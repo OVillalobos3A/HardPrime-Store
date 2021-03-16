@@ -6,11 +6,12 @@ Dashboard_Page::headerTemplate('Página Principal');
 ?>
 
 <!--Contenedor para mostrar una tabla con datos-->
+<br>
 <div class="row container">
     <div class="col s12">
         <div class="card indigo light-blue darken-4">
             <div class="card-content white-text">
-                <h3 class="center-align">¡BIENVENIDO @usuario!</h3>
+                <h4 class="center-align">¡BIENVENIDO @usuario!</h4>
                 <h5 class="center-align">Estas son las novedades:</h5>
                 <div class="col s12 m6">
                     <div class="card-panel blue-grey">

@@ -23,13 +23,17 @@ class Dashboard_Page {
             <body>
                 <!--Encabezado del documento-->
                 <header>
-                    <div class="navbar-fixed">
+                    <div class="navbar-fixed" id="mostrar">
                         <nav>
                             <div class="nav-wrapper light-blue darken-4">
                                 <a href="../../views/dashboard/ScreenPrincipal.php" class="brand-logo"> HardPrimeStore</a>
                                 <ul id="nav-mobile" class="right hide-on-med-and-down">
-                                    <a class="waves-effect waves-light btn blue-grey" href="../../views/dashboard/index.php">Cerrar
-                                        Sesión</a>
+                                    <a class="waves-effect waves-light btn blue-grey" href="../../views/dashboard/index.php">
+                                    Cerrar Sesión
+                                    </a>
+                                </ul>
+                                <ul id="nav-mobile" class="right hide-on-med-and-down">
+                                    <img class="responsive-img" src="../../resources/img/Tabla/man.png">
                                 </ul>
                             </div>
                         </nav>
@@ -38,21 +42,21 @@ class Dashboard_Page {
                         <nav>
                             <div class="nav-wrapper blue-grey">
                                 <ul id="dropdown1" class="dropdown-content">
-                                    <li><a href="../../views/dashboard/">Empleados</a></li>
-                                    <li><a href="../views/Marcas.php">Marcas</a></li>
-                                    <li><a href="../views/Categorias.php">Categorías</a></li>
+                                    <li><a href="../../views/dashboard/Empleados.php">Empleados</a></li>
+                                    <li><a href="../../views/dashboard/Marcas.php">Marcas</a></li>
+                                    <li><a href="../../views/dashboard/Categorias.php">Categorías</a></li>
                                 </ul>
                                 <ul id="dropdown2" class="dropdown-content">
-                                    <li><a href="../views/Productos.php">Productos</a></li>
-                                    <li><a href="../views/Proveedores.php">Proveedores</a></li>
-                                    <li><a href="../views/Entradas.php">Entadas</a></li>
+                                    <li><a href="../../views/dashboard/Productos.php">Productos</a></li>
+                                    <li><a href="../../views/dashboard/Proveedores.php">Proveedores</a></li>
+                                    <li><a href="../../views/dashboard/Entradas.php">Entadas</a></li>
                                 </ul>
                                 <ul id="dropdown3" class="dropdown-content">
-                                    <li><a href="../views/Usuarios.php">Gestión de usuarios</a></li>
+                                    <li><a href="../../views/dashboard/Usuarios.php">Gestión de usuarios</a></li>
                                 </ul>
                                 <ul id="dropdown4" class="dropdown-content">
-                                    <li><a href="../views/Pedidos.php">Pedidos</a></li>
-                                    <li><a href="../views/Vclientes.php">Visualización de clientes</a></li>
+                                    <li><a href="../../views/dashboard/Clientes.php">Clientes y pedidos</a></li>
+                                    <li><a href="../../views/dashboard/Consultas.php">Consultas y dudas</a></li>
                                 </ul>
                                 <a href="#" data-target="mobile-demo" class="sidenav-trigger"><i class="material-icons">menu</i></a>
                                 <ul class="left hide-on-med-and-down">
@@ -70,21 +74,21 @@ class Dashboard_Page {
                     </div>
                     <ul class="sidenav" id="mobile-demo">
                         <li class="light-blue darken-4"><a class="white-text">Gestión</a></li>
-                        <li><a href="../views/Empleados.php" class="center-align">Empleados</a></li>
-                        <li><a href="../views/Marcas.php" class="center-align">Marcas</a></li>
-                        <li><a href="../views/Categorias.php" class="center-align">Categorías</a></li>
+                        <li><a href="../../views/dashboard/Empleados.php" class="center-align">Empleados</a></li>
+                        <li><a href="../../views/dashboard/Marcas.php" class="center-align">Marcas</a></li>
+                        <li><a href="../../views/dashboard/Categorias.php" class="center-align">Categorías</a></li>
                         <li class="divider"></li>
                         <li class="light-blue darken-4"><a class="white-text">Inventario</a></li>
-                        <li><a href="../views/Productos.php" class="center-align">Productos</a></li>
-                        <li><a href="../views/Proveedores.php" class="center-align">Proveedores</a></li>
-                        <li><a href="../views/Entradas.php" class="center-align">Entradas</a></li>
+                        <li><a href="../../views/dashboard/Productos.php" class="center-align">Productos</a></li>
+                        <li><a href="../../views/dashboard/Proveedores.php" class="center-align">Proveedores</a></li>
+                        <li><a href="../../views/dashboard/Entradas.php" class="center-align">Entradas</a></li>
                         <li class="divider"></li>
                         <li class="light-blue darken-4"><a class="white-text">Usuarios</a></li>
-                        <li><a href="../views/Usuarios.php" class="center-align">Gestión de usuarios</a></li>
+                        <li><a href="../../views/dashboard/Usuarios.php" class="center-align">Gestión de usuarios</a></li>
                         <li class="divider"></li>
                         <li class="light-blue darken-4"><a class="white-text">Clientes</a></li>
-                        <li><a href="../views/Pedidos.php" class="center-align">Visualización de clientes</a></li>
-                        <li><a href="../views/Vclientes.php" class="center-align">Visualización de pedidos</a></li>
+                        <li><a href="../../views/dashboard/Clientes.php" class="center-align">Clientes y pedidos</a></li>
+                        <li><a href="../../views/dashboard/Consultas.php" class="center-align">Consultas y dudas</a></li>
                         <li class="divider"></li>
                         <br>
                         <li class="blue-grey"><a href="../../views/dashboard/index.php" class="center-align white-text">Cerrar Sesión</a></li>

@@ -52,9 +52,9 @@ Dashboard_Page::headerTemplate('Login');
                 </div>
                 <br>
                 <div class="form-field center-align">
-                    <a class="waves-effect waves-light btn blue-grey" href="../views/index2.php">¿Problemas
-                        con tu
-                        contraseña?</a>
+                    <a class="waves-effect waves-light btn blue-grey" href="../../views/dashboard/RecuContra.php">
+                        Recuperar contraseña
+                    </a>
                 </div>
             </div>
         </div>
