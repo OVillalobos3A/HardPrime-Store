@@ -1,0 +1,45 @@
+
+ body {
+  display: flex;
+  min-height: 100vh;
+  flex-direction: column;
+}
+footer{
+  flex-shrink: 0;    
+}
+ main {
+    padding-top: 50px;
+    flex: 1 0 auto;
+  padding-top: 64px;
+  }
+
+  h6#footer_text{
+    text-align: right;
+
+  }
+  ul#mobile-nav{
+    width: 225px;
+
+  }
+
+  @media only screen and (min-width : 0px) {
+    .invesible-top {
+      top: 128px;
+    }
+  } 
+
+  /**.side-nav{
+        
+  }**/
+  
+#link1{
+  text-align: center;
+  display: inline-block;
+  width: 100%;
+}
+
+#lista1 {    
+    color: white;            
+}
+
+

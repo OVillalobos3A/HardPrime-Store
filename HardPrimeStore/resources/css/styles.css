@@ -1,0 +1,112 @@
+body {
+    display: flex;
+    min-height: 100vh;
+    flex-direction: column;
+}
+main {
+    flex: 1 0 auto;
+    padding-top: 64px;
+  }
+  footer{
+    flex-shrink: 0;    
+  }
+#link1{
+    text-align: center;
+    display: inline-block;
+    width: 100%;
+  }
+  #editar_info, #cambiar_contra, #agregar_direc{
+    font-size: 15px;
+    
+  }
+
+  #check1{
+    align-self: center;
+  }
+  div#terminos {
+    display: flex;
+    justify-content: center;
+  }  
+  div#confirmar{
+    float: right;
+    
+  }
+  div#btnconfirmar{
+    text-align: center;
+    justify-content: center;
+    
+  }
+
+  div#calificar{
+    float: center;
+    
+  }
+
+div#colorp{
+
+    background-color: blue;
+}
+
+
+.ec-stars-wrapper {
+	/* Espacio entre los inline-block (los hijos, los `a`) 
+	   http://ksesocss.blogspot.com/2012/03/display-inline-block-y-sus-empeno-en.html */
+	font-size: 0;
+	/* Podríamos quitarlo, 
+		pero de esta manera (siempre que no le demos padding), 
+		sólo aplicará la regla .ec-stars-wrapper:hover a cuando
+		también se esté haciendo hover a alguna estrella */
+	display: inline-block;
+}
+.ec-stars-wrapper a {
+	text-decoration: none;
+	display: inline-block;
+	/* Volver a dar tamaño al texto */
+	font-size: 32px;
+	font-size: 2rem;
+	
+	color: #888;
+}
+
+.ec-stars-wrapper:hover a {
+	color: #e65100;
+}
+
+/*
+ * El selector de hijo, es necesario para aumentar la especifidad
+ */
+.ec-stars-wrapper > a:hover ~ a {
+	color: #888;
+}
+
+#estrellas1:hover a {
+	color: #e65100;
+}
+
+/*
+ * El selector de hijo, es necesario para aumentar la especifidad
+ */
+#estrellas1 > a:hover ~ a {
+	color: #e65100;
+}
+#estrellas1 a {
+	text-decoration: none;
+	display: inline-block;
+	/* Volver a dar tamaño al texto */
+	font-size: 32px;
+	font-size: 2rem;
+	
+	color: #e65100;
+}
+.select-dropdown.dropdown-trigger{
+color: black;
+
+}
+
+.img2{
+  display:block;
+  margin:auto;
+}
+
+
+     
