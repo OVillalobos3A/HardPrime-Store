@@ -52,10 +52,13 @@ class Dashboard_Page {
                 </footer>
                 <!--Importación de archivos JavaScript al final del cuerpo para una carga optimizada-->
                 <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
-                <script src="../../app/controllers/dashboard/'.$controller.'"></script>
+                <script type="text/javascript" src="../../resources/js/materialize.min.js"></script>
+                <script type="text/javascript" src="../../resources/js/sweetalert.min.js"></script>
+                <script type="text/javascript" src="../../app/helpers/dashboard/components.js"></script>
                 <script>
                     M.AutoInit();
                 </script>
+                <script type="text/javascript" src="../../app/controllers/dashboard/' . $controller . '"></script>
             </body>
             </html>
         ');

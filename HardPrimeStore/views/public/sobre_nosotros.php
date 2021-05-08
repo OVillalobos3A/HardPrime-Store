@@ -10,7 +10,7 @@ Sitio_Publico::headerTemplate('Sobre nosotros');
                 <h4>Sobre Nosotros</h4>
                 <hr>
                 <h5>
-                    HardPrime store es un proyecto que fue creado con el fin de ayudar a las personas que tienen la necesidad de comprar repuestos, accesorios de computadoras, a hacer sus compras de manera mas rapida y sin tener la necesidad de salir de casa
+                    HardPrime Store es un proyecto que fue creado con el fin de ayudar a las personas que tienen la necesidad de comprar repuestos, accesorios de computadoras, a hacer sus compras de manera mas rapida y sin tener la necesidad de salir de casa.
                 </h5>
             </div>
         </div>

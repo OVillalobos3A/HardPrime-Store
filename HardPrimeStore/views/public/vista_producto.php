@@ -92,12 +92,10 @@ Sitio_Publico::headerTemplate('HardPrimeStore - Producto');
                 <!--Se crean los comentarios que tiene el producto-->
                 <li class="collection-item avatar">
                     <i class="material-icons circle green">person</i>
-                    <span class="title"><b>Usuario1</b></span>
-                    <p>10/03/202 <br>
-                        Lorem ipsum dolor sit amet consectetur adipisicing elit. Quis consequuntur iusto laborum aliquam
-                        numquam architecto necessitatibus deserunt natus earum culpa ullam voluptas, harum officiis
-                        cumque
-                        et non. Debitis, ut qui.
+                    <span class="title"><b>Andres02</b></span>
+                    <p>10/03/2021 <br>
+                        Lo recomiendo mucho, es uno de los productos que más me ha gustado, y lo mejor es que se 
+                        encuentra en la relación calidad/precio.
                     </p>
 
                     <div class="ec-stars-wrapper" id="estrellas1">
@@ -114,12 +112,10 @@ Sitio_Publico::headerTemplate('HardPrimeStore - Producto');
                 </li>
                 <li class="collection-item avatar">
                     <i class="material-icons circle">person</i>
-                    <span class="title"><b>Usuario2</b></span>
+                    <span class="title"><b>Jesus12</b></span>
                     <p>11/03/2021 <br>
-                        Lorem ipsum dolor sit amet consectetur adipisicing elit. Quis consequuntur iusto laborum aliquam
-                        numquam architecto necessitatibus deserunt natus earum culpa ullam voluptas, harum officiis
-                        cumque
-                        et non. Debitis, ut qui.
+                        Lo recomiendo mucho, es uno de los productos que más me ha gustado, y lo mejor es que se 
+                        encuentra en la relación calidad/precio.
                     </p>
                     <div class="ec-stars-wrapper" id="estrellas1">
                         <a href="#" class="secondary-content" data-value="1"
@@ -136,12 +132,10 @@ Sitio_Publico::headerTemplate('HardPrimeStore - Producto');
                 </li>
                 <li class="collection-item avatar">
                     <i class="material-icons circle green">person</i>
-                    <span class="title"><b>Usuario3</b></span>
-                    <p>12/03/202 <br>
-                        Lorem ipsum dolor sit amet consectetur adipisicing elit. Quis consequuntur iusto laborum aliquam
-                        numquam architecto necessitatibus deserunt natus earum culpa ullam voluptas, harum officiis
-                        cumque
-                        et non. Debitis, ut qui.
+                    <span class="title"><b>OscarV503</b></span>
+                    <p>12/03/2021<br>
+                        Lo recomiendo mucho, es uno de los productos que más me ha gustado, y lo mejor es que se 
+                        encuentra en la relación calidad/precio.
                     </p>
                     <div class="ec-stars-wrapper" id="estrellas1">
                         <a href="#" class="secondary-content" data-value="1"
@@ -158,12 +152,10 @@ Sitio_Publico::headerTemplate('HardPrimeStore - Producto');
                 </li>
                 <li class="collection-item avatar">
                     <i class="material-icons circle red">person</i>
-                    <span class="title"><b>Usuario4</b></span>
-                    <p>13/03/202 <br>
-                        Lorem ipsum dolor sit amet consectetur adipisicing elit. Quis consequuntur iusto laborum aliquam
-                        numquam architecto necessitatibus deserunt natus earum culpa ullam voluptas, harum officiis
-                        cumque
-                        et non. Debitis, ut qui.
+                    <span class="title"><b>Carlos05</b></span>
+                    <p>13/03/2021<br>
+                        Lo recomiendo mucho, es uno de los productos que más me ha gustado, y lo mejor es que se 
+                        encuentra en la relación calidad/precio.
                     </p>
                     <div class="ec-stars-wrapper" id="estrellas1">
                         <a href="#" class="secondary-content" data-value="1"

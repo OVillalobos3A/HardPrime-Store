@@ -113,7 +113,10 @@ Sitio_Publico::headerTemplate('Crear cuenta');
                                 </div>
                                 <div class="input-field col s6 m3">
                                     <br>
-                                    <a class="waves-effect orange darken-4 btn btn-medium right"><i class="material-icons right">done</i>Crear cuenta</a><br>
+                                    <a class="waves-effect orange darken-4 btn btn-medium right" href="../../views/public/index.php">
+                                        <i class="material-icons right">done</i>Crear cuenta
+                                    </a>
+                                    <br>
                                 </div>
                                 <div class="container" id="terminos">
                                     <form action="#">

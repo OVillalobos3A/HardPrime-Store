@@ -206,7 +206,9 @@
                             <div class="card-content">
                                 <span class="card-title indigo-text text-darken-4"><b>Mouse HP</b></span>
                                 <h6 class="orange-text text-darken-4"><b>$200</b></h6>
-                                <p>I am a very simple card. I am good at containing small bits of information. I am convenient because I require little markup to use effectively.</p>
+                                <p>
+                                    Ratón gaming, 8000 dpi, sensor, muestreo de 200 IPS y una aceleración de 25G. Alta capacidad de respuesta.
+                                </p>
                                 <a href="vista_producto.php" id="link1">Ver producto</a>
                             </div>
                         </div>
@@ -221,7 +223,9 @@
                             <div class="card-content">
                                 <span class="card-title indigo-text text-darken-4"><b>Teclado HP</b></span>
                                 <h6 class="orange-text text-darken-4"><b>$200</b></h6>
-                                <p>I am a very simple card. I am good at containing small bits of information. I am convenient because I require little markup to use effectively.</p>
+                                <p>
+                                    Ratón gaming, 8000 dpi, sensor, muestreo de 200 IPS y una aceleración de 25G. Alta capacidad de respuesta.
+                                </p>
                                 <a href="vista_producto.php" id="link1">Ver producto</a>
                             </div>
                         </div>
@@ -236,7 +240,9 @@
                             <div class="card-content">
                                 <span class="card-title indigo-text text-darken-4"><b>Monitor HP</b></span>
                                 <h6 class="orange-text text-darken-4"><b>$200</b></h6>
-                                <p>I am a very simple card. I am good at containing small bits of information. I am convenient because I require little markup to use effectively.</p>
+                                <p>
+                                    Ratón gaming, 8000 dpi, sensor, muestreo de 200 IPS y una aceleración de 25G. Alta capacidad de respuesta.
+                                </p>
                                 <a href="vista_producto.php" id="link1">Ver producto</a>
                             </div>
                         </div>
@@ -251,7 +257,9 @@
                             <div class="card-content">
                                 <span class="card-title indigo-text text-darken-4"><b>Monitor HP - HD</b></span>
                                 <h6 class="orange-text text-darken-4"><b>$200</b></h6>
-                                <p>I am a very simple card. I am good at containing small bits of information. I am convenient because I require little markup to use effectively.</p>
+                                <p>
+                                    Ratón gaming, 8000 dpi, sensor, muestreo de 200 IPS y una aceleración de 25G. Alta capacidad de respuesta.
+                                </p>
                                 <a href="vista_producto.php" id="link1">Ver producto</a>
                             </div>
                         </div>
@@ -267,7 +275,9 @@
                             <div class="card-content">
                                 <span class="card-title indigo-text text-darken-4"><b>Bateria HP</b></span>
                                 <h6 class="orange-text text-darken-4"><b>$200</b></h6>
-                                <p>I am a very simple card. I am good at containing small bits of information. I am convenient because I require little markup to use effectively.</p>
+                                <p>
+                                    Ratón gaming, 8000 dpi, sensor, muestreo de 200 IPS y una aceleración de 25G. Alta capacidad de respuesta.
+                                </p>
                                 <a href="vista_producto.php" id="link1">Ver producto</a>
                             </div>
                         </div>

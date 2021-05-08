@@ -26,10 +26,10 @@ class Dashboard_Page {
                     <div class="navbar-fixed" id="mostrar">
                         <nav>
                             <div class="nav-wrapper light-blue darken-4">
-                                <a href="../../views/dashboard/index.php" class="brand-logo hide-on-med-and-down"><img class="responsive-img" src="../../resources/img/tabla/Logo2.png" width="250"></a>
-                                <a href="../../views/dashboard/index.php" class="brand-logo hide-on-large-only"><img class="responsive-img" src="../../resources/img/tabla/Logo2.png" width="200"></a>
+                                <a href="../../views/dashboard/screenprincipal.php" class="brand-logo hide-on-med-and-down"><img class="responsive-img" src="../../resources/img/tabla/Logo2.png" width="250"></a>
+                                <a href="../../views/dashboard/screenprincipal.php" class="brand-logo hide-on-large-only"><img class="responsive-img" src="../../resources/img/tabla/Logo2.png" width="200"></a>
                                 <ul id="nav-mobile" class="right hide-on-med-and-down">
-                                    <a class="waves-effect waves-light btn blue-grey" href="../../views/dashboard/index.php">
+                                    <a class="waves-effect waves-light btn blue-grey" onclick="logOut()">
                                         Cerrar Sesión
                                     </a>
                                 </ul>
@@ -49,7 +49,7 @@ class Dashboard_Page {
                                 </ul>
                                 <ul id="dropdown2" class="dropdown-content">
                                     <li><a href="../../views/dashboard/productos.php">Productos</a></li>
-                                    <li><a href="../../views/dashboard/proveedores.php">Proveedores</a></li>
+                                    <li><a href="../../views/dashboard/proveedor.php">Proveedores</a></li>
                                     <li><a href="../../views/dashboard/entradas.php">Entadas</a></li>
                                 </ul>
                                 <ul id="dropdown3" class="dropdown-content">
@@ -81,7 +81,7 @@ class Dashboard_Page {
                         <li class="divider"></li>
                         <li class="light-blue darken-4"><a class="white-text">Inventario</a></li>
                         <li><a href="../../views/dashboard/productos.php" class="center-align">Productos</a></li>
-                        <li><a href="../../views/dashboard/proveedores.php" class="center-align">Proveedores</a></li>
+                        <li><a href="../../views/dashboard/proveedor.php" class="center-align">Proveedores</a></li>
                         <li><a href="../../views/dashboard/entradas.php" class="center-align">Entradas</a></li>
                         <li class="divider"></li>
                         <li class="light-blue darken-4"><a class="white-text">Usuarios</a></li>
@@ -117,11 +117,14 @@ class Dashboard_Page {
                     </div>
                 </footer>
                 <!--Importación de archivos JavaScript al final del cuerpo para una carga optimizada-->
-                <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
-                <script src="../../app/controllers/dashboard/'.$controller.'"></script>
+                <script type="text/javascript" src="../../resources/js/materialize.min.js"></script>
+                <script type="text/javascript" src="../../resources/js/sweetalert.min.js"></script>
+                <script type="text/javascript" src="../../app/helpers/dashboard/components.js"></script>
                 <script>
                     M.AutoInit();
                 </script>
+                <script type="text/javascript" src="../../app/controllers/dashboard/account.js"></script>
+                <script type="text/javascript" src="../../app/controllers/dashboard/' . $controller . '"></script>
             </body>
             </html>
         ');

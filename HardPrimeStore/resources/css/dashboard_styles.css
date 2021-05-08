@@ -16,3 +16,7 @@ main {
     display:block;
     margin:auto;
 }
+
+.menu1 {
+    float: right;
+}

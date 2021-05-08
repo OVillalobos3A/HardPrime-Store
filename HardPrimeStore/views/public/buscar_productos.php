@@ -220,7 +220,10 @@
                             <div class="card-content">
                                 <span class="card-title indigo-text text-darken-4"><b>Disco duro Seagate</b></span>
                                 <h6 class="orange-text text-darken-4"><b>$200</b></h6>
-                                <p>I am a very simple card. I am good at containing small bits of information. I am convenient because I require little markup to use effectively.</p>
+                                <p> 
+                                    La unidad portátil de expansión de Seagate proporciona almacenamiento adicional para su 
+                                    colección de archivos en constante crecimiento.
+                                </p>
                                 <a href="vista_producto.php" id="link1">Ver producto</a>
                             </div>
                         </div>
@@ -235,7 +238,10 @@
                             <div class="card-content">
                                 <span class="card-title indigo-text text-darken-4"><b>Pantalla dell</b></span>
                                 <h6 class="orange-text text-darken-4"><b>$200</b></h6>
-                                <p>I am a very simple card. I am good at containing small bits of information. I am convenient because I require little markup to use effectively.</p>
+                                <p> 
+                                    La unidad portátil de expansión de Seagate proporciona almacenamiento adicional para su 
+                                    colección de archivos en constante crecimiento.
+                                </p>
                                 <a href="vista_producto.php" id="link1">Ver producto</a>
                             </div>
                         </div>
@@ -250,7 +256,10 @@
                             <div class="card-content">
                                 <span class="card-title indigo-text text-darken-4"><b>Tarjeta Gráfica</b></span>
                                 <h6 class="orange-text text-darken-4"><b>$200</b></h6>
-                                <p>I am a very simple card. I am good at containing small bits of information. I am convenient because I require little markup to use effectively.</p>
+                                <p> 
+                                    La unidad portátil de expansión de Seagate proporciona almacenamiento adicional para su 
+                                    colección de archivos en constante crecimiento.
+                                </p>
                                 <a href="vista_producto.php" id="link1">Ver producto</a>
                             </div>
                         </div>
@@ -265,7 +274,10 @@
                             <div class="card-content">
                                 <span class="card-title indigo-text text-darken-4"><b>Teclado</b></span>
                                 <h6 class="orange-text text-darken-4"><b>$200</b></h6>
-                                <p>I am a very simple card. I am good at containing small bits of information. I am convenient because I require little markup to use effectively.</p>
+                                <p> 
+                                    La unidad portátil de expansión de Seagate proporciona almacenamiento adicional para su 
+                                    colección de archivos en constante crecimiento.
+                                </p>
                                 <a href="vista_producto.php" id="link1">Ver producto</a>
                             </div>
                         </div>
@@ -282,7 +294,10 @@
                             <div class="card-content">
                                 <span class="card-title indigo-text text-darken-4"><b>Teclado con cable extendido</b></span>
                                 <h6 class="orange-text text-darken-4"><b>$200</b></h6>
-                                <p>I am a very simple card. I am good at containing small bits of information. I am convenient because I require little markup to use effectively.</p>
+                                <p> 
+                                    La unidad portátil de expansión de Seagate proporciona almacenamiento adicional para su 
+                                    colección de archivos en constante crecimiento.
+                                </p>
                                 <a href="vista_producto.php" id="link1">Ver producto</a>
                             </div>
                         </div>

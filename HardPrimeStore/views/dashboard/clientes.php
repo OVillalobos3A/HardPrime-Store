@@ -27,10 +27,15 @@ Dashboard_Page::headerTemplate('clientes');
                     <div class="card-content Black-text">
                         <br>
                          <!--Se añade un input field el cual su función es buscar un cliente en especifico-->
-                        <div class="input-field col s6">
-                            <i class="material-icons prefix">search</i>
-                            <input type="text" id="autocomplete-input" class="autocomplete">
-                            <label for="autocomplete-input">Buscar cliente</label>
+                        <div class="row">
+                            <div class="input-field col s6">
+                                <i class="material-icons prefix">search</i>
+                                <input type="text" id="autocomplete-input" class="autocomplete">
+                                <label for="autocomplete-input">Buscar cliente por nombre</label>
+                            </div>
+                            <div class="input-field col s6">
+                                <a class="btn-floating btn-large waves-effect waves-light red"><i class="material-icons">done</i></a>
+                            </div>
                         </div>
                         <!--Se construye la tabla de datos correspondiente a clientes-->
                         <!--Se especifica la clase para hacer responsive la tabla, y el tipo de tabla-->
@@ -135,10 +140,15 @@ Dashboard_Page::headerTemplate('clientes');
                     <div class="card-content Black-text">
                         <br>
                         <!--Se añade un input field el cual su función es buscar un pedido en especifico-->
-                        <div class="input-field col s6">
-                            <i class="material-icons prefix">search</i>
-                            <input type="text" id="autocomplete-input" class="autocomplete">
-                            <label for="autocomplete-input">Buscar pedido</label>
+                        <div class="row">
+                            <div class="input-field col s6">
+                                <i class="material-icons prefix">search</i>
+                                <input type="text" id="autocomplete-input" class="autocomplete">
+                                <label for="autocomplete-input">Buscar pedido por código</label>
+                            </div>
+                            <div class="input-field col s6">
+                                <a class="btn-floating btn-large waves-effect waves-light red"><i class="material-icons">done</i></a>
+                            </div>
                         </div>
                         <!--Se construye la tabla de datos correspondiente a pedidos-->
                         <!--Se especifica la clase para hacer responsive la tabla, y el tipo de tabla-->
