@@ -14,7 +14,7 @@ Dashboard_Page::headerTemplate('Proveedores');
             <!--Agregamos un botón cuya función es que nos mueste el formulario para agregar-->
             <!--un registro-->
             <div>
-                <a class="waves-effect red btn modal-trigger" onclick="openCreateDialog()"><i class="material-icons left">add</i>Agregar proveedor</a>
+                <a href="#" class="waves-effect red btn" onclick="openCreateDialog()"><i class="material-icons left">add</i>Agregar proveedor</a>
             </div>
             <br>
             <!--Se añade un input field el cual su función es buscar un empleado en especifico-->

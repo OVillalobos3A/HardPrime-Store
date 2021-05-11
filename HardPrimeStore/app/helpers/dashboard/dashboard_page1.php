@@ -55,9 +55,6 @@ class Dashboard_Page {
                 <script type="text/javascript" src="../../resources/js/materialize.min.js"></script>
                 <script type="text/javascript" src="../../resources/js/sweetalert.min.js"></script>
                 <script type="text/javascript" src="../../app/helpers/dashboard/components.js"></script>
-                <script>
-                    M.AutoInit();
-                </script>
                 <script type="text/javascript" src="../../app/controllers/dashboard/' . $controller . '"></script>
             </body>
             </html>

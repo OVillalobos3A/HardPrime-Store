@@ -14,20 +14,24 @@ Dashboard_Page::headerTemplate('Marcas');
             <!--Agregamos un botón cuya función es que nos mueste el formulario para agregar-->
             <!--un registro-->
             <div>
-                <a class="waves-effect red btn modal-trigger" href="#modal_registro"><i class="material-icons left">add</i>Agregar marcas</a>
+                <a href="#" class="waves-effect red btn" onclick="openCreateDialog()"><i class="material-icons left">add</i>Agregar marca</a>
             </div>
             <br>
             <!--Se añade un input field el cual su función es buscar un empleado en especifico-->
-            <div class="row">
-                <div class="input-field col s6">
-                    <i class="material-icons prefix">search</i>
-                    <input type="text" id="autocomplete-input" class="autocomplete">
-                    <label for="autocomplete-input">Buscar marca por nombre</label>
+            <form method="post" id="search-form">
+                <div class="row">
+                    <div class="input-field col s6">
+                        <i class="material-icons prefix">search</i>
+                        <input id="search" type="text" name="search" required/>
+                        <label for="autocomplete-input">Nombre</label>
+                    </div>
+                    <div class="input-field col s6 m4">
+                        <button class="btn red" type="submit" name="action">Buscar
+                            <i class="material-icons right">search</i>
+                        </button>
+                    </div>
                 </div>
-                <div class="input-field col s6">
-                    <a class="btn-floating btn-large waves-effect waves-light red"><i class="material-icons">done</i></a>
-                </div>
-            </div>
+            </form>
             <!--Se construye la tabla de datos correspondiente a usuarios-->
             <!--Se especifica la clase para hacer responsive la tabla, y el tipo de tabla-->
             <!--Se especifica el detalle de cada fila y columna-->
@@ -37,109 +41,56 @@ Dashboard_Page::headerTemplate('Marcas');
                         <th>Nombre</th>
                         <th>Imagen</th>
                         <th>Logo</th>
-                        <th>Acción</th>
                     </tr>
                 </thead>
-
-                <tbody>
-                    <tr>
-                        <th>Nvida</th>
-                        <th><img class="responsive-img" src="../../resources/img/tabla marca/imagen.png"></th>
-                        <th><img class="responsive-img" src="../../resources/img/tabla marca/logo.png"></th>
-                        <th>
-                            <a class="btn-floating btn waves-effect light-blue darken-4 modal-trigger" href="#modal_registro"><i class="material-icons" title="Editar registro">create</i></a>
-                            <a class="btn-floating btn waves-effect red" href="#"><i class="material-icons" title="Eliminar registro">delete</i></a>
-                        </th>
-                    </tr>
-                    <tr>
-                        <th>Intel</th>
-                        <th><img class="responsive-img" src="../../resources/img/tabla marca/imagen.png"></th>
-                        <th><img class="responsive-img" src="../../resources/img/tabla marca/logo.png"></th>
-                        <th>
-                            <a class="btn-floating btn waves-effect light-blue darken-4 modal-trigger" href="#modal_registro"><i class="material-icons" title="Editar registro">create</i></a>
-                            <a class="btn-floating btn waves-effect red" href="#"><i class="material-icons" title="Eliminar registro">delete</i></a>
-                        </th>
-                    </tr>
-                    <tr>
-                        <th>Ryzen</th>
-                        <th><img class="responsive-img" src="../../resources/img/tabla marca/imagen.png"></th>
-                        <th><img class="responsive-img" src="../../resources/img/tabla marca/logo.png"></th>
-                        <th>
-                            <a class="btn-floating btn waves-effect light-blue darken-4 modal-trigger" href="#modal_registro"><i class="material-icons" title="Editar registro">create</i></a>
-                            <a class="btn-floating btn waves-effect red" href="#"><i class="material-icons" title="Eliminar registro">delete</i></a>
-                        </th>
-                    </tr>
-                    <tr>
-                        <th>Logitech</th>
-                        <th><img class="responsive-img" src="../../resources/img/tabla marca/imagen.png"></th>
-                        <th><img class="responsive-img" src="../../resources/img/tabla marca/logo.png"></th>
-                        <th>
-                            <a class="btn-floating btn waves-effect light-blue darken-4 modal-trigger" href="#modal_registro"><i class="material-icons" title="Editar registro">create</i></a>
-                            <a class="btn-floating btn waves-effect red" href="#"><i class="material-icons" title="Eliminar registro">delete</i></a>
-                        </th>
-                    </tr>
+                <tbody id="tbody-rows">
                 </tbody>
             </table>
         </div>
     </div>
 </div>
-<div id="modal_registro" class="modal">
+<div id="save-modal" class="modal">
     <div class="modal-content">
-        <h5 class="center-align">Agregar marca</h5>
+        <h5 id="modal-title" class="center-align"></h5>
         <br>
         <!--Estableciendo el tamaño de cada div correspondiente-->
-        <div class="row">
-            <!--Creamos la estructura del formulario respectivo-->
-            <form class="col-md-4">
-                <div class="row">
-                    <!--Estableciendo el tamaño del que tomará el Input field-->
-                    <div class="input-field col s12 m6">
-                        <input id="nombres" type="text" class="validate">
-                        <label for="nombres">Nombre de la marca</label>
+        <form method="post" id="save-form" enctype="multipart/form-data">
+            <!-- Campo oculto para asignar el id del registro al momento de modificar -->
+            <input class="hide" type="number" id="id_marca" name="id_marca"/>
+            <div class="row">
+                <div class="input-field col s12 m6">
+                    <i class="material-icons prefix">note_add</i>
+                    <input id="nombre_marca" type="text" name="nombre_marca" class="validate" required/>
+                    <label for="nombre_marca">Nombre</label>
+                </div>
+                <div class="file-field input-field col s12 m6">
+                    <div class="btn waves-effect tooltipped" data-tooltip="Seleccione una imagen de al menos 500x500">
+                        <span><i class="material-icons">image</i></span>
+                        <input id="archivo_marca" type="file" name="archivo_marca" accept=".gif, .jpg, .png"/>
                     </div>
-                    <!--Estableciendo el tamaño del que tomará el Input field-->
-                    <div class="input-field col s12 m6">
-                        <form action="#">
-                            <div class="file-field input-field">
-                                <div class="btn blue-grey">
-                                    <span>Escoger imagen</span>
-                                    <input type="file">
-                                </div>
-                                <div class="file-path-wrapper">
-                                    <input class="file-path validate" type="text">
-                                </div>
-                            </div>
-                        </form>
-                    </div>
-                    <!--Estableciendo el tamaño del que tomará el Input field-->
-                    <div class="input-field col s12 m6">
-                        <form action="#">
-                            <div class="file-field input-field">
-                                <div class="btn blue-grey">
-                                    <span>Escoger logo</span>
-                                    <input type="file">
-                                </div>
-                                <div class="file-path-wrapper">
-                                    <input class="file-path validate" type="text">
-                                </div>
-                            </div>
-                        </form>
-                    </div>
-                    <div class="row">
-                        <div class="col s10 offset-s1 center-align">
-                            <a class="waves-effect light-blue darken-3 btn"><i class="material-icons right">save</i>Guardar</a>
-                            <a class="waves-effect red btn modal-close"><i class="material-icons right">close</i>Cancelar</a>
-                        </div>
+                    <div class="file-path-wrapper">
+                        <input class="file-path validate" type="text" placeholder="Formatos aceptados: gif, jpg y png"/>
                     </div>
                 </div>
-            </form>
-        </div>
-    </div>
-    <div class="modal-footer">
+                <div class="file-field input-field col s12 m6">
+                    <div class="btn waves-effect tooltipped" data-tooltip="Seleccione un logo de al menos 500x500">
+                        <span><i class="material-icons">image</i></span>
+                        <input id="archivo_marca1" type="file" name="archivo_marca1" accept=".gif, .jpg, .png"/>
+                    </div>
+                    <div class="file-path-wrapper">
+                        <input class="file-path validate" type="text" placeholder="Formatos aceptados: gif, jpg y png"/>
+                    </div>
+                </div>
+            </div>
+            <div class="row center-align">
+                <a href="#" class="btn waves-effect grey tooltipped modal-close" data-tooltip="Cancelar"><i class="material-icons">cancel</i></a>
+                <button type="submit" class="btn waves-effect blue tooltipped" data-tooltip="Guardar"><i class="material-icons">save</i></button>
+            </div>
+        </form>
     </div>
 </div>
 <br>
 <?php
 //Se imprime la plantilla del pie y se envía el nombre del controlador para la página web
-Dashboard_Page::footerTemplate('Marcas.js');
+Dashboard_Page::footerTemplate('marcas.js');
 ?>

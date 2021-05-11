@@ -15,9 +15,7 @@ class Empleados extends Validator
     private $alias = null;
     private $clave = null;
     private $ide = null;
-    private $estado = null;
-    private $imagen = null;
-    private $ruta = '../../../resources/img/productos/';
+
 
     /*
     *   Métodos para asignar valores a los atributos.
@@ -26,16 +24,6 @@ class Empleados extends Validator
     {
         if ($this->validateNaturalNumber($value)) {
             $this->id = $value;
-            return true;
-        } else {
-            return false;
-        }
-    }
-
-    public function setImagen($file)
-    {
-        if ($this->validateImageFile($file, 500, 500)) {
-            $this->imagen = $this->getImageName();
             return true;
         } else {
             return false;
@@ -190,19 +178,10 @@ class Empleados extends Validator
     {
         return $this->alias;
     }
-    public function getImagen()
-    {
-        return $this->imagen;
-    }
 
     public function getClave()
     {
         return $this->clave;
-    }
-
-    public function getRuta()
-    {
-        return $this->ruta;
     }
 
     /*
@@ -264,9 +243,10 @@ class Empleados extends Validator
     */
     public function searchRows($value)
     {
-        $sql = 'SELECT id_empleado, nombre, apellido, correo, telefono, genero, estado, imagen
-                FROM empleados
-                WHERE nombre ILIKE ? OR apellido ILIKE ?';
+        $sql = 'SELECT id_usuario, nombres_usuario, apellidos_usuario, correo_usuario, alias_usuario
+                FROM usuarios
+                WHERE apellidos_usuario ILIKE ? OR nombres_usuario ILIKE ?
+                ORDER BY apellidos_usuario';
         $params = array("%$value%", "%$value%");
         return Database::getRows($sql, $params);
     }
@@ -294,9 +274,9 @@ class Empleados extends Validator
 
     public function createRow()
     {
-        $sql = 'INSERT INTO empleados(imagen, nombre, apellido, correo, telefono, fecha_nac, genero)
-                VALUES(?, ?, ?, ?, ?, ?, ?)';
-        $params = array($this->imagen, $this->nombre, $this->apellido, $this->correo, $this->tel, $this->fecha, $this->gen);
+        $sql = 'INSERT INTO empleados(nombre, apellido, correo, telefono, fecha_nac, genero)
+                VALUES(?, ?, ?, ?, ?, ?)';
+        $params = array($this->nombre, $this->apellido, $this->correo, $this->tel, $this->fecha, $this->gen);
         if ($this->ide = Database::getLastRow($sql, $params)) {
             return true;
         } else {
@@ -307,7 +287,7 @@ class Empleados extends Validator
 
     public function readAll()
     {
-        $sql = 'SELECT id_empleado, nombre, apellido, correo, telefono, genero, estado, imagen
+        $sql = 'SELECT nombre, apellido
                 FROM empleados';
         $params = null;
         return Database::getRows($sql, $params);
@@ -315,29 +295,26 @@ class Empleados extends Validator
 
     public function readOne()
     {
-        $sql = 'SELECT id_empleado, nombre, apellido, correo, telefono, fecha_nac, genero, imagen
-                FROM empleados
-                WHERE id_empleado = ?';
+        $sql = 'SELECT id_usuario, nombres_usuario, apellidos_usuario, correo_usuario
+                FROM usuarios
+                WHERE id_usuario = ?';
         $params = array($this->id);
         return Database::getRow($sql, $params);
     }
 
-    public function updateRow($current_image)
+    public function updateRow()
     {
-        // Se verifica si existe una nueva imagen para borrar la actual, de lo contrario se mantiene la actual.
-        ($this->imagen) ? $this->deleteFile($this->getRuta(), $current_image) : $this->imagen = $current_image;
-
-        $sql = 'UPDATE empleados 
-                SET nombre = ?, apellido = ?, correo = ?, telefono = ?, fecha_nac = ?, genero = ?, imagen = ?
-                WHERE id_empleado= ?';
-        $params = array($this->nombre, $this->apellido, $this->correo, $this->tel, $this->fecha, $this->gen, $this->imagen, $this->id);
+        $sql = 'UPDATE usuarios 
+                SET nombres_usuario = ?, apellidos_usuario = ?, correo_usuario = ?
+                WHERE id_usuario = ?';
+        $params = array($this->nombres, $this->apellidos, $this->correo, $this->id);
         return Database::executeRow($sql, $params);
     }
 
     public function deleteRow()
     {
-        $sql = 'DELETE FROM empleados
-                WHERE id_empleado = ?';
+        $sql = 'DELETE FROM usuarios
+                WHERE id_usuario = ?';
         $params = array($this->id);
         return Database::executeRow($sql, $params);
     }

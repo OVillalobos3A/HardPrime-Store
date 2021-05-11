@@ -1,6 +1,6 @@
 <?php
-require_once('../../helpers/database.php');
-require_once('../../helpers/validator.php');
+require_once('../../helpers/dashboard/database.php');
+require_once('../../helpers/dashboard/validator.php');
 require_once('../../models/categorias.php');
 
 // Se comprueba si existe una acción a realizar, de lo contrario se finaliza el script con un mensaje de error.
@@ -50,8 +50,8 @@ if (isset($_GET['action'])) {
                 break;
             case 'create':
                 $_POST = $categoria->validateForm($_POST);
-                if ($categoria->setNombre($_POST['nombre_categoria'])) {
-                    if ($categoria->setDescripcion($_POST['descripcion_categoria'])) {
+                if ($categoria->setNombre($_POST['nombre'])) {
+                    if ($categoria->setDescripcion($_POST['descripcion'])) {
                         if (is_uploaded_file($_FILES['archivo_categoria']['tmp_name'])) {
                             if ($categoria->setImagen($_FILES['archivo_categoria'])) {
                                 if ($categoria->createRow()) {
@@ -96,11 +96,11 @@ if (isset($_GET['action'])) {
                 $_POST = $categoria->validateForm($_POST);
                 if ($categoria->setId($_POST['id_categoria'])) {
                     if ($data = $categoria->readOne()) {
-                        if ($categoria->setNombre($_POST['nombre_categoria'])) {
-                            if ($categoria->setDescripcion($_POST['descripcion_categoria'])) {
+                        if ($categoria->setNombre($_POST['nombre'])) {
+                            if ($categoria->setDescripcion($_POST['descripcion'])) {
                                 if (is_uploaded_file($_FILES['archivo_categoria']['tmp_name'])) {
                                     if ($categoria->setImagen($_FILES['archivo_categoria'])) {
-                                        if ($categoria->updateRow($data['imagen_categoria'])) {
+                                        if ($categoria->updateRow($data['imagen'])) {
                                             $result['status'] = 1;
                                             if ($categoria->saveFile($_FILES['archivo_categoria'], $categoria->getRuta(), $categoria->getImagen())) {
                                                 $result['message'] = 'Categoría modificada correctamente';
@@ -114,7 +114,7 @@ if (isset($_GET['action'])) {
                                         $result['exception'] = $categoria->getImageError();
                                     }
                                 } else {
-                                    if ($categoria->updateRow($data['imagen_categoria'])) {
+                                    if ($categoria->updateRow($data['imagen'])) {
                                         $result['status'] = 1;
                                         $result['message'] = 'Categoría modificada correctamente';
                                     } else {
@@ -139,7 +139,7 @@ if (isset($_GET['action'])) {
                     if ($data = $categoria->readOne()) {
                         if ($categoria->deleteRow()) {
                             $result['status'] = 1;
-                            if ($categoria->deleteFile($categoria->getRuta(), $data['imagen_categoria'])) {
+                            if ($categoria->deleteFile($categoria->getRuta(), $data['imagen'])) {
                                 $result['message'] = 'Categoría eliminada correctamente';
                             } else {
                                 $result['message'] = 'Categoría eliminada pero no se borró la imagen';
