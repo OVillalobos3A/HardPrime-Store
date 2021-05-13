@@ -30,7 +30,7 @@ if (isset($_GET['action'])) {
                     if (Database::getException()) {
                         $result['exception'] = Database::getException();
                     } else {
-                        $result['exception'] = 'No hay usuarios registrados';
+                        $result['exception'] = 'No hay empleados registrados';
                     }
                 }
                 break;
@@ -58,26 +58,38 @@ if (isset($_GET['action'])) {
                 break;
             case 'create':
                 $_POST = $usuario->validateForm($_POST);
-                if ($usuario->setNombres($_POST['nombres_usuario'])) {
-                    if ($usuario->setApellidos($_POST['apellidos_usuario'])) {
-                        if ($usuario->setCorreo($_POST['correo_usuario'])) {
-                            if ($usuario->setAlias($_POST['alias_usuario'])) {
-                                if ($_POST['clave_usuario'] == $_POST['confirmar_clave']) {
-                                    if ($usuario->setClave($_POST['clave_usuario'])) {
-                                        if ($usuario->createRow()) {
-                                            $result['status'] = 1;
-                                            $result['message'] = 'Usuario creado correctamente';
+                if ($usuario->setNombre($_POST['nombre'])) {
+                    if ($usuario->setApellido($_POST['apellido'])) {
+                        if ($usuario->setCorreo($_POST['correo'])) {
+                            if ($usuario->setTel($_POST['telefono'])) {
+                                if ($usuario->setGen($_POST['genero'])) {
+                                    if ($usuario->setFecha($_POST['fecha'])) {
+                                        if (is_uploaded_file($_FILES['imagen']['tmp_name'])) {
+                                            if ($usuario->setImagen($_FILES['imagen'])) {
+                                                if ($usuario->createRow()) {
+                                                    $result['status'] = 1;
+                                                    if ($usuario->saveFile($_FILES['imagen'], $usuario->getRuta(), $usuario->getImagen())) {
+                                                        $result['message'] = 'Empleado creado correctamente';
+                                                    } else {
+                                                        $result['message'] = 'Empleado creado pero no se guardó la imagen';
+                                                    }
+                                                } else {
+                                                    $result['exception'] = Database::getException();;
+                                                }
+                                            } else {
+                                                $result['exception'] = $usuario->getImageError();
+                                            }
                                         } else {
-                                            $result['exception'] = Database::getException();
+                                            $result['exception'] = 'Seleccione una imagen';
                                         }
                                     } else {
-                                        $result['exception'] = $usuario->getPasswordError();
+                                        $result['exception'] = 'Fecha incorrecta';
                                     }
                                 } else {
-                                    $result['exception'] = 'Claves diferentes';
+                                    $result['exception'] = $usuario->getPasswordError();
                                 }
                             } else {
-                                $result['exception'] = 'Alias incorrecto';
+                                $result['exception'] = 'Teléfono incorrecto';
                             }
                         } else {
                             $result['exception'] = 'Correo incorrecto';
@@ -90,68 +102,101 @@ if (isset($_GET['action'])) {
                 }
                 break;
             case 'readOne':
-                if ($usuario->setId($_POST['id_usuario'])) {
+                if ($usuario->setId($_POST['id_empleado'])) {
                     if ($result['dataset'] = $usuario->readOne()) {
                         $result['status'] = 1;
                     } else {
                         if (Database::getException()) {
                             $result['exception'] = Database::getException();
                         } else {
-                            $result['exception'] = 'Usuario inexistente';
+                            $result['exception'] = 'Empleado inexistente';
                         }
                     }
                 } else {
-                    $result['exception'] = 'Usuario incorrecto';
+                    $result['exception'] = 'Empleado incorrecto';
                 }
                 break;
             case 'update':
                 $_POST = $usuario->validateForm($_POST);
-                if ($usuario->setId($_POST['id_usuario'])) {
-                    if ($usuario->readOne()) {
-                        if ($usuario->setNombres($_POST['nombres_usuario'])) {
-                            if ($usuario->setApellidos($_POST['apellidos_usuario'])) {
-                                if ($usuario->setCorreo($_POST['correo_usuario'])) {
-                                    if ($usuario->updateRow()) {
-                                        $result['status'] = 1;
-                                        $result['message'] = 'Usuario modificado correctamente';
+                if ($usuario->setId($_POST['id_empleado'])) {
+                    if ($data = $usuario->readOne()) {
+                        if ($usuario->setNombre($_POST['nombre'])) {
+                            if ($usuario->setApellido($_POST['apellido'])) {
+                                if ($usuario->setCorreo($_POST['correo'])) {
+                                    if ($usuario->setTel($_POST['telefono'])) {
+                                        if ($usuario->setGen($_POST['genero'])) {
+                                            if ($usuario->setFecha($_POST['fecha'])) {
+                                                if (is_uploaded_file($_FILES['imagen']['tmp_name'])) {
+                                                    if ($usuario->setImagen($_FILES['imagen'])) {
+                                                        if ($usuario->updateRow($data['imagen'])) {
+                                                            $result['status'] = 1;
+                                                            if ($usuario->saveFile($_FILES['imagen'], $usuario->getRuta(), $usuario->getImagen())) {
+                                                                $result['message'] = 'Empleado modificado correctamente';
+                                                            } else {
+                                                                $result['message'] = 'Empleado modificado pero no se guardó la imagen';
+                                                            }
+                                                        } else {
+                                                            $result['exception'] = Database::getException();
+                                                        }
+                                                    } else {
+                                                        $result['exception'] = $usuario->getImageError();
+                                                    }
+                                                } else {
+                                                    if ($usuario->updateRow($data['imagen'])) {
+                                                        $result['status'] = 1;
+                                                        $result['message'] = 'Empleado modificado correctamente';
+                                                    } else {
+                                                        $result['exception'] = Database::getException();
+                                                    }
+                                                }
+                                            } else {
+                                                $result['exception'] = 'La fecha es incorrecta';
+                                            }
+                                        } else {
+                                            $result['exception'] = 'Genero incorrecto';
+                                        }
                                     } else {
-                                        $result['exception'] = Database::getException();
+                                        $result['exception'] = 'El teléfono es invalido';
                                     }
                                 } else {
-                                    $result['exception'] = 'Correo incorrecto';
+                                    $result['exception'] = 'Correo invalido';
                                 }
                             } else {
                                 $result['exception'] = 'Apellidos incorrectos';
                             }
                         } else {
-                            $result['exception'] = 'Nombres incorrectos';
+                            $result['exception'] = 'Nombre incorrecto';
                         }
                     } else {
-                        $result['exception'] = 'Usuario inexistente';
+                        $result['exception'] = 'Empleado inexistente';
                     }
                 } else {
-                    $result['exception'] = 'Usuario incorrecto';
+                    $result['exception'] = 'Empleado incorrecto';
                 }
                 break;
             case 'delete':
-                if ($_POST['id_usuario'] != $_SESSION['id_usuario']) {
-                    if ($usuario->setId($_POST['id_usuario'])) {
-                        if ($usuario->readOne()) {
-                            if ($usuario->deleteRow()) {
-                                $result['status'] = 1;
-                                $result['message'] = 'Usuario eliminado correctamente';
+                // if ($_POST['id_empleado'] != $_SESSION['id_empleado']) {
+                if ($usuario->setId($_POST['id_empleado'])) {
+                    if ($data = $usuario->readOne()) {
+                        if ($usuario->deleteRow()) {
+                            $result['status'] = 1;
+                            if ($usuario->deleteFile($usuario->getRuta(), $data['imagen'])) {
+                                $result['message'] = 'Empleado eliminado correctamente';
                             } else {
-                                $result['exception'] = Database::getException();
+                                $result['message'] = 'Empleado eliminado pero no se borró la imagen';
                             }
                         } else {
-                            $result['exception'] = 'Usuario inexistente';
+                            $result['exception'] = Database::getException();
                         }
                     } else {
-                        $result['exception'] = 'Usuario incorrecto';
+                        $result['exception'] = 'Empleado inexistente';
                     }
                 } else {
-                    $result['exception'] = 'No se puede eliminar a sí mismo';
+                    $result['exception'] = 'Empleado incorrecto';
                 }
+                // } else {
+                //   $result['exception'] = 'No se puede eliminar a sí mismo';
+                //}
                 break;
             default:
                 $result['exception'] = 'Acción no disponible dentro de la sesión';
@@ -181,25 +226,25 @@ if (isset($_GET['action'])) {
                                 if ($usuario->setFecha($_POST['fecha'])) {
                                     if ($usuario->setGen($_POST['gen'])) {
                                         if ($usuario->createRow()) {
-                                                if ($usuario->setAlias($_POST['alias'])) {
-                                                    if ($_POST['clave1'] == $_POST['clave2']) {
-                                                        if ($usuario->setClave($_POST['clave1'])) {
-                                                            if ($usuario->firstUser()) {
-                                                                $result['message'] = 'Se ha ingresado un usuario';
-                                                                $result['status'] = 1;
-                                                            } else {
-                                                                $result['exception'] = Database::getException();
-                                                                $result['message'] = 'Error desconocido';
-                                                            }
+                                            if ($usuario->setAlias($_POST['alias'])) {
+                                                if ($_POST['clave1'] == $_POST['clave2']) {
+                                                    if ($usuario->setClave($_POST['clave1'])) {
+                                                        if ($usuario->firstUser()) {
+                                                            $result['message'] = 'Se ha ingresado un usuario';
+                                                            $result['status'] = 1;
                                                         } else {
-                                                            $result['exception'] = $usuario->getPasswordError();
+                                                            $result['exception'] = Database::getException();
+                                                            $result['message'] = 'Error desconocido';
                                                         }
                                                     } else {
-                                                        $result['exception'] = 'Claves diferentes';
+                                                        $result['exception'] = $usuario->getPasswordError();
                                                     }
                                                 } else {
-                                                    $result['exception'] = 'Usuario incorrecto';
-                                                }   
+                                                    $result['exception'] = 'Claves diferentes';
+                                                }
+                                            } else {
+                                                $result['exception'] = 'Usuario incorrecto';
+                                            }
                                         } else {
                                             $result['exception'] = Database::getException();
                                         }
@@ -221,7 +266,7 @@ if (isset($_GET['action'])) {
                 } else {
                     $result['exception'] = 'Nombres incorrectos';
                 }
-            break;
+                break;
             case 'logIn':
                 $_POST = $usuario->validateForm($_POST);
                 if ($usuario->checkUser($_POST['alias'])) {
