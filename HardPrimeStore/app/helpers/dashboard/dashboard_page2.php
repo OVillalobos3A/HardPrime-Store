@@ -33,9 +33,6 @@ class Dashboard_Page {
                                         Cerrar Sesión
                                     </a>
                                 </ul>
-                                <ul id="nav-mobile" class="right hide-on-med-and-down">
-                                    <img class="responsive-img" src="../../resources/img/tabla/man.png">
-                                </ul>
                             </div>
                         </nav>
                     </div>
@@ -56,8 +53,9 @@ class Dashboard_Page {
                                     <li><a href="../../views/dashboard/usuarios.php">Gestión de usuarios</a></li>
                                 </ul>
                                 <ul id="dropdown4" class="dropdown-content">
-                                    <li><a href="../../views/dashboard/clientes.php">Clientes y pedidos</a></li>
-                                    <li><a href="../../views/dashboard/consultas.php">Consultas y dudas</a></li>
+                                    <li><a href="../../views/dashboard/clientes.php">Clientes</a></li>
+                                    <li><a href="../../views/dashboard/valoraciones.php">Valoraciones</a></li>
+                                    <li><a href="../../views/dashboard/pedidos.php">Pedidos</a></li>
                                 </ul>
                                 <a href="#" data-target="mobile-demo" class="sidenav-trigger"><i class="material-icons">menu</i></a>
                                 <ul class="left hide-on-med-and-down">
@@ -88,14 +86,12 @@ class Dashboard_Page {
                         <li><a href="../../views/dashboard/usuarios.php" class="center-align">Gestión de usuarios</a></li>
                         <li class="divider"></li>
                         <li class="light-blue darken-4"><a class="white-text">Clientes</a></li>
-                        <li><a href="../../views/dashboard/clientes.php" class="center-align">Clientes y pedidos</a></li>
-                        <li><a href="../../views/dashboard/consultas.php" class="center-align">Consultas y dudas</a></li>
+                        <li><a href="../../views/dashboard/clientes.php" class="center-align">Clientes</a></li>
+                        <li><a href="../../views/dashboard/valoraciones.php" class="center-align">Valoraciones</a></li>
+                        <li><a href="../../views/dashboard/pedidos.php" class="center-align">Pedidos</a></li>
                         <li class="divider"></li>
                         <br>
-                        <img class="responsive-img img2" src="../../resources/img/tabla/man.png">
-                        <li><a class="center-align">@usuario</a></li>
-                        <br>
-                        <li class="blue-grey"><a href="../../views/dashboard/index.php" class="center-align white-text">Cerrar Sesión</a></li>
+                        <li class="blue-grey"><a href="#" class="center-align white-text" onclick="logOut()">Cerrar Sesión</a></li>
                     </ul>
                 </header>
                 <br>

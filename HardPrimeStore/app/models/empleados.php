@@ -15,9 +15,9 @@ class Empleados extends Validator
     private $alias = null;
     private $clave = null;
     private $ide = null;
-    private $estado = null;
     private $imagen = null;
-    private $ruta = '../../../resources/img/productos/';
+    private $ruta = '../../../resources/img/empleados/';
+
 
     /*
     *   Métodos para asignar valores a los atributos.
@@ -26,16 +26,6 @@ class Empleados extends Validator
     {
         if ($this->validateNaturalNumber($value)) {
             $this->id = $value;
-            return true;
-        } else {
-            return false;
-        }
-    }
-
-    public function setImagen($file)
-    {
-        if ($this->validateImageFile($file, 500, 500)) {
-            $this->imagen = $this->getImageName();
             return true;
         } else {
             return false;
@@ -138,6 +128,16 @@ class Empleados extends Validator
         }
     }
 
+    public function setImagen($file)
+    {
+        if ($this->validateImageFile($file, 500, 500)) {
+            $this->imagen = $this->getImageName();
+            return true;
+        } else {
+            return false;
+        }
+    }
+
     /*
     *   Métodos para obtener valores de los atributos.
     */
@@ -190,14 +190,15 @@ class Empleados extends Validator
     {
         return $this->alias;
     }
-    public function getImagen()
-    {
-        return $this->imagen;
-    }
 
     public function getClave()
     {
         return $this->clave;
+    }
+
+    public function getImagen()
+    {
+        return $this->imagen;
     }
 
     public function getRuta()
@@ -243,11 +244,11 @@ class Empleados extends Validator
 
     public function readProfile()
     {
-        $sql = 'SELECT id_usuario, nombres_usuario, apellidos_usuario, correo_usuario, alias_usuario
-                FROM usuarios
-                WHERE id_usuario = ?';
+        $sql = "SELECT nombre, apellido, imagen, CONCAT('¡BIENVENID@!', ' ', usuario) as usuario
+                FROM usuarios INNER JOIN empleados ON usuarios.id_empleado = empleados.id_empleado
+                WHERE usuarios.id_empleado = ?";
         $params = array($_SESSION['id_usuario']);
-        return Database::getRow($sql, $params);
+        return Database::getRows($sql, $params);
     }
 
     public function editProfile()
@@ -264,9 +265,10 @@ class Empleados extends Validator
     */
     public function searchRows($value)
     {
-        $sql = 'SELECT id_empleado, nombre, apellido, correo, telefono, genero, estado, imagen
-                FROM empleados
-                WHERE nombre ILIKE ? OR apellido ILIKE ?';
+        $sql = 'SELECT id_usuario, nombres_usuario, apellidos_usuario, correo_usuario, alias_usuario
+                FROM usuarios
+                WHERE apellidos_usuario ILIKE ? OR nombres_usuario ILIKE ?
+                ORDER BY apellidos_usuario';
         $params = array("%$value%", "%$value%");
         return Database::getRows($sql, $params);
     }
@@ -294,9 +296,9 @@ class Empleados extends Validator
 
     public function createRow()
     {
-        $sql = 'INSERT INTO empleados(imagen, nombre, apellido, correo, telefono, fecha_nac, genero)
+        $sql = 'INSERT INTO empleados(nombre, apellido, correo, telefono, fecha_nac, genero, imagen)
                 VALUES(?, ?, ?, ?, ?, ?, ?)';
-        $params = array($this->imagen, $this->nombre, $this->apellido, $this->correo, $this->tel, $this->fecha, $this->gen);
+        $params = array($this->nombre, $this->apellido, $this->correo, $this->tel, $this->fecha, $this->gen, $this->imagen);
         if ($this->ide = Database::getLastRow($sql, $params)) {
             return true;
         } else {
@@ -307,18 +309,18 @@ class Empleados extends Validator
 
     public function readAll()
     {
-        $sql = 'SELECT id_empleado, nombre, apellido, correo, telefono, genero, estado, imagen
+        $sql = 'SELECT nombre, apellido
                 FROM empleados';
         $params = null;
-        return Database::getRows($sql, $params);
+        return Database::getRow($sql, $params);
     }
 
     public function readOne()
     {
-        $sql = 'SELECT id_empleado, nombre, apellido, correo, telefono, fecha_nac, genero, imagen
-                FROM empleados
-                WHERE id_empleado = ?';
-        $params = array($this->id);
+        $sql = 'SELECT usuarios.id_empleado, nombre, apellido, correo, telefono, imagen, usuarios.id_usuario, usuario
+                FROM usuarios INNER JOIN empleados ON usuarios.id_empleado = empleados.id_empleado
+                WHERE usuarios.id_usuario = ?';
+        $params = array($_SESSION['id_usuario']);
         return Database::getRow($sql, $params);
     }
 
@@ -326,19 +328,40 @@ class Empleados extends Validator
     {
         // Se verifica si existe una nueva imagen para borrar la actual, de lo contrario se mantiene la actual.
         ($this->imagen) ? $this->deleteFile($this->getRuta(), $current_image) : $this->imagen = $current_image;
-
         $sql = 'UPDATE empleados 
-                SET nombre = ?, apellido = ?, correo = ?, telefono = ?, fecha_nac = ?, genero = ?, imagen = ?
-                WHERE id_empleado= ?';
-        $params = array($this->nombre, $this->apellido, $this->correo, $this->tel, $this->fecha, $this->gen, $this->imagen, $this->id);
+                SET nombre = ?, apellido = ?, correo = ?, telefono = ?, imagen = ?
+                WHERE id_empleado = ?';
+        $params = array($this->nombre, $this->apellido, $this->correo, $this->tel, $this->imagen, $this->id);
         return Database::executeRow($sql, $params);
     }
+
+    public function updateUserCredentials()
+    {
+        // Se encripta la clave por medio del algoritmo bcrypt que genera un string de 60 caracteres.
+        $hash = password_hash($this->clave, PASSWORD_DEFAULT);
+        $sql = 'UPDATE usuarios 
+                SET usuario = ?, contraseña = ?
+                WHERE id_usuario = ?';
+        $params = array($this->alias, $hash, $this->id);
+        return Database::executeRow($sql, $params);
+    }
+
+    public function updateUserCredentials2()
+    {
+        $sql = 'UPDATE usuarios 
+                SET usuario = ?
+                WHERE id_usuario = ?';
+        $params = array($this->alias, $this->id);
+        return Database::executeRow($sql, $params);
+    }
+
 
     public function deleteRow()
     {
-        $sql = 'DELETE FROM empleados
-                WHERE id_empleado = ?';
+        $sql = 'DELETE FROM usuarios
+                WHERE id_usuario = ?';
         $params = array($this->id);
         return Database::executeRow($sql, $params);
     }
+
 }

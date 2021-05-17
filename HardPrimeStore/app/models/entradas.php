@@ -2,17 +2,14 @@
 /*
 *	Clase para manejar la tabla productos de la base de datos. Es clase hija de Validator.
 */
-class Productos extends Validator
+class Entradas extends Validator
 {
     // Declaración de atributos (propiedades).
     private $id = null;
-    private $nombre = null;
-    private $descripcion = null;
-    private $precio = null;
-    private $imagen = null;
-    private $categoria = null;
-    private $estado = null;
-    private $ruta = '../../../resources/img/productos/';
+    private $cantidad = null;
+    private $fecha = null;
+    private $idemp = null;
+    private $idpro = null;
 
     /*
     *   Métodos para asignar valores a los atributos.
@@ -27,60 +24,40 @@ class Productos extends Validator
         }
     }
 
-    public function setNombre($value)
-    {
-        if ($this->validateAlphanumeric($value, 1, 50)) {
-            $this->nombre = $value;
-            return true;
-        } else {
-            return false;
-        }
-    }
-
-    public function setDescripcion($value)
-    {
-        if ($this->validateString($value, 1, 250)) {
-            $this->descripcion = $value;
-            return true;
-        } else {
-            return false;
-        }
-    }
-
-    public function setPrecio($value)
-    {
-        if ($this->validateMoney($value)) {
-            $this->precio = $value;
-            return true;
-        } else {
-            return false;
-        }
-    }
-
-    public function setImagen($file)
-    {
-        if ($this->validateImageFile($file, 500, 500)) {
-            $this->imagen = $this->getImageName();
-            return true;
-        } else {
-            return false;
-        }
-    }
-
-    public function setCategoria($value)
+    public function setIdemp($value)
     {
         if ($this->validateNaturalNumber($value)) {
-            $this->categoria = $value;
+            $this->idemp = $value;
             return true;
         } else {
             return false;
         }
     }
 
-    public function setEstado($value)
+    public function setIdpro($value)
     {
-        if ($this->validateBoolean($value)) {
-            $this->estado = $value;
+        if ($this->validateNaturalNumber($value)) {
+            $this->idpro = $value;
+            return true;
+        } else {
+            return false;
+        }
+    }
+
+    public function setCant($value)
+    {
+        if ($this->validateNaturalNumber($value)) {
+            $this->cantidad = $value;
+            return true;
+        } else {
+            return false;
+        }
+    }
+
+    public function setFecha($value)
+    {
+        if ($this->validateDate($value)) {
+            $this->fecha = $value;
             return true;
         } else {
             return false;
@@ -95,39 +72,24 @@ class Productos extends Validator
         return $this->id;
     }
 
-    public function getNombre()
+    public function getIdemp()
     {
-        return $this->nombre;
+        return $this->idemp;
     }
 
-    public function getDescripcion()
+    public function getIdpro()
     {
-        return $this->descripcion;
+        return $this->idpro;
     }
 
-    public function getPrecio()
+    public function getCant()
     {
-        return $this->precio;
+        return $this->cantidad;
     }
 
-    public function getImagen()
+    public function getFecha()
     {
-        return $this->imagen;
-    }
-
-    public function getCategoria()
-    {
-        return $this->categoria;
-    }
-
-    public function getEstado()
-    {
-        return $this->estado;
-    }
-
-    public function getRuta()
-    {
-        return $this->ruta;
+        return $this->fecha;
     }
 
     /*

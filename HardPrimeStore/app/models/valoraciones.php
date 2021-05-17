@@ -2,7 +2,7 @@
 /*
 *	Clase para manejar la tabla categorias de la base de datos. Es clase hija de Validator.
 */
-class Clientes extends Validator
+class Valoraciones extends Validator
 {
     // Declaración de atributos (propiedades).
     private $id = null;
@@ -56,76 +56,69 @@ class Clientes extends Validator
     */
     public function searchRows($value)
     {
-        $sql = 'SELECT id_cliente, nombre, apellido, correo, direccion, celular, estado
-                FROM clientes 
-                WHERE nombre ILIKE ? OR direccion ILIKE ?
-                ORDER BY nombre';
+        $sql = 'SELECT id_calificacion, comentario, fecha, calificacion, calificaciones.estado as estado, productos.nombre as producto, clientes.nombre as cliente
+                FROM calificaciones INNER JOIN productos ON calificaciones.id_producto = productos.id_producto
+                INNER JOIN clientes ON calificaciones.id_cliente = clientes.id_cliente
+                WHERE clientes.nombre ILIKE ? OR productos.nombre ILIKE ?
+                ORDER BY clientes.nombre';
         $params = array("%$value%", "%$value%");
         return Database::getRows($sql, $params);
     }
 
     public function readAll()
     {
-        $sql = 'SELECT id_cliente, nombre, apellido, correo, direccion, celular, estado
-                FROM clientes 
-                ORDER BY nombre';
+        $sql = 'SELECT id_calificacion, comentario, fecha, calificacion, calificaciones.estado as estado, productos.nombre as producto, clientes.nombre as cliente
+                FROM calificaciones INNER JOIN productos ON calificaciones.id_producto = productos.id_producto
+                INNER JOIN clientes ON calificaciones.id_cliente = clientes.id_cliente
+                ORDER BY clientes.nombre';
         $params = null;
-        return Database::getRows($sql, $params);
-    }
-
-    public function viewOrder()
-    {
-        $sql = 'SELECT id_pedido, pedido.estado as estado, fecha_envio, fecha_pedido, empleados.nombre as encargado
-                FROM pedido INNER JOIN clientes ON pedido.id_cliente = clientes.id_cliente
-                INNER JOIN empleados ON pedido.id_empleado = empleados.id_empleado
-                WHERE pedido.id_cliente = ?';
-        $params = array($this->id);
         return Database::getRows($sql, $params);
     }
 
     public function readOne()
     {
-        $sql = 'SELECT id_cliente, nombre, apellido, correo, direccion, celular, estado
-                FROM clientes 
-                WHERE id_cliente = ?';
+        $sql = 'SELECT id_calificacion, comentario, fecha, calificacion, calificaciones.estado as estado, productos.nombre as producto, clientes.nombre as cliente
+                FROM calificaciones INNER JOIN productos ON calificaciones.id_producto = productos.id_producto
+                INNER JOIN clientes ON calificaciones.id_cliente = clientes.id_cliente
+                WHERE id_calificacion = ?';
         $params = array($this->id);
         return Database::getRow($sql, $params);
     }
 
     public function readOne1()
     {
-        $this->estado1 = "Inactivo";
-        $sql = 'SELECT id_cliente, nombre, estado
-                FROM clientes 
-                WHERE id_cliente = ? and estado = ?';
+        $this->estado1 = "Desabilitado";
+        $sql = 'SELECT id_calificacion, comentario, estado
+                FROM calificaciones 
+                WHERE id_calificacion = ? and estado = ?';
         $params = array($this->id, $this->estado1);
         return Database::getRow($sql, $params);
     }
 
     public function updateRow()
     {
-        $this->estado = "Activo";
-        $sql = 'UPDATE clientes
+        $this->estado = "Habilitado";
+        $sql = 'UPDATE calificaciones
                 SET estado = ?
-                WHERE id_cliente = ?';
+                WHERE id_calificacion = ?';
         $params = array($this->estado, $this->id);
         return Database::executeRow($sql, $params);
     }
 
     public function updateRow1()
     {
-        $this->estado = "Inactivo";
-        $sql = 'UPDATE clientes
+        $this->estado = "Desabilitado";
+        $sql = 'UPDATE calificaciones
                 SET estado = ?
-                WHERE id_cliente = ?';
+                WHERE id_calificacion = ?';
         $params = array($this->estado, $this->id);
         return Database::executeRow($sql, $params);
     }
 
     public function deleteRow()
     {
-        $sql = 'DELETE FROM clientes
-                WHERE id_cliente = ?';
+        $sql = 'DELETE FROM calificaciones
+                WHERE id_calificacion = ?';
         $params = array($this->id);
         return Database::executeRow($sql, $params);
     }

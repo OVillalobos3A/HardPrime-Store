@@ -2,7 +2,7 @@
 //Se incluye la clase con las plantillas del documento
 include('../../app/helpers/dashboard/dashboard_page1.php');
 //Se imprime la plantilla del encabezado y se envía el titulo para la página web
-Dashboard_Page::headerTemplate('Entradas');
+Dashboard_Page::headerTemplate('Registro');
 ?>
 
 <div class="row container">
@@ -31,15 +31,23 @@ Dashboard_Page::headerTemplate('Entradas');
                         </div>
                         <div class="input-field col s12 m6">
                             <input type="date" id="fecha" name="fecha" class="validate" required/>
-                            <label for="fecha">Nacimiento</label>
+                            <label for="fecha">Fecha de nacimiento</label>
                         </div>
                         <div class="input-field col s12 m6">
                             <select id="gen" name="gen">
-                            <option value="" disabled selected>Seleccionar</option>
                             <option value="M">Masculino</option>
                             <option value="F">Femenino</option>
                             </select>
                             <label>Género:</label>
+                        </div>
+                        <div class="file-field input-field col s12 m6">
+                            <div class="btn waves-effect tooltipped" data-tooltip="Seleccione una foto de perfil de al menos 500x500">
+                                <span><i class="material-icons">image</i></span>
+                                <input id="archivo" type="file" name="archivo" accept=".gif, .jpg, .png"/>
+                            </div>
+                            <div class="file-path-wrapper">
+                                <input class="file-path validate" type="text" placeholder="Formatos aceptados: gif, jpg y png"/>
+                            </div>
                         </div>
                         <div class="input-field col s12 m6">
                             <input id="alias" type="text" name="alias" class="validate" required/>
