@@ -2,15 +2,22 @@
 /*
 *	Clase para manejar la tabla productos de la base de datos. Es clase hija de Validator.
 */
+
+
+
 class Usuarios extends Validator
 {
     //Declarando los atributos
     private $id = null;
-    private $usuario = null;
+    public $usuario = null;
     private $clave = null;
     private $empleado = null;
     private $tipo_usuario = null;
     private $estado = null;
+    private $correo = null;
+    private $codigo = null;
+
+
 
     //Metodos para asignar valores a los atributos
 
@@ -34,6 +41,16 @@ class Usuarios extends Validator
         }
     }
 
+    public function setCorreo($value)
+    {
+        if ($this->validateAlphanumeric($value, 1, 50)) {
+            $this->correo = $value;
+            return true;
+        } else {
+            return false;
+        }
+    }
+
     public function setClave($value)
     {
         if ($this->validatePassword($value)) {
@@ -48,6 +65,16 @@ class Usuarios extends Validator
     {
         if ($this->validateNaturalNumber($value)) {
             $this->empleado = $value;
+            return true;
+        } else {
+            return false;
+        }
+    }
+
+    public function setCodigo($value)
+    {
+        if ($this->validateAlphanumeric($value, 1, 50)) {
+            $this->codigo = $value;
             return true;
         } else {
             return false;
@@ -105,6 +132,17 @@ class Usuarios extends Validator
         return $this->estado;
     }
 
+    public function getCodigo()
+    {
+        return $this->codigo;
+    }
+
+    public function getCorreo()
+    {
+        return $this->correo;
+    }
+
+
 
     //Métodos para realizar las operaciones SCRUD (search, create, read, update, delete).
     public function searchRows($value)
@@ -153,6 +191,76 @@ class Usuarios extends Validator
                 WHERE id_usuario = ?';
         $params = array($this->usuario, $this->empleado, $this->tipo_usuario, $this->id);
         return Database::executeRow($sql, $params);
+    }
+
+    public function recuContra()
+    {
+        $hash = password_hash($this->clave, PASSWORD_DEFAULT);
+        $sql = 'UPDATE usuarios
+                SET contraseña = ?
+                WHERE usuario = ?';
+        $params = array($hash, $this->usuario);
+        return Database::executeRow($sql, $params);
+    }
+
+    public function obtenerCorreo()
+    {
+        $sql = 'SELECT correo FROM empleados
+                INNER JOIN usuarios USING(id_empleado)
+                WHERE usuario = ?';
+        $params = array($this->usuario);
+        if ($data = Database::getRow($sql, $params)) {
+            $this->correo = $data['correo'];            
+            return true;
+        } else {
+            return false;
+        }                
+    }
+    public function checkCode()
+    {
+        $sql = 'SELECT codigo_recu FROM usuarios                
+                WHERE usuario = ?';
+        $params = array($this->usuario);
+        if ($data = Database::getRow($sql, $params)) {
+            $this->codigo = $data['codigo_recu'];
+            return true;
+        } else {
+            return false;
+        }                
+    }
+
+    public function enviarCodigo()
+    {
+        $asunto = $this->getCodigo();
+        mail("HardPrime@gmail.com,destinatario@gmail.com", "Recuperación de contraseña - HardPrimeStore", $asunto);
+    }
+
+    public function updateCode()
+    {
+        $sql = 'UPDATE usuarios
+                SET codigo_recu = ?
+                WHERE usuario = ?';
+        $params = array($this->codigo, $this->usuario);
+        return Database::executeRow($sql, $params);
+    }
+
+    function generarCodigo($longitud)
+    {
+        $caracteres = array("0", "1", "2", "3", "4", "5", "6", "7", "8", "9");
+
+
+        for ($i = 1; $i <= $longitud; $i++) {
+            $this->codigo .= $caracteres[$this->numero_aleatorio(0, 9)];
+        }
+
+        return $this->codigo;
+    }
+
+    function numero_aleatorio($ninicial, $nfinal)
+    {
+        $numero = rand($ninicial, $nfinal);
+
+        return $numero;
     }
 
     public function deleteRow()
