@@ -34,6 +34,49 @@ function readRows(api) {
     });
 }
 
+function readRows2(api) {
+    fetch(api + 'readProfile', {
+        method: 'get'
+    }).then(function (request) {
+        // Se verifica si la petición es correcta, de lo contrario se muestra un mensaje indicando el problema.
+        if (request.ok) {
+            request.json().then(function (response) {
+                // Se comprueba si la respuesta es satisfactoria, de lo contrario se muestra un mensaje con la excepción.
+                if (response.status) {
+                    let content = '';
+                    // Se recorre el conjunto de registros devuelto por la API (dataset) fila por fila a través del objeto row.
+                    response.dataset.map(function (row) {
+                        // Se crean y concatenan las tarjetas con los datos de cada categoría.
+                        content += `
+                            <div>
+                                <h4 class="center-align">${row.usuario}</h4>
+                            </div>
+                            <div class="center-align">
+                                <img class="circle" height="100" src="../../resources/img/empleados/${row.imagen}">
+                            </div>
+                            <div class="center-align">
+                                <a class="waves-effect waves-light btn"><i class="material-icons right tooltipped" data-tooltip="Modificar perfil" onclick="openUpdateProfile(${row.id_empleado})">account_circle</i>Perfil</a>
+                                <a class="waves-effect waves-light btn"><i class="material-icons right tooltipped" data-tooltip="Modificar Credenciales" onclick="openUpdateCredentials(${row.id_usuario})">pin</i>Credenciales</a>
+                            </div>
+                        `;
+                    });
+                    // Se agregan las tarjetas a la etiqueta div mediante su id para mostrar las categorías.
+                    document.getElementById('profile1').innerHTML = content;
+                    // Se inicializa el componente Tooltip asignado a los enlaces para que funcionen las sugerencias textuales.
+                    M.Tooltip.init(document.querySelectorAll('.tooltipped'));
+                } else {
+                    
+                }
+            });
+        } else {
+            console.log(request.status + ' ' + request.statusText);
+        }
+    }).catch(function (error) {
+        console.log(error);
+    });
+}
+
+
 /*
 *   Función para obtener los resultados de una búsqueda en los mantenimientos de tablas (operación search).
 *
@@ -100,6 +143,34 @@ function saveRow(api, action, form, modal) {
         console.log(error);
     });
 }
+
+function saveRowUser(api, action, form, modal) {
+    fetch(api + action, {
+        method: 'post',
+        body: new FormData(document.getElementById(form))
+    }).then(function (request) {
+        // Se verifica si la petición es correcta, de lo contrario se muestra un mensaje indicando el problema.
+        if (request.ok) {
+            request.json().then(function (response) {
+                // Se comprueba si la respuesta es satisfactoria, de lo contrario se muestra un mensaje con la excepción.
+                if (response.status) {
+                    // Se cierra la caja de dialogo (modal) del formulario.
+                    let instance = M.Modal.getInstance(document.getElementById(modal));
+                    instance.close();
+                    readRows2(api);
+                    sweetAlert(1, response.message, null);
+                } else {
+                    sweetAlert(2, response.exception, null);
+                }
+            });
+        } else {
+            console.log(request.status + ' ' + request.statusText);
+        }
+    }).catch(function (error) {
+        console.log(error);
+    });
+}
+
 
 /*
 *   Función para eliminar un registro seleccionado en los mantenimientos de tablas (operación delete). Requiere el archivo sweetalert.min.js para funcionar.
