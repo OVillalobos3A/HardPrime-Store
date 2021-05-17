@@ -17,7 +17,6 @@ class Pedidos extends Validator
     *   0: Pendiente. Es cuando el pedido esta en proceso por parte del cliente y se puede modificar el detalle.
     *   1: Finalizado. Es cuando el cliente finaliza el pedido y ya no es posible modificar el detalle.
     *   2: Entregado. Es cuando la tienda ha entregado el pedido al cliente.
-    *   3: Anulado. Es cuando el cliente se arrepiente de haber realizado el pedido.
     */
 
     /*
