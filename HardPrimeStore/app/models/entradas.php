@@ -97,47 +97,73 @@ class Entradas extends Validator
     */
     public function searchRows($value)
     {
-        $sql = 'SELECT id_producto, imagen_producto, nombre_producto, descripcion_producto, precio_producto, nombre_categoria, estado_producto
-                FROM productos INNER JOIN categorias USING(id_categoria)
-                WHERE nombre_producto ILIKE ? OR descripcion_producto ILIKE ?
-                ORDER BY nombre_producto';
-        $params = array("%$value%", "%$value%");
+        $sql = "SELECT id_entrada, productos.nombre as product, fecha, cantidad, CONCAT(empleados.nombre, ' ', empleados.apellido) as nombre
+                FROM entrada INNER JOIN productos ON entrada.id_producto = productos.id_producto 
+                INNER JOIN empleados ON entrada.id_empleado = empleados.id_empleado
+                WHERE productos.nombre ILIKE ?
+                ORDER BY productos.nombre";
+        $params = array("%$value%");
         return Database::getRows($sql, $params);
     }
 
     public function createRow()
     {
-        $sql = 'INSERT INTO productos(nombre_producto, descripcion_producto, precio_producto, imagen_producto, estado_producto, id_categoria, id_usuario)
-                VALUES(?, ?, ?, ?, ?, ?, ?)';
-        $params = array($this->nombre, $this->descripcion, $this->precio, $this->imagen, $this->estado, $this->categoria, $_SESSION['id_usuario']);
+        $sql = 'INSERT INTO entrada(cantidad, fecha, id_producto, id_empleado)
+                VALUES(?, ?, ?, ?)';
+        $params = array($this->cantidad, $this->fecha, $this->idpro, $this->idemp);
         return Database::executeRow($sql, $params);
     }
 
     public function readAll()
     {
-        $sql = 'SELECT id_producto, imagen_producto, nombre_producto, descripcion_producto, precio_producto, nombre_categoria, estado_producto
-                FROM productos INNER JOIN categorias USING(id_categoria)
-                ORDER BY nombre_producto';
+        $sql = "SELECT id_entrada, productos.nombre as product, fecha, cantidad, CONCAT(empleados.nombre, ' ', empleados.apellido) as nombre
+                FROM entrada INNER JOIN productos ON entrada.id_producto = productos.id_producto 
+                INNER JOIN empleados ON entrada.id_empleado = empleados.id_empleado
+                ORDER BY productos.nombre";
+        $params = null;
+        return Database::getRows($sql, $params);
+    }
+
+    public function readEmp()
+    {
+        $sql = 'SELECT usuarios.id_empleado as empleado, usuario
+                FROM usuarios INNER JOIN empleados ON usuarios.id_empleado = empleados.id_empleado
+                WHERE usuarios.id_usuario = ?';
+        $params = array($_SESSION['id_usuario']);
+        return Database::getRow($sql, $params);
+    }
+
+    public function readAllProduct()
+    {
+        $sql = 'SELECT id_producto, nombre
+                FROM productos';
         $params = null;
         return Database::getRows($sql, $params);
     }
 
     public function readOne()
     {
-        $sql = 'SELECT id_producto, nombre_producto, descripcion_producto, precio_producto, imagen_producto, id_categoria, estado_producto
-                FROM productos
-                WHERE id_producto = ?';
+        $sql = 'SELECT id_entrada, cantidad, fecha, id_empleado, id_producto
+                FROM entrada
+                WHERE id_entrada = ?';
         $params = array($this->id);
         return Database::getRow($sql, $params);
     }
 
-    public function updateRow($current_image)
+    public function backStock()
     {
-        // Se verifica si existe una nueva imagen para borrar la actual, de lo contrario se mantiene la actual.
-        ($this->imagen) ? $this->deleteFile($this->getRuta(), $current_image) : $this->imagen = $current_image;
+        $sql = 'UPDATE productos SET stock = (productos.stock - entrada.cantidad)
+                FROM entrada
+                WHERE entrada.id_producto = productos.id_producto  AND id_entrada = ?';
+        $params = array($this->id);
+        return Database::getRow($sql, $params);
+    }
 
-        $sql = 'UPDATE productos
-                SET imagen_producto = ?, nombre_producto = ?, descripcion_producto = ?, precio_producto = ?, estado_producto = ?, id_categoria = ?
+    //TOdvaía no
+    public function updateRow()
+    {
+        $sql = 'UPDATE entrada
+                SET imagen_pr = ?, nombre_producto = ?, descripcion_producto = ?, precio_producto = ?, estado_producto = ?, id_categoria = ?
                 WHERE id_producto = ?';
         $params = array($this->imagen, $this->nombre, $this->descripcion, $this->precio, $this->estado, $this->categoria, $this->id);
         return Database::executeRow($sql, $params);
@@ -145,21 +171,10 @@ class Entradas extends Validator
 
     public function deleteRow()
     {
-        $sql = 'DELETE FROM productos
-                WHERE id_producto = ?';
+        $sql = 'DELETE FROM entrada
+                WHERE id_entrada = ?';
         $params = array($this->id);
         return Database::executeRow($sql, $params);
     }
 
-    /*
-    *   Métodos para generar gráficas.
-    */
-    public function cantidadProductosCategoria()
-    {
-        $sql = 'SELECT nombre_categoria, COUNT(id_producto) cantidad
-                FROM productos INNER JOIN categorias USING(id_categoria)
-                GROUP BY nombre_categoria ORDER BY cantidad DESC';
-        $params = null;
-        return Database::getRows($sql, $params);
-    }
 }
