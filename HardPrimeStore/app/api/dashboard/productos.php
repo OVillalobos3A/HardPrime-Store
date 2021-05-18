@@ -1,6 +1,6 @@
 <?php
-require_once('../../helpers/dashboard/database.php');
-require_once('../../helpers/dashboard/validator.php');
+require_once('../../helpers/database.php');
+require_once('../../helpers/validator.php');
 require_once('../../models/productos.php');
 
 // Se comprueba si existe una acción a realizar, de lo contrario se finaliza el script con un mensaje de error.
@@ -50,73 +50,41 @@ if (isset($_GET['action'])) {
                 break;
             case 'create':
                 $_POST = $producto->validateForm($_POST);
-                if ($producto->setNombre($_POST['nombre'])) {
-                    if ($producto->setDescripcion($_POST['descp'])) {
-                        if ($producto->setStock($_POST['stock'])) {
-                            if ($producto->setPrecio($_POST['precio'])) {
-                                if ($producto->setEstado(isset($_POST['estado']) ? 1 : 0)) {
-                                    if (isset($_POST['categoria'])) {
-                                        if ($producto->setCategoria($_POST['categoria'])) {
-                                            if (isset($_POST['marca'])) {
-                                                if ($producto->setMarca($_POST['marca'])) {
-                                                    if (isset($_POST['proveedor'])) {
-                                                        if ($producto->setProveedor($_POST['proveedor'])) {
-                                                            if (is_uploaded_file($_FILES['imagen']['tmp_name'])) {
-                                                                if ($producto->setImagen($_FILES['imagen'])) {
-                                                                    if (is_uploaded_file($_FILES['imagen2']['tmp_name'])) {
-                                                                        if ($producto->setImagen2($_FILES['imagen2'])) {
-                                                                            if ($producto->createRow()) {
-                                                                                $result['status'] = 1;
-                                                                                if ($producto->saveFile($_FILES['imagen'], $producto->getRuta(), $producto->getImagen())) {
-                                                                                    if ($producto->saveFile($_FILES['imagen2'], $producto->getRuta(), $producto->getImagen2())) {
-                                                                                        $result['message'] = 'Producto creado correctamente';
-                                                                                    } else {
-                                                                                        $result['message'] = 'Producto creado pero solo una imagen se guardó';
-                                                                                    }
-                                                                                } else {
-                                                                                    $result['message'] = 'Producto creado pero no se guardó ninguna imagen';
-                                                                                }
-                                                                            } else {
-                                                                                $result['exception'] = Database::getException();;
-                                                                            }
-                                                                        } else {
-                                                                            $result['exception'] = $producto->getImageError();
-                                                                        }
-                                                                    } else {
-                                                                        $result['exception'] = 'Seleccione una segunda imagen';
-                                                                    }
-                                                                } else {
-                                                                    $result['exception'] = $producto->getImageError();
-                                                                }
-                                                            } else {
-                                                                $result['exception'] = 'Seleccione una imagen';
-                                                            }
-                                                        } else {
-                                                            $result['exception'] = 'Proveedor incorrecto';
-                                                        }
+                if ($producto->setNombre($_POST['nombre_producto'])) {
+                    if ($producto->setDescripcion($_POST['descripcion_producto'])) {
+                        if ($producto->setPrecio($_POST['precio_producto'])) {
+                            if (isset($_POST['categoria_producto'])) {
+                                if ($producto->setCategoria($_POST['categoria_producto'])) {
+                                    if ($producto->setEstado(isset($_POST['estado_producto']) ? 1 : 0)) {
+                                        if (is_uploaded_file($_FILES['archivo_producto']['tmp_name'])) {
+                                            if ($producto->setImagen($_FILES['archivo_producto'])) {
+                                                if ($producto->createRow()) {
+                                                    $result['status'] = 1;
+                                                    if ($producto->saveFile($_FILES['archivo_producto'], $producto->getRuta(), $producto->getImagen())) {
+                                                        $result['message'] = 'Producto creado correctamente';
                                                     } else {
-                                                        $result['exception'] = 'Seleccione un proveedor';
+                                                        $result['message'] = 'Producto creado pero no se guardó la imagen';
                                                     }
                                                 } else {
-                                                    $result['exception'] = 'Marca incorrecta';
+                                                    $result['exception'] = Database::getException();;
                                                 }
                                             } else {
-                                                $result['exception'] = 'Seleccione una marca incorrecta';
+                                                $result['exception'] = $producto->getImageError();
                                             }
                                         } else {
-                                            $result['exception'] = 'Categoría incorrecta';
+                                            $result['exception'] = 'Seleccione una imagen';
                                         }
                                     } else {
-                                        $result['exception'] = 'Seleccione una categoría';
+                                        $result['exception'] = 'Estado incorrecto';
                                     }
                                 } else {
-                                    $result['exception'] = 'Estado erroneo';
+                                    $result['exception'] = 'Categoría incorrecta';
                                 }
                             } else {
-                                $result['exception'] = 'Precio incorrecto';
+                                $result['exception'] = 'Seleccione una categoría';
                             }
                         } else {
-                            $result['exception'] = 'Stock invalido';
+                            $result['exception'] = 'Precio incorrecto';
                         }
                     } else {
                         $result['exception'] = 'Descripción incorrecta';
@@ -144,108 +112,42 @@ if (isset($_GET['action'])) {
                 $_POST = $producto->validateForm($_POST);
                 if ($producto->setId($_POST['id_producto'])) {
                     if ($data = $producto->readOne()) {
-                        if ($producto->setNombre($_POST['nombre'])) {
-                            if ($producto->setDescripcion($_POST['descp'])) {
-                                if ($producto->setStock($_POST['stock'])) {
-                                    if ($producto->setEstado(isset($_POST['estado']) ? 1 : 0)) {
-                                        if ($producto->setPrecio($_POST['precio'])) {
-                                            if (isset($_POST['categoria'])) {
-                                                if ($producto->setCategoria($_POST['categoria'])) {
-                                                    if (isset($_POST['marca'])) {
-                                                        if ($producto->setMarca($_POST['marca'])) {
-                                                            if (isset($_POST['proveedor'])) {
-                                                                if ($producto->setProveedor($_POST['proveedor'])) {
-                                                                    if (is_uploaded_file($_FILES['imagen']['tmp_name']) && is_uploaded_file($_FILES['imagen2']['tmp_name'])) {
-                                                                        if ($producto->setImagen($_FILES['imagen'])) {
-                                                                            if ($producto->setImagen2($_FILES['imagen2'])) {
-                                                                                if ($producto->updateRow($data['imagen'], $data['imagen2'])) {
-                                                                                    $result['status'] = 1;
-                                                                                    if ($producto->saveFile($_FILES['imagen'], $producto->getRuta(), $producto->getImagen())) {
-                                                                                        if ($producto->saveFile($_FILES['imagen2'], $producto->getRuta(), $producto->getImagen2())) {
-                                                                                            $result['message'] = 'Producto creado correctamente';
-                                                                                        } else {
-                                                                                            $result['message'] = 'Producto creado pero solo una imagen se guardó';
-                                                                                        }
-                                                                                    } else {
-                                                                                        $result['message'] = 'Producto creado pero no se guardó ninguna imagen';
-                                                                                    }
-                                                                                } else {
-                                                                                    $result['exception'] = Database::getException();;
-                                                                                }
-                                                                            } else {
-                                                                                $result['exception'] = $producto->getImageError();
-                                                                            }
-                                                                        } else {
-                                                                            $result['exception'] = $producto->getImageError();
-                                                                        }
-                                                                    } else {
-                                                                        if (is_uploaded_file($_FILES['imagen']['tmp_name'])) {
-                                                                            if ($producto->setImagen($_FILES['imagen'])) {
-                                                                                if ($producto->updateRow($data['imagen'], $data['imagen2'])) {
-                                                                                    $result['status'] = 1;
-                                                                                    if ($producto->saveFile($_FILES['imagen'], $producto->getRuta(), $producto->getImagen())) {
-                                                                                        $result['message'] = 'Marca modificada correctamente';
-                                                                                    } else {
-                                                                                        $result['message'] = 'Marca modificada pero no se guardó la imagen.';
-                                                                                    }
-                                                                                } else {
-                                                                                    $result['exception'] = Database::getException();
-                                                                                }
-                                                                            } else {
-                                                                                $result['exception'] = $marca->getImageError();
-                                                                            }
-                                                                        } else {
-                                                                            if (is_uploaded_file($_FILES['imagen2']['tmp_name'])) {
-                                                                                if ($producto->setImagen2($_FILES['imagen2'])) {
-                                                                                    if ($producto->updateRow($data['imagen'], $data['imagen2'])) {
-                                                                                        $result['status'] = 1;
-                                                                                        if ($producto->saveFile($_FILES['imagen2'], $producto->getRuta(), $producto->getImagen2())) {
-                                                                                            $result['message'] = 'Marca modificada correctamente';
-                                                                                        } else {
-                                                                                            $result['message'] = 'Marca modificada pero no se guardó el logo.';
-                                                                                        }
-                                                                                    } else {
-                                                                                        $result['exception'] = Database::getException();
-                                                                                    }
-                                                                                } else {
-                                                                                    $result['exception'] = $producto->getImageError();
-                                                                                }
-                                                                            } else {
-                                                                                if ($producto->updateRow($data['imagen'], $data['imagen2'])) {
-                                                                                    $result['status'] = 1;
-                                                                                    $result['message'] = 'Marca modificada correctamente';
-                                                                                } else {
-                                                                                    $result['exception'] = Database::getException();
-                                                                                }
-                                                                            }
-                                                                        }
-                                                                    }
-                                                                } else {
-                                                                    $result['exception'] = 'Proveedor incorrecto';
-                                                                }
-                                                            } else {
-                                                                $result['exception'] = 'Seleccione un proveedor';
-                                                            }
+                        if ($producto->setNombre($_POST['nombre_producto'])) {
+                            if ($producto->setDescripcion($_POST['descripcion_producto'])) {
+                                if ($producto->setPrecio($_POST['precio_producto'])) {
+                                    if ($producto->setCategoria($_POST['categoria_producto'])) {
+                                        if ($producto->setEstado(isset($_POST['estado_producto']) ? 1 : 0)) {
+                                            if (is_uploaded_file($_FILES['archivo_producto']['tmp_name'])) {
+                                                if ($producto->setImagen($_FILES['archivo_producto'])) {
+                                                    if ($producto->updateRow($data['imagen_producto'])) {
+                                                        $result['status'] = 1;
+                                                        if ($producto->saveFile($_FILES['archivo_producto'], $producto->getRuta(), $producto->getImagen())) {
+                                                            $result['message'] = 'Producto modificado correctamente';
                                                         } else {
-                                                            $result['exception'] = 'Marca incorrecta';
+                                                            $result['message'] = 'Producto modificado pero no se guardó la imagen';
                                                         }
                                                     } else {
-                                                        $result['exception'] = 'Seleccione una marca incorrecta';
+                                                        $result['exception'] = Database::getException();
                                                     }
                                                 } else {
-                                                    $result['exception'] = 'Categoría incorrecta';
+                                                    $result['exception'] = $producto->getImageError();
                                                 }
                                             } else {
-                                                $result['exception'] = 'Seleccione una categoría';
+                                                if ($producto->updateRow($data['imagen_producto'])) {
+                                                    $result['status'] = 1;
+                                                    $result['message'] = 'Producto modificado correctamente';
+                                                } else {
+                                                    $result['exception'] = Database::getException();
+                                                }
                                             }
                                         } else {
-                                            $result['exception'] = 'Precio incorrecto';
+                                            $result['exception'] = 'Estado incorrecto';
                                         }
                                     } else {
-                                        $result['exception'] = 'Estado invalido';
+                                        $result['exception'] = 'Seleccione una categoría';
                                     }
                                 } else {
-                                    $result['exception'] = 'Stock invalido';
+                                    $result['exception'] = 'Precio incorrecto';
                                 }
                             } else {
                                 $result['exception'] = 'Descripción incorrecta';
@@ -254,7 +156,7 @@ if (isset($_GET['action'])) {
                             $result['exception'] = 'Nombre incorrecto';
                         }
                     } else {
-                        $result['exception'] = 'El producto no existe';
+                        $result['exception'] = 'Producto inexistente';
                     }
                 } else {
                     $result['exception'] = 'Producto incorrecto';
@@ -265,7 +167,7 @@ if (isset($_GET['action'])) {
                     if ($data = $producto->readOne()) {
                         if ($producto->deleteRow()) {
                             $result['status'] = 1;
-                            if ($producto->deleteFile($producto->getRuta(), $data['imagen']) && $producto->deleteFile($producto->getRuta(), $data['imagen2'])) {
+                            if ($producto->deleteFile($producto->getRuta(), $data['imagen_producto'])) {
                                 $result['message'] = 'Producto eliminado correctamente';
                             } else {
                                 $result['message'] = 'Producto eliminado pero no se borró la imagen';
@@ -278,6 +180,17 @@ if (isset($_GET['action'])) {
                     }
                 } else {
                     $result['exception'] = 'Producto incorrecto';
+                }
+                break;
+            case 'cantidadProductosCategoria':
+                if ($result['dataset'] = $producto->cantidadProductosCategoria()) {
+                    $result['status'] = 1;
+                } else {
+                    if (Database::getException()) {
+                        $result['exception'] = Database::getException();
+                    } else {
+                        $result['exception'] = 'No hay datos disponibles';
+                    }
                 }
                 break;
             default:

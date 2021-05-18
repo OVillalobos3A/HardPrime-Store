@@ -62,24 +62,26 @@ Dashboard_Page::headerTemplate('Clientes');
             <!--Se especifica la clase para hacer responsive la tabla, y el tipo de tabla-->
             <!--Se especifica el detalle de cada fila y columna-->
             <!--Estableciendo el tamaño de cada div correspondiente-->
-            <form method="post" id="save-form" enctype="multipart/form-data">
-                <!-- Campo oculto para asignar el id del registro al momento de modificar -->
-                <input class="hide" type="number" id="id_cliente" name="id_cliente"/>
-                <table class="responsive-table striped">
-                <thead>
-                    <tr>
-                        <th>Nombre</th>
-                        <th>Apellido</th>
-                        <th>Correo</th>
-                        <th>Dirección</th>
-                        <th>Celeluar</th>
-                        <th>Estado</th>
-                    </tr>
-                </thead>
-                <tbody id="tbody-rows">
-                </tbody>
-                </table>
-            </form>
+            <div class="row">
+                <form method="post" id="save-form" enctype="multipart/form-data">
+                    <!-- Campo oculto para asignar el id del registro al momento de modificar -->
+                    <input class="hide" type="number" id="id_cliente" name="id_cliente"/>
+                    <table class="responsive-table striped">
+                    <thead>
+                        <tr>
+                            <th>Nombre</th>
+                            <th>Apellido</th>
+                            <th>Correo</th>
+                            <th>Dirección</th>
+                            <th>Celeluar</th>
+                            <th>Estado</th>
+                        </tr>
+                    </thead>
+                    <tbody id="tbody-rows">
+                    </tbody>
+                    </table>
+                </form>
+            </div>
         </div>
     </div>
 </div>

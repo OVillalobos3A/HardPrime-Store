@@ -10,7 +10,7 @@ Dashboard_Page::headerTemplate('Recu-contraseña');
 <div class="row container" id="ocultable">
     <div class="col s12">
         <div class="card whithe">
-            <!--Defiendo el contenido de la card que contendrá el formulario-->
+             <!--Defiendo el contenido de la card que contendrá el formulario-->
             <div class="card-content black-text">
                 <a class="waves-effect blue-grey btn" href="../../views/dashboard/index.php">
                     <i class="material-icons left">arrow_back</i>Login
@@ -22,12 +22,12 @@ Dashboard_Page::headerTemplate('Recu-contraseña');
                 <br>
                 <!--Estableciendo el tamaño de cada div correspondiente-->
                 <!--Creamos la estructura del formulario respectivo-->
-                <div class="row" id="save-modal">
-                    <form method="post" id="save-form" name="save-form" enctype="multipart/form-data" class="col-md-4">
+                <div class="row">
+                    <form class="col-md-4">
                         <div class="row">
                             <!--Estableciendo el tamaño del que tomará el Input field-->
                             <div class="input-field col s12 m6">
-                                <input id="usuario" type="text" name="usuario" class="validate" required>
+                                <input id="usuario" type="text" class="validate">
                                 <label for="usuario">Ingrese su usuario:</label>
                             </div>
                         </div>
@@ -39,41 +39,38 @@ Dashboard_Page::headerTemplate('Recu-contraseña');
                                 </button>
                             </div>
                         </div>
-                    </form>
-                </div>
-                <div class="row" id="save-modal2">
-                    <div class="row">
-                        <!--Estableciendo el tamaño del que tomará el Input field-->
-                        <div class="input-field col s12">
-                            <p class="justificado">Se ha enviado un código de confirmación al correo electrónico
-                                asociado a esta cuenta, por favor revisa tu bandeja de entrada y procede a cambiar
-                                tu contraseña.
-                            </p>
-                        </div>
-                    </div>
-                    <form method="post" id="save-form2" name="save-form2" enctype="multipart/form-data">
-                    <input class="hide" type="text" id="usuario2" name="usuario2"/>
                         <div class="row">
                             <!--Estableciendo el tamaño del que tomará el Input field-->
-                            <div class="input-field col s12 m6">
-                                <input id="codigo" type="text" name="codigo" class="validate" required>
-                                <label for="codigo">Ingrese el código de confirmación:</label>
+                            <div class="input-field col s12">
+                                <p class="justificado">Se ha enviado un código de confirmación al correo electrónico
+                                    asociado a esta cuenta, por favor revisa tu bandeja de entrada y procede a cambiar
+                                    tu contraseña.
+                                </p>
                             </div>
                         </div>
                         <div class="row">
                             <!--Estableciendo el tamaño del que tomará el Input field-->
                             <div class="input-field col s12 m6">
-                                <input id="clave" type="text" name="clave" class="validate" required>
-                                <label for="clave">Nueva contraseña:</label>
+                                <input id="usuario" type="text" class="validate">
+                                <label for="usuario">Ingrese el código de confirmación:</label>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <!--Estableciendo el tamaño del que tomará el Input field-->
+                            <div class="input-field col s12 m6">
+                                <input id="usuario" type="text" class="validate">
+                                <label for="usuario">Nueva contraseña:</label>
                             </div>
                             <!--Estableciendo el tamaño del que tomará el Input field-->
                             <div class="input-field col s12 m6">
-                                <input id="confirmar" type="text" name="confirmar" class="validate" required>
-                                <label for="confirmar">Confirmar contraseña:</label>
+                                <input id="usuario" type="text" class="validate">
+                                <label for="usuario">Confirmar contraseña:</label>
                             </div>
                             <!--Estableciendo el tamaño del que tomará el Input field-->
                             <div class="input-field col s12 m6">
-                                <button id="cambiar" class="btn waves-effect blue-grey" type="submit" name="cambiar">Cambiar contraseña<i class="material-icons right">edit</i>
+                                <button class="btn waves-effect blue-grey disabled" type="submit" name="action">Cambiar
+                                    contraseña
+                                    <i class="material-icons right">edit</i>
                                 </button>
                             </div>
                         </div>
@@ -83,9 +80,8 @@ Dashboard_Page::headerTemplate('Recu-contraseña');
         </div>
     </div>
 </div>
-</div>
 
 <?php
 //Se imprime la plantilla del pie y se envía el nombre del controlador para la página web
-Dashboard_Page::footerTemplate('recuperacion.js');
+Dashboard_Page::footerTemplate('Recuperacion');
 ?>

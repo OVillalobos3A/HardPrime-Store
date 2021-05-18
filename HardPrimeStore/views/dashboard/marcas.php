@@ -4,7 +4,7 @@ include('../../app/helpers/dashboard/dashboard_page2.php');
 //Se imprime la plantilla del encabezado y se envía el titulo para la página web
 Dashboard_Page::headerTemplate('Marcas');
 ?>
-<br>
+
 <div class="container">
     <div class="card whithe">
         <div class="card-content Black-text">
@@ -35,17 +35,19 @@ Dashboard_Page::headerTemplate('Marcas');
             <!--Se construye la tabla de datos correspondiente a usuarios-->
             <!--Se especifica la clase para hacer responsive la tabla, y el tipo de tabla-->
             <!--Se especifica el detalle de cada fila y columna-->
-            <table class="responsive-table striped">
-                <thead>
-                    <tr>
-                        <th>Nombre</th>
-                        <th>Imagen</th>
-                        <th>Logo</th>
-                    </tr>
-                </thead>
-                <tbody id="tbody-rows">
-                </tbody>
-            </table>
+            <div class="row"> 
+                <table class="responsive-table striped">
+                    <thead>
+                        <tr>
+                            <th>Nombre</th>
+                            <th>Imagen</th>
+                            <th>Logo</th>
+                        </tr>
+                    </thead>
+                    <tbody id="tbody-rows">
+                    </tbody>
+                </table>
+            </div>
         </div>
     </div>
 </div>
@@ -60,7 +62,7 @@ Dashboard_Page::headerTemplate('Marcas');
             <div class="row">
                 <div class="input-field col s12 m6">
                     <i class="material-icons prefix">note_add</i>
-                    <input id="nombre_marca" type="text" name="nombre_marca" class="validate" required/>
+                    <input id="nombre_marca" type="text" name="nombre_marca" class="validate" maxlength="6" required/>
                     <label for="nombre_marca">Nombre</label>
                 </div>
                 <div class="file-field input-field col s12 m6">

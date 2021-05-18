@@ -64,13 +64,13 @@ Dashboard_Page::headerTemplate('Proveedores');
                     <!--Estableciendo el tamaño del que tomará el Input field-->
                     <div class="input-field col s12 m6">
                         <i class="material-icons prefix">badge</i>
-                        <input id="nombre" type="text" class="validate data-length=25" name="nombre">
+                        <input id="nombre" type="text" class="validate data-length=25" name="nombre" required>
                         <label for="nombre">Nombre</label>
                     </div>
                     <!--Estableciendo el tamaño del que tomará el Input field-->
                     <div class="input-field col s12 m6">
                         <i class="material-icons prefix">apartment</i>
-                        <input id="direccion" type="text" class="validate" name="direccion">
+                        <input id="direccion" type="text" class="validate" name="direccion" required>
                         <label for="direccion">Dirección</label>
                     </div>
                 </div>
@@ -78,13 +78,13 @@ Dashboard_Page::headerTemplate('Proveedores');
                     <!--Estableciendo el tamaño del que tomará el Input field-->
                     <div class="input-field col s12 m6">
                         <i class="material-icons prefix">call</i>
-                        <input id="tel" type="text" class="validate" name="tel">
+                        <input id="tel" type="text" class="validate" name="tel" required>
                         <label for="tel">Telefono</label>
                     </div>
                     <!--Estableciendo el tamaño del que tomará el Input field-->
                     <div class="input-field col s12 m6">
                         <i class="material-icons prefix">email</i>
-                        <input id="correo" type="text" class="validate" name="correo">
+                        <input id="correo" type="text" class="validate" name="correo" required>
                         <label for="correo">Correo</label>
                     </div>
                 </div>
