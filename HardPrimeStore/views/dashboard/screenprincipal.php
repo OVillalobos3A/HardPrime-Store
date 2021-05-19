@@ -9,29 +9,30 @@ Dashboard_Page::headerTemplate('Página Principal');
 <br>
 <div class="row container">
     <div class="col s12">
-            <div class="card indigo light-blue darken-4">
-                <!--Defiendo el contenido de la card que contendrá las gráficas-->
-                <div class="card-content white-text">
-                    <!--Definiendo el nombre del encabezado-->
-                    <div class="row" id="profile1"></div>
-                    <h5 class="center-align">Estas son las novedades:</h5>
-                    <!--Definiendo el panel número 1 para almacenar las gráficas-->
-                    <!--En este caso solo son imagenes-->
-                    <div class="col s12 m6">
-                        <div class="card-panel blue-grey">
-                            <img class="responsive-img" src="../../resources/img/Charts/chart1.PNG">
-                            <h4 class="center-align">Productos más vendidos</h4>
-                        </div>
+        <div class="card indigo light-blue darken-4">
+            <!--Defiendo el contenido de la card que contendrá las gráficas-->
+            <div class="card-content white-text">
+                <input class="hide" type="text" id="op" name="op"/>
+                <div class="center-align" id="datos"></div>
+                <!--Definiendo el nombre del encabezado-->
+                <h5 class="center-align">Estas son las novedades:</h5>
+                <!--Definiendo el panel número 1 para almacenar las gráficas-->
+                <!--En este caso solo son imagenes-->
+                <div class="col s12 m6">
+                    <div class="card-panel blue-grey">
+                        <img class="responsive-img" src="../../resources/img/Charts/chart1.PNG">
+                        <h4 class="center-align">Productos más vendidos</h4>
                     </div>
-                    <!--Definiendo el panel número 1 para almacenar las gráficas-->
-                    <div class="col s12 m6">
-                        <div class="card-panel blue-grey">
-                            <img class="responsive-img" src="../../resources/img/Charts/chart2.PNG">
-                            <h4 class="center-align">Clientes registrados</h4>
-                        </div>
+                </div>
+                <!--Definiendo el panel número 1 para almacenar las gráficas-->
+                <div class="col s12 m6">
+                    <div class="card-panel blue-grey">
+                        <img class="responsive-img" src="../../resources/img/Charts/chart2.PNG">
+                        <h4 class="center-align">Clientes registrados</h4>
                     </div>
                 </div>
             </div>
+        </div>
     </div>
 </div>
 <div id="save-modal" class="modal">
@@ -118,8 +119,35 @@ Dashboard_Page::headerTemplate('Página Principal');
         </form>
     </div>
 </div>
-
+<div id="primer-modal" class="modal">
+    <div class="modal-content">
+        <h5 id="modal-title1" class="center-align">Cambiar Contraseña</h5>
+        <p class="center-align">Se ha detectado una contraseña por defecto, por favor procede a cambiarla a continuación.</p>
+        <br>
+        <!--Estableciendo el tamaño de cada div correspondiente-->
+        <form method="post" id="primer-form" enctype="multipart/form-data">
+            <!-- Campo oculto para asignar el id del registro al momento de modificar -->
+            
+            <div class="row">                
+                <div class="input-field col s12 m6">
+                    <i class="material-icons prefix">add_moderator</i>
+                    <input id="primer_contra" type="password" name="primer_contra" class="validate" required/>
+                    <label for="ncontra">Nueva contraseña</label>
+                </div>
+                <div class="input-field col s12 m6">
+                    <i class="material-icons prefix">add_moderator</i>
+                    <input id="primer_contra2" type="password" name="primer_contra2" class="validate" required/>
+                    <label for="ncontra1">Confirmar contraseña</label>
+                </div>
+                </div>
+            </div>
+            <div class="row center-align">                
+                <button type="submit" class="btn waves-effect blue tooltipped" data-tooltip="Guardar"><i class="material-icons">save</i></button>
+            </div>
+        </form>
+    </div>
+</div>
 <?php
 //Se imprime la plantilla del pie y se envía el nombre del controlador para la página web
-Dashboard_Page::footerTemplate('screenprincipal.js');
+Dashboard_Page::footerTemplate('main.js');
 ?>
