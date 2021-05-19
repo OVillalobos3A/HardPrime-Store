@@ -25,7 +25,7 @@ if (isset($_GET['action'])) {
                         $result['exception'] = 'No hay usuarios registrados';
                     }
                 }
-                break;
+                break;           
             case 'search':
                 $_POST = $producto->validateForm($_POST);
                 if ($_POST['search'] != '') {
@@ -52,25 +52,29 @@ if (isset($_GET['action'])) {
                 $_POST = $producto->validateForm($_POST);
                 if ($producto->setUsuario($_POST['usuario'])) {
                     if ($producto->setClave($_POST['contraseña'])) {
-                        if (isset($_POST['empleado'])) {
-                            if ($producto->setEmpleado($_POST['empleado'])) {
-                                if (isset($_POST['tipo_usuario'])) {
-                                    if ($producto->setTipo_usuario($_POST['tipo_usuario'])) {
-                                        if ($producto->createRow()) {
-                                            $result['status'] = 1;
-                                            $result['message'] = 'Empleado creado correctamente';
-                                        } else {
-                                            $result['exception'] = Database::getException();;
+                        if ($producto->setEstado($_POST['estado'])) {
+                            if (isset($_POST['empleado'])) {
+                                if ($producto->setEmpleado($_POST['empleado'])) {
+                                    if (isset($_POST['tipo_usuario'])) {
+                                        if ($producto->setTipo_usuario($_POST['tipo_usuario'])) {
+                                            if ($producto->createRow()) {
+                                                $result['status'] = 1;
+                                                $result['message'] = 'Empleado creado correctamente';
+                                            } else {
+                                                $result['exception'] = Database::getException();;
+                                            }
                                         }
+                                    } else {
+                                        $result['exception'] = 'Seleccione un tipo de usuario';
                                     }
                                 } else {
-                                    $result['exception'] = 'Seleccione un tipo de usuario';
+                                    $result['exception'] = 'Seleccione un empleado';
                                 }
                             } else {
-                                $result['exception'] = 'Seleccione un empleado';
+                                $result['exception'] = 'Empleado incorrecto';
                             }
                         } else {
-                            $result['exception'] = 'Empleado incorrecto';
+                            $result['exception'] = 'Error al asignar el estado';
                         }
                     } else {
                         $result['exception'] = 'Error al asignar la contraseña';

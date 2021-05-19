@@ -94,7 +94,7 @@ class Usuarios extends Validator
     public function setEstado($value)
     {
         if ($this->validateAlphanumeric($value, 1, 50)) {
-            $this->nombre = $value;
+            $this->estado = $value;
             return true;
         } else {
             return false;
@@ -147,7 +147,7 @@ class Usuarios extends Validator
     //Métodos para realizar las operaciones SCRUD (search, create, read, update, delete).
     public function searchRows($value)
     {
-        $sql = 'SELECT id_usuario, usuario, empleados.nombre, tipo_usuario
+        $sql = 'SELECT id_usuario, usuario, usuarios.estado, empleados.nombre, tipo_usuario
         FROM usuarios INNER JOIN empleados USING(id_empleado)
         INNER JOIN tipo_usuario USING(id_tipo_usuario)      
         WHERE usuario ILIKE ?
@@ -158,26 +158,28 @@ class Usuarios extends Validator
 
     public function createRow()
     {
+        $primer_uso = 1;
         $hash = password_hash($this->clave, PASSWORD_DEFAULT);
-        $sql = 'INSERT INTO usuarios(usuario, contraseña, id_empleado, id_tipo_usuario)
-                VALUES(?, ?, ?, ?)';
-        $params = array($this->usuario, $hash, $this->empleado, $this->tipo_usuario);
+        $sql = 'INSERT INTO usuarios(usuario, contraseña, estado, primer_uso, id_empleado, id_tipo_usuario)
+                VALUES(?, ?, ?, ?, ?, ?)';
+        $params = array($this->usuario, $hash, $this->estado, $primer_uso, $this->empleado, $this->tipo_usuario);
         return Database::executeRow($sql, $params);
     }
 
     public function readAll()
     {
-        $sql = 'SELECT id_usuario, usuario, empleados.nombre, tipo_usuario, usuarios.estado
+        $sql = 'SELECT id_usuario, usuario, usuarios.estado, empleados.nombre, tipo_usuario, usuarios.estado
         FROM usuarios INNER JOIN empleados USING(id_empleado)
         INNER JOIN tipo_usuario USING(id_tipo_usuario)
         ORDER BY usuario';
         $params = null;
         return Database::getRows($sql, $params);
     }
+    
 
     public function readOne()
     {
-        $sql = 'SELECT id_usuario, usuario, contraseña, id_empleado, id_tipo_usuario, estado
+        $sql = 'SELECT id_usuario, usuario, usuarios.estado, contraseña, id_empleado, id_tipo_usuario, estado
                 FROM usuarios
                 WHERE id_usuario = ?';
         $params = array($this->id);
@@ -187,9 +189,9 @@ class Usuarios extends Validator
     public function updateRow()
     {
         $sql = 'UPDATE usuarios
-                SET usuario = ?, id_empleado = ?, id_tipo_usuario = ?
+                SET usuario = ?, estado = ?, id_empleado = ?, id_tipo_usuario = ?
                 WHERE id_usuario = ?';
-        $params = array($this->usuario, $this->empleado, $this->tipo_usuario, $this->id);
+        $params = array($this->usuario, $this->estado, $this->empleado, $this->tipo_usuario, $this->id);
         return Database::executeRow($sql, $params);
     }
 
@@ -223,6 +225,19 @@ class Usuarios extends Validator
         $params = array($this->usuario);
         if ($data = Database::getRow($sql, $params)) {
             $this->codigo = $data['codigo_recu'];
+            return true;
+        } else {
+            return false;
+        }                
+    }
+
+    public function checkUser()
+    {
+        $sql = 'SELECT usuario FROM usuarios                
+                WHERE usuario = ?';
+        $params = array($this->usuario);
+        if ($data = Database::getRow($sql, $params)) {
+            $this->usuario = $data['usuario'];
             return true;
         } else {
             return false;
