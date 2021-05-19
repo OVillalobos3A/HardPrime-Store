@@ -18,79 +18,80 @@ if (isset($_GET['action'])) {
     // Se compara la acción a realizar cuando un administrador ha iniciado sesión.
     switch ($_GET['action']) {
         case 'generarCodigo':
-            $_POST = $recu->validateForm($_POST);
-            if ($recu->setUsuario($_POST['usuario'])) {   
-                $recu->usuario = ($_POST['usuario']);
-                if ($recu->generarCodigo(5)) {
-                    if ($recu->updateCode()) {
-                        if ($recu->obtenerCorreo()) {                            
-                            $mail = new PHPMailer();
-                            $mail->IsSMTP();
-                            //Configuracion servidor mail
-                            $mail->From = "HardPrimeStore@gmail.com"; //remitente
-                            $mail->SMTPAuth = true;
-                            $mail->SMTPSecure = 'tls'; //seguridad
-                            $mail->Host = "smtp.gmail.com"; // servidor smtp
-                            $mail->Port = 587; //puerto
-                            $mail->Username = 'HardPrimeStore@gmail.com'; //nombre usuario
-                            $mail->Password = 'Store2021'; //contraseña
+            $_POST = $recu->validateForm($_POST);            
+                $recu->setUsuario($_POST['usuario']);
+                    $recu->checkUser();
+                    if ($recu->getUsuario() == $_POST['usuario']) {                    
+                    if ($recu->generarCodigo(5)) {
+                        if ($recu->updateCode()) {
+                            if ($recu->obtenerCorreo()) {
+                                $mail = new PHPMailer();
+                                $mail->IsSMTP();
+                                //Configuracion servidor mail
+                                $mail->From = "HardPrimeStore@gmail.com"; //remitente
+                                $mail->SMTPAuth = true;
+                                $mail->SMTPSecure = 'tls'; //seguridad
+                                $mail->Host = "smtp.gmail.com"; // servidor smtp
+                                $mail->Port = 587; //puerto
+                                $mail->Username = 'HardPrimeStore@gmail.com'; //nombre usuario
+                                $mail->Password = 'Store2021'; //contraseña
 
-                            $mail->AddAddress($recu->getCorreo());
-                            $mail->Subject = 'Codigo de recuperacion - HardPrimeStore';
-                            $mail->Body = 'El codigo de recuperacion es: ' . $recu->getCodigo() . '.';
-                            if ($mail->Send()) {
-                                $result['status'] = 1;
-                                $result['message'] = 'Código de recuperación enviado, por favor revise su correo.';
+                                $mail->AddAddress($recu->getCorreo());
+                                $mail->Subject = 'Codigo de recuperacion - HardPrimeStore';
+                                $mail->Body = 'El codigo de recuperacion es: ' . $recu->getCodigo() . '.';
+                                if ($mail->Send()) {
+                                    $result['status'] = 1;
+                                    $result['message'] = 'Código de recuperación enviado, por favor revise su correo.';
+                                } else {
+                                    $result['exception'] = 'Ocurrió un error al enviar el correo.';
+                                }
                             } else {
-                                $result['message'] = $recu->getCorreo();
-                            }                            
+                                $result['exception'] = 'No se pudo obtener el correo correspondiente al usuario.';
+                            }
                         } else {
+                            $result['exception'] = 'Hubo un error al asignar el código de recuperación.';
                         }
                     } else {
-                        $result['message'] = 'Hubo un error al asignar el código de recupeeración.';
+                        $result['exception'] = 'No fue posible generar el código de recuperación.';
                     }
                 } else {
-                    $result['message'] = 'No fue posible generar el código de recuperación.';
-                }
-            } else {
-                $result['message'] = 'El usuario no existe.';
-            }           
+                    $result['exception'] = 'El usuario no existe.';
+                }            
             break;
         case 'recuContra':
             $_POST = $recu->validateForm($_POST);
             if ($recu->setCodigo($_POST['codigo'])) {
                 if ($recu->setUsuario($_POST['usuario2'])) {
-                if ($recu->checkCode() == true) {
-                    $result['message'] = $recu->getUsuario();
-                    if ($recu->getCodigo() == $_POST['codigo']) {
-                        if ($_POST['clave'] == $_POST['confirmar']) {
-                            if ($recu->setClave($_POST['clave'])) {
-                                if ($recu->recuContra()) {
-                                    $result['status'] = 1;
-                                    $result['message'] = 'La contraseña se ha actualizado correctamente.';
+                    if ($recu->checkCode() == true) {                        
+                        if ($recu->getCodigo() == $_POST['codigo']) {
+                            if ($_POST['clave'] == $_POST['confirmar']) {
+                                if ($recu->setClave($_POST['clave'])) {
+                                    if ($recu->recuContra()) {
+                                        $result['status'] = 1;
+                                        $result['message'] = 'La contraseña se ha actualizado correctamente.';
+                                    } else {
+                                        $result['exception'] = Database::getException();
+                                    }
                                 } else {
-                                    $result['exception'] = Database::getException();
+                                    $result['exception'] = 'Contraseña incorrecta, verifica que tenga mas de 6 dígitos.';
                                 }
                             } else {
-                                $result['message'] = 'Contraseña incorrecta.';
+                                $result['exception'] = 'Las contraseñas no coinciden.';
                             }
                         } else {
-                            $result['message'] = 'Las contraseñas no coinciden.';
+                            $result['exception'] = 'El código de recuperación no coincide.';
                         }
                     } else {
-                        $result['message'] = 'El código no coincide.';
+                        $result['exception'] = $recu->getCodigo();
                     }
-                }else{ 
-                   $result['message'] = $recu->getCodigo();
+                } else {
+                    $result['exception'] = 'Error al intentar cambiar la contraseña.';
                 }
-            }else{
-
-            }
             } else {
-                $result['message'] = 'El código es incorrecto.';
-            }           
+                $result['exception'] = 'Error al asignar el código de recuperación.';
+            }
             break;
-            default:
+        default:
             $result['exception'] = 'Acción no disponible';
     }
     // Se indica el tipo de contenido a mostrar y su respectivo conjunto de caracteres.
