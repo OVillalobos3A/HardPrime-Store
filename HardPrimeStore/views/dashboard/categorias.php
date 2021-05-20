@@ -16,17 +16,19 @@ Dashboard_Page::headerTemplate('Categorías');
             <div>
                 <a href="#" class="waves-effect red btn" onclick="openCreateDialog()"><i class="material-icons left">add</i>Agregar categoría</a>
             </div>
+            <br>
             <form method="post" id="search-form">
                 <div class="row">
                     <div class="input-field col s6">
                         <i class="material-icons prefix">search</i>
-                        <input id="search" type="text" name="search" required/>
+                        <input id="search" type="text" name="search" maxlength="50" required/>
                         <label for="autocomplete-input">Nombre, descripción</label>
                     </div>
                     <div class="input-field col s6 m4">
                         <button class="btn red" type="submit" name="action">Buscar
                             <i class="material-icons right">search</i>
                         </button>
+                        <a href="#" onclick="openTable()" class="btn waves-effect blue tooltipped" data-tooltip="Refrescar tabla"><i class="material-icons">refresh</i></a>
                     </div>
                 </div>
             </form>
@@ -61,19 +63,19 @@ Dashboard_Page::headerTemplate('Categorías');
                     <!--Estableciendo el tamaño del que tomará el Input field-->
                     <div class="input-field col s12 m6">
                         <i class="material-icons prefix">business</i>
-                        <input id="nombre_categoria" type="text" class="validate data-length=25" name="nombre" required/>
+                        <input id="nombre_categoria" type="text" class="validate data-length=25" name="nombre" maxlength="20" required/>
                         <label for="nombre">Nombre</label>
                     </div>
                     <!--Estableciendo el tamaño del que tomará el Input field-->
                     <div class="input-field col s12 m6">
                         <i class="material-icons prefix">description</i>
-                        <input id="descripcion" type="text" class="validate" name="descripcion" required/>
+                        <input id="descripcion" type="text" class="validate" name="descripcion" maxlength="50" required/>
                         <label for="descripcion">Descripción</label>
                     </div>
                 </div>
                 <div class="file-field input-field col s12 m6">
-                    <div class="btn waves-effect tooltipped" data-tooltip="Seleccione una imagen de al menos 500x500">
-                        <span><i class="material-icons">image</i></span>
+                    <div class="btn blue-grey tooltipped"  data-tooltip="Seleccione una imagen de 500x500">
+                        <i class="material-icons right">image</i>Imagen
                         <input id="archivo_categoria" type="file" name="archivo_categoria" accept=".gif, .jpg, .png"/>
                     </div>
                     <div class="file-path-wrapper">
@@ -82,8 +84,8 @@ Dashboard_Page::headerTemplate('Categorías');
                 </div>
             </div>
             <div class="row center-align">
-                <a href="#" class="btn waves-effect grey tooltipped modal-close" data-tooltip="Cancelar"><i class="material-icons">cancel</i></a>
-                <button type="submit" class="btn waves-effect blue tooltipped" data-tooltip="Guardar"><i class="material-icons">save</i></button>
+                <a href="#" class="btn waves-effect red tooltipped modal-close" data-tooltip="Cancelar"><i class="material-icons">cancel</i></a>
+                <button type="submit" class="btn waves-effect light-blue darken-4 tooltipped" data-tooltip="Guardar"><i class="material-icons">save</i></button>
             </div>
         </form>
     </div>

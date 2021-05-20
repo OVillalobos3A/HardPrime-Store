@@ -14,7 +14,7 @@ Dashboard_Page::headerTemplate('Administrar usuarios');
             <!--Agregamos un botón cuya función es que nos mueste el formulario para agregar-->
             <!--un registro-->
             <div>
-            <a onclick="openCreateDialog()" class="waves-effect red btn modal-trigger" href="#"><i class="material-icons left">add</i>Agregar usuarios</a>
+                <a onclick="openCreateDialog()" class="waves-effect red btn" href="#"><i class="material-icons left">add</i>Agregar usuarios</a>
             </div>
             <br>
             <!--Se añade un input field el cual su función es buscar un empleado en especifico-->
@@ -22,11 +22,14 @@ Dashboard_Page::headerTemplate('Administrar usuarios');
                 <div class="row">
                     <div class="input-field col s6">
                         <i class="material-icons prefix">search</i>
-                        <input type="text" name="search" id="autocomplete-input" class="autocomplete">
-                        <label for="autocomplete-input">Buscar usuario por alias</label>
+                        <input type="text" name="search" id="search" class="autocomplete"  maxlength="10" required/>
+                        <label for="search">Buscar usuario por alias</label>
                     </div>
-                    <div class="input-field col s6">
-                    <button type="submit" class="btn waves-effect tooltipped red" data-tooltip="Buscar"><i class="material-icons">check</i></button>
+                    <div class="input-field col s6 m4">
+                        <button class="btn red" type="submit" name="action">Buscar
+                            <i class="material-icons right">search</i>
+                        </button>
+                        <a href="#" onclick="openTable()" class="btn waves-effect blue tooltipped" data-tooltip="Refrescar tabla"><i class="material-icons">refresh</i></a>
                     </div>
                 </div>
             </form>
@@ -43,16 +46,8 @@ Dashboard_Page::headerTemplate('Administrar usuarios');
                         <th>Acción</th>
                     </tr>
                 </thead>
-
                 <tbody id="tbody-rows">
                     <tr>
-                        <th>Fernando Cubías</th>
-                        <th>fjcubi13</th>
-                        <th>Gerente</th>
-                        <th>
-                            <a class="btn-floating btn waves-effect light-blue darken-4 modal-trigger" href="#modal_registro"><i class="material-icons" title="Editar registro">create</i></a>
-                            <a class="btn-floating btn waves-effect red" href="#"><i class="material-icons" title="Eliminar registro">delete</i></a>
-                        </th>
                     </tr>
                 </tbody>
             </table>
@@ -114,8 +109,6 @@ Dashboard_Page::headerTemplate('Administrar usuarios');
                 </div>
             </form>
         </div>
-    </div>
-    <div class="modal-footer">
     </div>
 </div>
 
