@@ -88,7 +88,7 @@ Dashboard_Page::headerTemplate('Administrar usuarios');
                     <!--Estableciendo el tamaño del que tomará el Input field-->
                     <div class="input-field col s12 m6">
                     <i class="material-icons prefix">account_box</i>
-                        <input id="usuario" name="usuario" type="text" class="validate" required>
+                        <input id="usuario" name="usuario" type="text" maxlength="10" class="validate" required>
                         <label for="telefono">Usuario</label>
                     </div>
 
@@ -96,8 +96,8 @@ Dashboard_Page::headerTemplate('Administrar usuarios');
                         <i class="material-icons prefix">playlist_add_check</i>
                         <select id="estado" name="estado">
                             <option value="" disabled selected>Estado</option>
-                            <option value="Activo">Activo</option>
-                            <option value="Inactivo">Inactivo</option>
+                            <option value="activo">Activo</option>
+                            <option value="inactivo">Inactivo</option>
                         </select>
                     </div>  
                 </div>
