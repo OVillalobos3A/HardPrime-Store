@@ -1,4 +1,5 @@
-//Método para ocultar y mostrar secciones en la página correspondiente a pedidos.
+///Método para ocultar y mostrar secciones en cada una de la páginas Scrud.
+
 element = document.getElementById('ocultable');
 element.style.display = 'none';  
 function mostrarOcultar(){
