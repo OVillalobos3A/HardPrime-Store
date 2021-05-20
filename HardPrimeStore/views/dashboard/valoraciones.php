@@ -16,13 +16,14 @@ Dashboard_Page::headerTemplate('Valoraciones');
                 <div class="row">
                     <div class="input-field col s6">
                         <i class="material-icons prefix">search</i>
-                        <input id="search" type="text" name="search" required/>
+                        <input id="search" type="text" name="search" maxlength="40" required/>
                         <label for="autocomplete-input">Cliente</label>
                     </div>
                     <div class="input-field col s6 m4">
                         <button class="btn red" type="submit" name="action">Buscar
                             <i class="material-icons right">search</i>
                         </button>
+                        <a href="#" onclick="openTable()" class="btn waves-effect blue tooltipped" data-tooltip="Refrescar tabla"><i class="material-icons">refresh</i></a>
                     </div>
                 </div>
             </form>
