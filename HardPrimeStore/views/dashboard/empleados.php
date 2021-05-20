@@ -27,8 +27,11 @@ Dashboard_Page::headerTemplate('Empleados');
                         <input type="text" id="search" name="search" class="autocomplete" required>
                         <label for="autocomplete-input">Buscar empleado por nombre</label>
                     </div>
-                    <div class="input-field col s6">
-                        <button type="submit" class="btn waves-effect tooltipped red" data-tooltip="Buscar"><i class="material-icons">check_circle</i></button>
+                    <div class="input-field col s6 m4">
+                        <button class="btn red" type="submit" name="action">Buscar
+                            <i class="material-icons right">search</i>
+                        </button>
+                        <a href="#" onclick="openTable()" class="btn waves-effect blue tooltipped" data-tooltip="Refrescar tabla"><i class="material-icons">refresh</i></a>
                     </div>
                 </form>
             </div>
@@ -38,19 +41,17 @@ Dashboard_Page::headerTemplate('Empleados');
             <table class="responsive-table striped">
                 <thead>
                     <tr>
-                        <th>NOMBRES</th>
-                        <th>APELLIDOS</th>
-                        <th>TELÉFONO</th>
-                        <th class="center-align">CORREO</th>
-                        <th>GÉNERO</th>
-                        <th>ESTADO</th>
-                        <th>IMAGEN</th>
-                        <th>ACCIÓN</th>
+                        <th>Nombres</th>
+                        <th>Apellidos</th>
+                        <th>Teléfono</th>
+                        <th>Correo</th>
+                        <th>Género</th>
+                        <th>Estado</th>
+                        <th>Imagen</th>
+                        <th>Acción</th>
                     </tr>
                 </thead>
-
                 <tbody id="tbody-rows">
-
                 </tbody>
             </table>
         </div>
@@ -74,7 +75,7 @@ Dashboard_Page::headerTemplate('Empleados');
                 </div>
                 <!--Estableciendo el tamaño del que tomará el Input field-->
                 <div class="input-field col s12 m6">
-                    <i class="material-icons prefix"></i>
+                    <i class="material-icons prefix">person</i>
                     <input id="apellido" type="text" name="apellido" class="validate" required>
                     <label for="apellido">Apellidos</label>
                 </div>
@@ -115,8 +116,8 @@ Dashboard_Page::headerTemplate('Empleados');
                 <!--Estableciendo el tamaño del que tomará el Input field-->
                 <!--Estableciendo el tamaño del que tomará el File Input-->
                 <div class="file-field input-field col s12 m6">
-                    <div class="btn blue-grey">
-                        <span>Escoger imagen</span>
+                    <div class="btn blue-grey tooltipped"  data-tooltip="Seleccione una imagen de 500x500">
+                        <i class="material-icons right">image</i>Imagen
                         <input id="imagen" type="file" name="imagen" accept=".gif, .jpg, .png">
                     </div>
                     <div class="file-path-wrapper">
