@@ -19,9 +19,9 @@ document.addEventListener('DOMContentLoaded', function () {
                 } else {
                     // Se verifica si ocurrió un problema en la base de datos, de lo contrario se continua normalmente.
                     if (response.error) {
-                        sweetAlert(2, response.exception, null);
+                        sweetAlert(2, response.exception, null);                        
                     } else {
-                        sweetAlert(3, response.exception, 'registro.php');
+                        sweetAlert(3, response.exception, 'registro.php');                        
                     }
                 }
             });
@@ -50,6 +50,10 @@ document.getElementById('session-form').addEventListener('submit', function (eve
                     sweetAlert(1, response.message, 'screenprincipal.php');
                 } else {
                     sweetAlert(2, response.exception, null);
+                    if(response.exception == 'Clave incorrecta'){
+                        document.getElementById('action').disabled = true;
+                    }
+
                 }
             });
         } else {

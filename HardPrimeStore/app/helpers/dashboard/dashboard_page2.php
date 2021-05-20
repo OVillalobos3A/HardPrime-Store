@@ -29,9 +29,7 @@ class Dashboard_Page {
                                 <a href="../../views/dashboard/screenprincipal.php" class="brand-logo hide-on-med-and-down"><img class="responsive-img" src="../../resources/img/tabla/Logo2.png" width="250"></a>
                                 <a href="../../views/dashboard/screenprincipal.php" class="brand-logo hide-on-large-only"><img class="responsive-img" src="../../resources/img/tabla/Logo2.png" width="200"></a>
                                 <ul id="nav-mobile" class="right hide-on-med-and-down">
-                                    <a class="waves-effect waves-light btn blue-grey" onclick="logOut()">
-                                        Cerrar Sesión
-                                    </a>
+                                    <a class="waves-effect waves-light btn blue-grey" onclick="logOut()"><i class="material-icons right">exit_to_app</i> Cerrar Sesión</a>
                                 </ul>
                             </div>
                         </nav>
@@ -47,15 +45,15 @@ class Dashboard_Page {
                                 <ul id="dropdown2" class="dropdown-content">
                                     <li><a href="../../views/dashboard/productos.php">Productos</a></li>
                                     <li><a href="../../views/dashboard/proveedor.php">Proveedores</a></li>
-                                    <li><a href="../../views/dashboard/entradas.php">Entadas</a></li>
+                                    <li><a href="../../views/dashboard/entradas.php">Entradas</a></li>
                                 </ul>
                                 <ul id="dropdown3" class="dropdown-content">
                                     <li><a href="../../views/dashboard/usuarios.php">Gestión de usuarios</a></li>
                                 </ul>
                                 <ul id="dropdown4" class="dropdown-content">
                                     <li><a href="../../views/dashboard/clientes.php">Clientes</a></li>
-                                    <li><a href="../../views/dashboard/valoraciones.php">Valoraciones</a></li>
                                     <li><a href="../../views/dashboard/pedidos.php">Pedidos</a></li>
+                                    <li><a href="../../views/dashboard/valoraciones.php">Valoraciones</a></li>
                                 </ul>
                                 <a href="#" data-target="mobile-demo" class="sidenav-trigger"><i class="material-icons">menu</i></a>
                                 <ul class="left hide-on-med-and-down">
@@ -86,12 +84,12 @@ class Dashboard_Page {
                         <li><a href="../../views/dashboard/usuarios.php" class="center-align">Gestión de usuarios</a></li>
                         <li class="divider"></li>
                         <li class="light-blue darken-4"><a class="white-text">Clientes</a></li>
-                        <li><a href="../../views/dashboard/clientes.php" class="center-align">Clientes</a></li>
-                        <li><a href="../../views/dashboard/valoraciones.php" class="center-align">Valoraciones</a></li>
+                        <li><a href="../../views/dashboard/clientes.php" class="center-align">Visualizar Clientes</a></li>
                         <li><a href="../../views/dashboard/pedidos.php" class="center-align">Pedidos</a></li>
+                        <li><a href="../../views/dashboard/valoraciones.php" class="center-align">Valoraciones</a></li>
                         <li class="divider"></li>
                         <br>
-                        <li class="blue-grey"><a href="#" class="center-align white-text" onclick="logOut()">Cerrar Sesión</a></li>
+                        <li class="blue-grey"><a href="#" class="center-align white-text" onclick="logOut()"><i class="material-icons right">exit_to_app</i>Cerrar Sesión</a></li>
                     </ul>
                 </header>
                 <br>

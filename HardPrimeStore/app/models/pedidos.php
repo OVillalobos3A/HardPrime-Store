@@ -65,7 +65,7 @@ class Pedidos extends Validator
 
     public function viewShop()
     {
-        $sql = 'SELECT  productos.nombre as nombre, cantidad, precio_producto as precio, (precio_producto*cantidad) as subtotal
+        $sql = 'SELECT  productos.nombre as nombre, cantidad, productos.precio as precio, (productos.precio*cantidad) as subtotal
                 FROM detalle_pedido INNER JOIN pedido ON detalle_pedido.id_pedido = pedido.id_pedido
                 INNER JOIN productos ON detalle_pedido.id_producto = productos.id_producto
                 WHERE detalle_pedido.id_pedido = ?';

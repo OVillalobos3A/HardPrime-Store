@@ -46,28 +46,28 @@ Dashboard_Page::headerTemplate('Página Principal');
             <div class="row">
                 <div class="input-field col s12 m6">
                     <i class="material-icons prefix">account_circle</i>
-                    <input id="nombre" type="text" name="nombre" class="validate" required/>
+                    <input id="nombre" type="text" name="nombre" class="validate" maxlength="25" required/>
                     <label for="nombre">Nombres</label>
                 </div>
                 <div class="input-field col s12 m6">
                     <i class="material-icons prefix">account_circle</i>
-                    <input id="apellido" type="text" name="apellido" class="validate" required/>
+                    <input id="apellido" type="text" name="apellido" class="validate" maxlength="25" required/>
                     <label for="apellido">Apellidos</label>
                 </div>
                 <div class="input-field col s12 m6">
                     <i class="material-icons prefix">email</i>
-                    <input id="correo" type="email" name="correo" class="validate" required/>
+                    <input id="correo" type="email" name="correo" class="validate" maxlength="40" required/>
                     <label for="correo">Correo</label>
                 </div>
                 <div class="input-field col s12 m6">
                     <i class="material-icons prefix">phone</i>
-                    <input id="tel" type="text" name="tel" class="validate" required/>
+                    <input id="tel" type="text" name="tel" class="validate" maxlength="9" required/>
                     <label for="tel">Teléfono</label>
                 </div>
                 </div>
                 <div class="file-field input-field col s12 m6">
-                    <div class="btn waves-effect tooltipped" data-tooltip="Seleccione una foto de perfil de al menos 500x500">
-                        <span><i class="material-icons">image</i></span>
+                    <div class="btn blue-grey tooltipped"  data-tooltip="Seleccione una imagen de 500x500">
+                        <i class="material-icons right">image</i>Foto de perfil
                         <input id="archivo" type="file" name="archivo" accept=".gif, .jpg, .png"/>
                     </div>
                     <div class="file-path-wrapper">
@@ -75,8 +75,8 @@ Dashboard_Page::headerTemplate('Página Principal');
                 </div>
             </div>
             <div class="row center-align">
-                <a href="#" class="btn waves-effect grey tooltipped modal-close" data-tooltip="Cancelar"><i class="material-icons">cancel</i></a>
-                <button type="submit" class="btn waves-effect blue tooltipped" data-tooltip="Guardar"><i class="material-icons">save</i></button>
+                <a href="#" class="btn waves-effect red tooltipped modal-close" data-tooltip="Cancelar"><i class="material-icons">cancel</i></a>
+                <button type="submit" class="btn waves-effect light-blue darken-4 tooltipped" data-tooltip="Guardar"><i class="material-icons">save</i></button>
             </div>
         </form>
     </div>
@@ -92,29 +92,29 @@ Dashboard_Page::headerTemplate('Página Principal');
             <div class="row">
                 <div class="input-field col s12 m6">
                     <i class="material-icons prefix">account_circle</i>
-                    <input id="alias" type="text" name="alias" class="validate" required/>
+                    <input id="alias" type="text" name="alias" class="validate" maxlength="10" required/>
                     <label for="alias">Usuario</label>
                 </div>
-                <div class="input-field col s12 m6">
-                    <i class="material-icons prefix">password</i>
-                    <input id="contra" type="password" name="contra" class="validate" required/>
-                    <label for="contra">Contraseña actual</label>
-                </div>
+                
                 <div class="input-field col s12 m6">
                     <i class="material-icons prefix">add_moderator</i>
-                    <input id="ncontra" type="password" name="ncontra" class="validate" required/>
+                    <input id="ncontra" type="password" name="ncontra" class="validate" maxlength="16" required/>
                     <label for="ncontra">Nueva contraseña</label>
                 </div>
                 <div class="input-field col s12 m6">
                     <i class="material-icons prefix">add_moderator</i>
-                    <input id="ncontra1" type="password" name="ncontra1" class="validate" required/>
+                    <input id="ncontra1" type="password" name="ncontra1" class="validate" maxlength="16" required/>
                     <label for="ncontra1">Confirmar contraseña</label>
                 </div>
+                <div class="input-field col s12 m6">
+                    <i class="material-icons prefix">password</i>
+                    <input id="contra" type="password" name="contra" class="validate" maxlength="16" required/>
+                    <label for="contra">Contraseña actual</label>
                 </div>
             </div>
             <div class="row center-align">
-                <a href="#" class="btn waves-effect grey tooltipped modal-close" data-tooltip="Cancelar"><i class="material-icons">cancel</i></a>
-                <button type="submit" class="btn waves-effect blue tooltipped" data-tooltip="Guardar"><i class="material-icons">save</i></button>
+                <a href="#" class="btn waves-effect red tooltipped modal-close" data-tooltip="Cancelar"><i class="material-icons">cancel</i></a>
+                <button type="submit" class="btn waves-effect light-blue darken-4 tooltipped" data-tooltip="Guardar"><i class="material-icons">save</i></button>
             </div>
         </form>
     </div>

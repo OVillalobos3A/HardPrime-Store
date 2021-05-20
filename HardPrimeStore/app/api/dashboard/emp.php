@@ -289,7 +289,7 @@ if (isset($_GET['action'])) {
             case 'updateUserCredentials':
                 $_POST = $usuario->validateForm($_POST);
                 if ($usuario->setId($_POST['id_usuario'])) {
-                    if ($data = $usuario->readOne()) {
+                    if ($data = $usuario->readOneuser()) {
                         if ($usuario->setAlias($_POST['alias'])) {
                             if ($_POST['ncontra'] != '' && $_POST['ncontra1'] != '') {
                                 if ($_POST['ncontra'] == $_POST['ncontra1']) {
@@ -391,28 +391,40 @@ if (isset($_GET['action'])) {
                             if ($usuario->setTel($_POST['tel'])) {
                                 if ($usuario->setFecha($_POST['fecha'])) {
                                     if ($usuario->setGen($_POST['gen'])) {
-                                        if ($usuario->createRow()) {
-                                            if ($usuario->setAlias($_POST['alias'])) {
-                                                if ($_POST['clave1'] == $_POST['clave2']) {
-                                                    if ($usuario->setClave($_POST['clave1'])) {
-                                                        if ($usuario->firstUser()) {
-                                                            $result['message'] = 'Se ha ingresado un usuario';
-                                                            $result['status'] = 1;
+                                        if ($usuario->setAlias($_POST['alias'])) {
+                                            if ($_POST['clave1'] == $_POST['clave2']) {
+                                                if ($usuario->setClave($_POST['clave1'])) {
+                                                    if (is_uploaded_file($_FILES['archivo']['tmp_name'])) {
+                                                        if ($usuario->setImagen($_FILES['archivo'])) {
+                                                            if ($usuario->createFirstEmp()) {
+                                                                if ($usuario->saveFile($_FILES['archivo'], $usuario->getRuta(), $usuario->getImagen())) {
+                                                                    if ($usuario->firstUser()) {
+                                                                        $result['status'] = 1;
+                                                                        $result['message'] = 'Se han ingresado correctamente los datos';
+                                                                    } else {
+                                                                        $result['exception'] = Database::getException();
+                                                                        $result['message'] = 'Error desconocido';
+                                                                    }
+                                                                } else {
+                                                                    $result['message'] = 'Empleado creado pero no se guardó la imagen';
+                                                                }
+                                                            } else {
+                                                                $result['exception'] = Database::getException();
+                                                            }
                                                         } else {
-                                                            $result['exception'] = Database::getException();
-                                                            $result['message'] = 'Error desconocido';
+                                                            $result['exception'] = $usuario->getImageError();
                                                         }
                                                     } else {
-                                                        $result['exception'] = $usuario->getPasswordError();
+                                                        $result['exception'] = 'Seleccione foto de perfil';
                                                     }
                                                 } else {
-                                                    $result['exception'] = 'Claves diferentes';
+                                                    $result['exception'] = $usuario->getPasswordError();
                                                 }
                                             } else {
-                                                $result['exception'] = 'Usuario incorrecto';
+                                                $result['exception'] = 'Claves diferentes';
                                             }
                                         } else {
-                                            $result['exception'] = Database::getException();
+                                            $result['exception'] = 'Usuario incorrecto';
                                         }
                                     } else {
                                         $result['exception'] = 'Género incorrecto';

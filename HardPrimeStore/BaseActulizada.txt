@@ -1,0 +1,249 @@
+Create table tipo_usuario(
+	id_tipo_usuario serial primary key,
+	tipo_usuario varchar(15) not null
+);
+
+--Restricción de datos para tabla tipo usuario--
+alter table tipo_usuario
+   add constraint UQ_tipo_u
+   unique (tipo_usuario);
+   
+
+Create table marca(
+	id_marca serial primary key,
+	nombre_marca varchar(20) not null,
+	imagen varchar(50),
+	logo_marca varchar(50)
+);
+
+--Restricción de datos para tabla marca--
+alter table marca
+   add constraint UQ_nombre_m
+   unique (nombre_marca);
+   
+
+Create table categoria(
+	id_categoria serial primary key,
+	nombre varchar(20) not null,
+	imagen varchar(50),
+	descripcion varchar(50) not null
+);
+
+--Restricción de datos para tabla categoria--
+alter table categoria
+   add constraint UQ_nombre_c
+   unique (nombre);
+   
+Create table proveedor(
+	id_proveedor serial primary key,
+	nombre varchar(20) not null,
+	correo varchar(40) not null,
+	direccion varchar(50) not null,
+	telefono varchar(9) not null
+);
+
+--Restricción de datos para tabla proveedor--
+alter table proveedor
+   add constraint UQ_nombre_p
+   unique (nombre),
+   add constraint UQ_direccion_p
+   unique (direccion),
+   add constraint UQ_correo_p
+   unique (correo),
+   add constraint UQ_telefono_p
+   unique (telefono);
+   
+Create table clientes(
+	id_cliente serial primary key,
+	imagen varchar(60),
+	direccion  varchar(200) not null,
+	nombre varchar(25) not null,
+	apellido varchar(25) not null,
+	correo varchar(40) not null,
+	celular varchar(9) not null,
+	tel_fijo varchar(9) not null,
+	fecha_nac date not null,
+	usuario varchar(10) not null,
+	contraseña varchar(16) not null,
+	codigo_recu varchar (5),
+	estado varchar(10) not null default 'activo'
+);
+
+--Restricción de datos para tabla clientes--
+alter table clientes
+   add constraint UQ_usuario_c
+   unique (usuario),
+   add constraint UQ_correo_c
+   unique (correo),
+   add constraint UQ_celular_c
+   unique (celular);
+   
+Create table empleados(
+	id_empleado serial primary key,
+	imagen varchar(50),
+	nombre varchar(25) not null,
+	apellido varchar(25) not null,
+	correo varchar(40) not null,
+	telefono varchar(9) not null,
+	fecha_nac date not null,
+	genero char not null,	
+	estado varchar(10) not null default 'activo'
+);
+
+--Restricción de datos para tabla empleados--
+alter table empleados
+   add constraint UQ_correo_e
+   unique (correo),
+   add constraint UQ_telefono_e
+   unique (telefono);
+   
+Create table usuarios(
+	id_usuario serial primary key,
+	usuario varchar(10) not null,
+	contraseña varchar(120) not null,
+	codigo_recu varchar (5),
+	id_empleado integer not null,
+	id_tipo_usuario integer not null,
+	primer_uso numeric not null default 1,
+	estado varchar(10) not null default 'activo',
+	FOREIGN KEY (id_empleado) REFERENCES empleados (id_empleado),
+	FOREIGN KEY (id_tipo_usuario) REFERENCES tipo_usuario (id_tipo_usuario)
+);
+
+--Restricción de datos para tabla usuarios--
+alter table usuarios
+   add constraint UQ_usuario_u
+   unique (usuario),
+   add constraint UQ_empleado_u
+   unique (id_empleado);
+  
+Create table productos(
+	id_producto serial primary key,
+	nombre varchar(20) not null,
+	precio numeric(8,2)not null,
+	descripcion varchar(50) not null,
+	descuento numeric(3,2) default 0.00,
+	stock integer,
+	estado boolean,
+	imagen varchar(50),
+	imagen2 varchar(50),	
+	id_proveedor integer not null,
+	id_categoria integer not null,
+	id_marca integer not null,
+	FOREIGN KEY (id_proveedor) REFERENCES proveedor (id_proveedor),
+	FOREIGN KEY (id_categoria) REFERENCES categoria (id_categoria),
+	FOREIGN KEY (id_marca) REFERENCES marca (id_marca)
+);
+
+--Restricción de datos para tabla productos--
+alter table productos
+   add constraint UQ_nombre_pr
+   unique (nombre);
+  
+Create table entrada(
+	id_entrada serial primary key,
+	cantidad integer not null,
+	fecha date not null,
+	id_empleado integer not null,
+	id_producto integer not null,
+	FOREIGN KEY (id_producto) REFERENCES productos (id_producto),
+	FOREIGN KEY (id_empleado) REFERENCES empleados (id_empleado)
+);
+
+Create table pedido(
+	id_pedido serial primary key,
+	costo_envio numeric(8,2),
+	impuestos numeric(8,2),
+	estado varchar(25) not null default 'En preparacion',
+	fecha_envio date not null,
+	fecha_pedido date not null,
+	id_empleado integer not null,
+	id_cliente integer not null,
+	FOREIGN KEY (id_empleado) REFERENCES empleados (id_empleado),
+	FOREIGN KEY (id_cliente) REFERENCES clientes (id_cliente)
+);
+
+Create table detalle_pedido(
+	id_detalle serial primary key,
+	cantidad integer,
+	id_producto integer not null,
+	id_pedido integer not null,
+	FOREIGN KEY (id_producto) REFERENCES productos (id_producto),
+	FOREIGN KEY (id_pedido) REFERENCES pedido (id_pedido)
+);
+   
+Create table calificaciones(
+	id_calificacion serial primary key,
+	comentario varchar(60) not null, 
+	fecha date not null,
+	estado varchar(15) not null default 'Deshabilitado',
+	calificacion numeric (3,2), 
+	id_producto integer not null,
+	id_cliente integer not null,
+	FOREIGN KEY (id_producto) REFERENCES productos (id_producto),
+	FOREIGN KEY (id_cliente) REFERENCES clientes (id_cliente)
+);
+
+Insert into tipo_usuario (tipo_usuario) values  ('Root'), ('Administrador'), ('Gerente');
+Select * from tipo_usuario;
+
+Create function UpdteProduct() returns Trigger
+as
+$$
+
+begin
+
+update productos set stock = stock + new.cantidad where id_producto = new.id_producto;
+
+return new;
+end
+$$
+Language plpgsql
+
+
+Create trigger INSTATE after insert on entrada
+for each row
+execute procedure UpdteProduct()
+
+
+
+--Inserts para clientes--
+INSERT INTO public.clientes(
+nombre, apellido, correo, celular, tel_fijo, fecha_nac, usuario, "contraseña", estado, direccion)
+VALUES ('Fernando Gabriel','Hernandez Perez', 'fhernandez@gmail.com', '2273-1452','2243-1734', '16/03/2000', 'ferHdez00', '123', 'Activo', 'Camiño Mireia, 792, 53º 2º'),
+('Pedro', 'Florez Zelaya','pedroflrez@gmail.com', '4327-3214', '5435-7653', '05/10/1994', 'pedro94', '1234', 'Activo', 'Camiño Mireia, 792, 53º 2º'),
+('Guillermo Felipe', 'Linarez Marroquín','guilleLinares.com', '7128-1452','7218-3819', '20/04/2001', 'guille01', '12345', 'Activo', 'Camiño Mireia, 792, 53º 2º'),
+('Diego Luis', 'Bonilla Fernandez','diebonilla@gmail.com', '5432-5241','5233-5232', '09/11/1995', 'Dbonilla', '123456', 'Inactivo', 'Camiño Mireia, 792, 53º 2º'),
+('Enrique Juan', 'López Hernandez','enrqLopez@gmail.com', '7381-7318','7218-7182', '14/08/1998', 'EnqriqueL', '1234567', 'Activo', 'Camiño Mireia, 792, 53º 2º');
+
+--Inserts para pedido--
+INSERT INTO public.pedido(
+costo_envio, fecha_envio, fecha_pedido, id_empleado, id_cliente)
+VALUES (20, '16/03/2021', '15/03/2021', 10, 2),
+(10, '16/03/2021', '15/03/2021', 8, 2),
+(15, '16/03/2021', '15/03/2021', 10, 3),
+(20, '17/03/2021', '15/03/2021', 8, 2),
+(15, '17/03/2021', '16/03/2021', 10, 3),
+(3, '16/03/2021', '15/03/2021', 8, 5);
+
+
+INSERT INTO public.detalle_pedido(
+cantidad, id_producto, id_pedido)
+VALUES (2, 3, 2),(5,  2, 3),(1, 3, 2),
+(1, 3, 3),(3, 2, 3),(10, 3, 2);
+	
+	
+Select * from empleados;
+Select * from clientes;
+Select * from pedido;
+Select * from productos;
+
+INSERT INTO public.calificaciones(
+comentario, fecha, calificacion, id_producto, id_cliente)
+VALUES ('Muy buen producto', '16/03/2021', 5, 2, 2),
+('Me sirvio mucho', '17/03/2021', 4, 2, 5),
+('Me esperaba mas', '11/02/2021', 3, 3, 3),
+('Me decepciono este producto', '15/03/2021', 1.5, 3, 2),
+('Me gustó pero el precio deberia ser mas bajo', '16/03/2021', 4, 2, 5);
+
+

@@ -103,16 +103,16 @@ if (isset($_GET['action'])) {
                                             $result['exception'] = Database::getException();
                                         }
                                     } else {
-                                        $result['exception'] = 'Teléfono incorrecto';
+                                        $result['exception'] = 'Teléfono incorrecto o campo vacío';
                                     }
                                 } else {
-                                    $result['exception'] = 'Dirección incorrecta';
+                                    $result['exception'] = 'Dirección incorrecta o campo vacío';
                                 }
                             } else {
-                                $result['exception'] = 'Correo incorrecto';
+                                $result['exception'] = 'Correo incorrecto o campo vacío';
                             }
                         } else {
-                            $result['exception'] = 'Nombre incorrecto';
+                            $result['exception'] = 'Nombre incorrecto o campo vacío';
                         }
                     } else {
                         $result['exception'] = 'Proveedor inexistente';

@@ -324,12 +324,13 @@ class Empleados extends Validator
 
     public function firstUser()
     {   
+        $this->primer_uso = 0;
         // Se encripta la clave por medio del algoritmo bcrypt que genera un string de 60 caracteres.
         $hash = password_hash($this->clave, PASSWORD_DEFAULT);
         $this->idt = 1;
-        $sql = 'INSERT INTO usuarios(usuario, contraseña, id_empleado, id_tipo_usuario)
-                VALUES(?,?,?,?)';
-        $params = array($this->alias, $hash, $this->ide, $this->idt);
+        $sql = 'INSERT INTO usuarios(usuario, contraseña, id_empleado, id_tipo_usuario, primer_uso)
+                VALUES(?,?,?,?,?)';
+        $params = array($this->alias, $hash, $this->ide, $this->idt, $this->primer_uso);
         return Database::executeRow($sql, $params);
     }
 
@@ -357,7 +358,19 @@ class Empleados extends Validator
             return false;
         }
     }
-    
+
+    public function createFirstEmp()
+    {
+        $this->estado = "activo";
+        $sql = 'INSERT INTO empleados(imagen, nombre, apellido, correo, telefono, fecha_nac, genero, estado)
+                VALUES(?, ?, ?, ?, ?, ?, ?, ?)';
+        $params = array($this->imagen, $this->nombre, $this->apellido, $this->correo, $this->tel, $this->fecha, $this->gen, $this->estado);
+        if ($this->ide = Database::getLastRow($sql, $params)) {
+            return true;
+        } else {
+            return false;
+        }
+    }
 
     public function readAll()
     {
@@ -376,18 +389,27 @@ class Empleados extends Validator
         return Database::getRow($sql, $params);
     }
 
+    public function readOneuser()
+    {
+        $sql = 'SELECT nombre, apellido, correo, telefono, imagen, usuarios.id_usuario, usuario
+                FROM usuarios INNER JOIN empleados ON usuarios.id_empleado = empleados.id_empleado
+                WHERE usuarios.id_usuario = ?';
+        $params = array($_SESSION['id_usuario']);
+        return Database::getRow($sql, $params);
+    }
+
     public function readOne1()
     {
-        $sql = "SELECT nombre, apellido, imagen, CONCAT('¡BIENVENID@!', ' ', usuario) as usuario
+        $sql = "SELECT usuarios.id_usuario as emp, usuarios.id_empleado as empleado, nombre, apellido, imagen, CONCAT('¡BIENVENID@!', ' ', usuario) as usuario
                 FROM usuarios INNER JOIN empleados ON usuarios.id_empleado = empleados.id_empleado
-                WHERE usuarios.id_empleado = ?";
+                WHERE usuarios.id_usuario = ?";
         $params = array($_SESSION['id_usuario']);
         return Database::getRows($sql, $params);
     }
 
     public function readEmfileds()
     {
-        $sql = 'SELECT usuarios.id_empleado, nombre, apellido, correo, telefono, imagen, usuarios.id_usuario, usuario
+        $sql = 'SELECT usuarios.id_empleado as emp, nombre, apellido, correo, telefono, imagen, usuarios.id_usuario, usuario
                 FROM usuarios INNER JOIN empleados ON usuarios.id_empleado = empleados.id_empleado
                 WHERE usuarios.id_usuario = ?';
         $params = array($_SESSION['id_usuario']);

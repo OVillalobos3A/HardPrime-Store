@@ -4,7 +4,7 @@ include('../../app/helpers/dashboard/dashboard_page2.php');
 //Se imprime la plantilla del encabezado y se envía el titulo para la página web
 Dashboard_Page::headerTemplate('Marcas');
 ?>
-
+<br>
 <div class="container">
     <div class="card whithe">
         <div class="card-content Black-text">
@@ -22,32 +22,32 @@ Dashboard_Page::headerTemplate('Marcas');
                 <div class="row">
                     <div class="input-field col s6">
                         <i class="material-icons prefix">search</i>
-                        <input id="search" type="text" name="search" required/>
-                        <label for="autocomplete-input">Nombre</label>
+                        <input id="search" type="text" name="search" maxlength="20" required/>
+                        <label for="autocomplete-input">Nombre de la marca</label>
                     </div>
                     <div class="input-field col s6 m4">
                         <button class="btn red" type="submit" name="action">Buscar
                             <i class="material-icons right">search</i>
                         </button>
+                        <a href="#" onclick="openTable()" class="btn waves-effect blue tooltipped" data-tooltip="Refrescar tabla"><i class="material-icons">refresh</i></a>
                     </div>
                 </div>
             </form>
             <!--Se construye la tabla de datos correspondiente a usuarios-->
             <!--Se especifica la clase para hacer responsive la tabla, y el tipo de tabla-->
             <!--Se especifica el detalle de cada fila y columna-->
-            <div class="row"> 
-                <table class="responsive-table striped">
-                    <thead>
-                        <tr>
-                            <th>Nombre</th>
-                            <th>Imagen</th>
-                            <th>Logo</th>
-                        </tr>
-                    </thead>
-                    <tbody id="tbody-rows">
-                    </tbody>
-                </table>
-            </div>
+            <table class="responsive-table striped">
+                <thead>
+                    <tr>
+                        <th>Nombre</th>
+                        <th>Imagen</th>
+                        <th>Logo</th>
+                        <th>Acción</th>
+                    </tr>
+                </thead>
+                <tbody id="tbody-rows">
+                </tbody>
+            </table>
         </div>
     </div>
 </div>
@@ -62,12 +62,12 @@ Dashboard_Page::headerTemplate('Marcas');
             <div class="row">
                 <div class="input-field col s12 m6">
                     <i class="material-icons prefix">note_add</i>
-                    <input id="nombre_marca" type="text" name="nombre_marca" class="validate" maxlength="6" required/>
+                    <input id="nombre_marca" type="text" name="nombre_marca" class="validate"  maxlength="20" required/>
                     <label for="nombre_marca">Nombre</label>
                 </div>
                 <div class="file-field input-field col s12 m6">
-                    <div class="btn waves-effect tooltipped" data-tooltip="Seleccione una imagen de al menos 500x500">
-                        <span><i class="material-icons">image</i></span>
+                    <div class="btn blue-grey tooltipped"  data-tooltip="Seleccione una imagen de 500x500">
+                        <i class="material-icons right">image</i>Imagen
                         <input id="archivo_marca" type="file" name="archivo_marca" accept=".gif, .jpg, .png"/>
                     </div>
                     <div class="file-path-wrapper">
@@ -75,8 +75,8 @@ Dashboard_Page::headerTemplate('Marcas');
                     </div>
                 </div>
                 <div class="file-field input-field col s12 m6">
-                    <div class="btn waves-effect tooltipped" data-tooltip="Seleccione un logo de al menos 500x500">
-                        <span><i class="material-icons">image</i></span>
+                    <div class="btn blue-grey tooltipped"  data-tooltip="Seleccione una imagen de 500x500">
+                        <i class="material-icons right">image</i>Logo
                         <input id="archivo_marca1" type="file" name="archivo_marca1" accept=".gif, .jpg, .png"/>
                     </div>
                     <div class="file-path-wrapper">
@@ -85,8 +85,8 @@ Dashboard_Page::headerTemplate('Marcas');
                 </div>
             </div>
             <div class="row center-align">
-                <a href="#" class="btn waves-effect grey tooltipped modal-close" data-tooltip="Cancelar"><i class="material-icons">cancel</i></a>
-                <button type="submit" class="btn waves-effect blue tooltipped" data-tooltip="Guardar"><i class="material-icons">save</i></button>
+                <a href="#" class="btn waves-effect red tooltipped modal-close" data-tooltip="Cancelar"><i class="material-icons">cancel</i></a>
+                <button type="submit" class="btn waves-effect light-blue darken-4 tooltipped" data-tooltip="Guardar"><i class="material-icons">save</i></button>
             </div>
         </form>
     </div>

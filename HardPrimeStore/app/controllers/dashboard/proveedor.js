@@ -20,8 +20,8 @@ function fillTable(dataset) {
                 <td>${row.direccion}</td>
                 <td>${row.telefono}</td>
                 <td>
-                    <a href="#" onclick="openUpdateDialog(${row.id_proveedor})" class="btn waves-effect blue tooltipped" data-tooltip="Actualizar"><i class="material-icons">mode_edit</i></a>
-                    <a href="#" onclick="openDeleteDialog(${row.id_proveedor})" class="btn waves-effect red tooltipped" data-tooltip="Eliminar"><i class="material-icons">delete</i></a>
+                    <a href="#" onclick="openUpdateDialog(${row.id_proveedor})" class="btn-floating btn waves-effect light-blue darken-4 tooltipped" data-tooltip="Editar"><i class="material-icons" title="Editar registro">create</i></a>
+                    <a href="#" onclick="openDeleteDialog(${row.id_proveedor})" class="btn-floating btn waves-effect red tooltipped" data-tooltip="Eliminar"><i class="material-icons" title="Eliminar registro">delete</i></a>
                 </td>
             </tr>
         `;
@@ -117,4 +117,12 @@ function openDeleteDialog(id) {
     data.append('id_proveedor', id);
     // Se llama a la función que elimina un registro. Se encuentra en el archivo components.js
     confirmDelete(API_PROVEEDOR, data);
+}
+
+//Código para refrescar la vista después de realizar una búsqueda
+function openTable() {
+    // Se restauran los elementos del formulario.
+    document.getElementById('search').value = "";
+    //Se cargan nuevamente las filas en la tabla de la vista después de presionar el botón.
+    readRows(API_PROVEEDOR);
 }

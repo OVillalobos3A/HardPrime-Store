@@ -90,7 +90,7 @@ if (isset($_GET['action'])) {
                                 $result['exception'] = 'Empleado incorrecto';
                             } 
                         } else {
-                            $result['exception'] = 'Producto incorrecto';
+                            $result['exception'] = 'No hay existencia de productos';
                         }
                     } else {
                         $result['exception'] = 'Seleccione una producto';

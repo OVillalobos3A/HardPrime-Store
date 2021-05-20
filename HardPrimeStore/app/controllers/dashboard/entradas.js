@@ -30,7 +30,7 @@ function fillTable(dataset) {
                 <td>${row.fecha}</td>
                 <td>${row.nombre}</td>
                 <td>
-                    <a href="#" onclick="openDeleteDialog(${row.id_entrada})" class="btn waves-effect red tooltipped" data-tooltip="Eliminar"><i class="material-icons">delete</i></a>
+                    <a href="#" onclick="openDeleteDialog(${row.id_entrada})" class="btn-floating btn waves-effect red tooltipped" data-tooltip="Eliminar"><i class="material-icons" title="Eliminar registro">delete</i></a>
                 </td>
             </tr>
         `;
@@ -142,6 +142,7 @@ function obtenerEmp() {
     });
 }
 
+//Funcion para refrescar la vista al momento de realizar un a búsqueda
 function openTable() {
     // Se restauran los elementos del formulario.
     document.getElementById('search').value = "";

@@ -63,7 +63,7 @@ function openName() {
                                 <img class="circle" height="100" src="../../resources/img/productos/${row.imagen}">
                             </div>
                             <div class="center-align">
-                                <a class="waves-effect waves-light btn"><i class="material-icons right tooltipped" data-tooltip="Modificar perfil" onclick="openUpdateProfile(${row.id_empleado})">account_circle</i>Perfil</a>
+                                <a class="waves-effect waves-light btn"><i class="material-icons right tooltipped" data-tooltip="Modificar perfil" onclick="openUpdateProfile(${row.empleado})">account_circle</i>Perfil</a>
                                 <a class="waves-effect waves-light btn"><i class="material-icons right tooltipped" data-tooltip="Modificar Credenciales" onclick="openUpdateCredentials(${row.id_usuario})">pin</i>Credenciales</a>
                             </div>
                         `;
@@ -110,7 +110,7 @@ function openUpdateProfile(id) {
                 // Se comprueba si la respuesta es satisfactoria, de lo contrario se muestra un mensaje con la excepción.
                 if (response.status) {
                     // Se inicializan los campos del formulario con los datos del registro seleccionado.
-                    document.getElementById('id_empleado').value = response.dataset.id_empleado;
+                    document.getElementById('id_empleado').value = response.dataset.emp;
                     document.getElementById('nombre').value = response.dataset.nombre;
                     document.getElementById('apellido').value = response.dataset.apellido;
                     document.getElementById('correo').value = response.dataset.correo;

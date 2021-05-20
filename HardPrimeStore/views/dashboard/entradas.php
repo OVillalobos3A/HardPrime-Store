@@ -21,7 +21,7 @@ Dashboard_Page::headerTemplate('Entradas');
                         </div>
                         <div class="input-field col s12 m6">
                             <i class="material-icons prefix">note_add</i>
-                            <input id="cantidad" type="number" class="validate" name="cantidad" required>
+                            <input id="cantidad" type="number" class="validate" name="cantidad" max="999" min="1" required>
                             <label for="cantidad">Cantidad</label>
                         </div>
                         <div class="input-field col s12 m6">
@@ -29,7 +29,7 @@ Dashboard_Page::headerTemplate('Entradas');
                         </div>
                     </div>
                     <div class="row center-align">
-                        <button type="submit" class="btn waves-effect blue tooltipped" data-tooltip="Guardar"><i class="material-icons">save</i></button>
+                        <button type="submit" class="btn waves-effect light-blue darken-4 tooltipped" data-tooltip="Guardar"><i class="material-icons">save</i></button>
                     </div>
                 </form>
             </div>
@@ -50,7 +50,7 @@ Dashboard_Page::headerTemplate('Entradas');
                 <div class="row">
                     <div class="input-field col s6">
                         <i class="material-icons prefix">search</i>
-                        <input id="search" type="text" name="search" required/>
+                        <input id="search" type="text" name="search" maxlength="20" required/>
                         <label for="autocomplete-input">Producto</label>
                     </div>
                     <div class="input-field col s6 m4">

@@ -24,7 +24,7 @@ Dashboard_Page::headerTemplate('Login');
                                     <!--Estableciendo el tamaño del que tomará el Input field-->
                                     <div class="input-field col s12">
                                         <i class="material-icons prefix">account_box</i>
-                                        <input id="alias" type="text" name="alias" class="validate" required/>
+                                        <input id="alias" type="text" name="alias" class="validate" maxlength="10" required />
                                         <label for="alias">Ingrese su usuario</label>
                                     </div>
                                 </div>
@@ -39,7 +39,7 @@ Dashboard_Page::headerTemplate('Login');
                                     <!--Estableciendo el tamaño del que tomará el Input field-->
                                     <div class="input-field col s12">
                                         <i class="material-icons prefix">vpn_key</i>
-                                        <input id="clave" type="password" name="clave" class="validate" required/>
+                                        <input id="claveu" type="password" name="clave" class="validate"  maxlength="16" required />
                                         <label for="clave">Ingrese su contraseña</label>
                                     </div>
                                 </div>
@@ -50,10 +50,10 @@ Dashboard_Page::headerTemplate('Login');
                     <br>
                     <!--Establecemos el botón de enviar-->
                     <div class="form-field center-align">
-                            <button class="btn-large blue-grey" type="submit" name="action">
-                                Acceder
-                                <i class="material-icons right">send</i>
-                            </button>
+                        <button class="btn-large blue-grey" type="submit" name="action">
+                            Acceder
+                            <i class="material-icons right">send</i>
+                        </button>
                         </a>
                     </div>
                     <br>
@@ -65,6 +65,39 @@ Dashboard_Page::headerTemplate('Login');
                     </div>
                 </form>
             </div>
+        </div>
+    </div>
+    <div id="save-modal" class="modal">
+        <div class="modal-content">
+            <h5 id="modal-title" class="center-align">Agregar usuario</h5>
+            <br>
+            <!--Estableciendo el tamaño de cada div correspondiente-->
+            <div class="row">
+                <!--Creamos la estructura del formulario respectivo-->
+                <form method="post" id="save-form" name="save-form" enctype="multipart/form-data" class="col-md-4">
+                    <!-- Campo oculto para asignar el id del registro al momento de modificar -->
+                    <input class="hide" type="text" id="usuario" name="usuario" />
+                    <div class="row">
+                        <!--Estableciendo el tamaño del que tomará el Input field-->
+                        <div class="input-field col s12 m6">
+                            <input id="clave" type="text" name="clave" class="validate"  maxlength="16" required>
+                            <label for="clave">Nueva contraseña:</label>
+                        </div>
+                        <!--Estableciendo el tamaño del que tomará el Input field-->
+                        <div class="input-field col s12 m6">
+                            <input id="confirmar" type="text" name="confirmar" class="validate"  maxlength="16" required>
+                            <label for="confirmar">Confirmar contraseña:</label>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col s10 offset-s1 center-align">                            
+                            <button type="submit" class="btn waves-effect light-blue darken-4 tooltipped" data-tooltip="Guardar"><i class="material-icons">save</i></button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+        <div class="modal-footer">
         </div>
     </div>
 </div>

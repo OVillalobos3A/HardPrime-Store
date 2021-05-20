@@ -35,7 +35,7 @@ function readRows(api) {
 }
 
 function readRows2(api) {
-    fetch(api + 'readProfile', {
+    fetch(api + 'openName', {
         method: 'get'
     }).then(function (request) {
         // Se verifica si la petición es correcta, de lo contrario se muestra un mensaje indicando el problema.
@@ -52,7 +52,7 @@ function readRows2(api) {
                                 <h4 class="center-align">${row.usuario}</h4>
                             </div>
                             <div class="center-align">
-                                <img class="circle" height="100" src="../../resources/img/empleados/${row.imagen}">
+                                <img class="circle" height="100" src="../../resources/img/productos/${row.imagen}">
                             </div>
                             <div class="center-align">
                                 <a class="waves-effect waves-light btn"><i class="material-icons right tooltipped" data-tooltip="Modificar perfil" onclick="openUpdateProfile(${row.id_empleado})">account_circle</i>Perfil</a>
@@ -61,7 +61,7 @@ function readRows2(api) {
                         `;
                     });
                     // Se agregan las tarjetas a la etiqueta div mediante su id para mostrar las categorías.
-                    document.getElementById('profile1').innerHTML = content;
+                    document.getElementById('datos').innerHTML = content;
                     // Se inicializa el componente Tooltip asignado a los enlaces para que funcionen las sugerencias textuales.
                     M.Tooltip.init(document.querySelectorAll('.tooltipped'));
                 } else {
@@ -76,6 +76,32 @@ function readRows2(api) {
     });
 }
 
+function saveRowUser(api, action, form, modal) {
+    fetch(api + action, {
+        method: 'post',
+        body: new FormData(document.getElementById(form))
+    }).then(function (request) {
+        // Se verifica si la petición es correcta, de lo contrario se muestra un mensaje indicando el problema.
+        if (request.ok) {
+            request.json().then(function (response) {
+                // Se comprueba si la respuesta es satisfactoria, de lo contrario se muestra un mensaje con la excepción.
+                if (response.status) {
+                    // Se cierra la caja de dialogo (modal) del formulario.
+                    let instance = M.Modal.getInstance(document.getElementById(modal));
+                    instance.close();
+                    readRows2(api);
+                    sweetAlert(1, response.message, null);
+                } else {
+                    sweetAlert(2, response.exception, null);
+                }
+            });
+        } else {
+            console.log(request.status + ' ' + request.statusText);
+        }
+    }).catch(function (error) {
+        console.log(error);
+    });
+}
 
 /*
 *   Función para obtener los resultados de una búsqueda en los mantenimientos de tablas (operación search).
@@ -144,8 +170,7 @@ function saveRow(api, action, form, modal) {
     });
 }
 
-
-function saveRowUser(api, action, form, modal) {
+function saveRow2(api, action, form) {
     fetch(api + action, {
         method: 'post',
         body: new FormData(document.getElementById(form))
@@ -155,10 +180,9 @@ function saveRowUser(api, action, form, modal) {
             request.json().then(function (response) {
                 // Se comprueba si la respuesta es satisfactoria, de lo contrario se muestra un mensaje con la excepción.
                 if (response.status) {
-                    // Se cierra la caja de dialogo (modal) del formulario.
-                    let instance = M.Modal.getInstance(document.getElementById(modal));
-                    instance.close();
-                    readRows2(api);
+                    // Se cierra la caja de dialogo (modal) del formulario.                    
+                    // Se cargan nuevamente las filas en la tabla de la vista después de agregar o modificar un registro.
+                    //readRows(api);
                     sweetAlert(1, response.message, null);
                 } else {
                     sweetAlert(2, response.exception, null);
@@ -171,7 +195,6 @@ function saveRowUser(api, action, form, modal) {
         console.log(error);
     });
 }
-
 
 /*
 *   Función para eliminar un registro seleccionado en los mantenimientos de tablas (operación delete). Requiere el archivo sweetalert.min.js para funcionar.

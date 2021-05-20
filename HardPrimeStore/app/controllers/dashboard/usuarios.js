@@ -19,10 +19,10 @@ function fillTable(dataset) {
         // Se crean y concatenan las filas de la tabla con los datos de cada registro.
         content += `
             <tr>                
-                <td><b>${row.nombre}</b></td>
-                <td><b>${row.usuario}</b></td>
-                <td><b>${row.estado}</b></td>
-                <td><b>${row.tipo_usuario}</b></td>                
+                <td>${row.nombre}</td>
+                <td>${row.usuario}</td>
+                <td>${row.estado}</td>
+                <td>${row.tipo_usuario}</td>                
                 <td>
                 <a href="#" onclick="openUpdateDialog(${row.id_usuario})" class="btn-floating btn waves-effect light-blue darken-4 modal-trigger"><i class="material-icons" title="Editar registro">create</i></a>
                 <a href="#" onclick="openDeleteDialog(${row.id_usuario})" class="btn-floating btn waves-effect red"><i class="material-icons" title="Eliminar registro">delete</i></a>
@@ -129,6 +129,14 @@ function openDeleteDialog(id) {
     data.append('id_usuario', id);
     // Se llama a la función que elimina un registro. Se encuentra en el archivo components.js
     confirmDelete(API_USUARIOS, data);
+}
+
+//Código para refrescar la vista después de realizar una búsqueda
+function openTable() {
+    // Se restauran los elementos del formulario.
+    document.getElementById('search').value = "";
+    //Se cargan nuevamente las filas en la tabla de la vista después de presionar el botón.
+    readRows(API_USUARIOS);
 }
 
 

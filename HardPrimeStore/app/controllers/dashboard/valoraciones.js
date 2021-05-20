@@ -22,7 +22,7 @@ function fillTable(dataset) {
                 <td>${row.fecha}</td>
                 <td>${row.estado}</td>
                 <td>
-                    <a href="#" onclick="openAct(${row.id_cliente})" class="btn waves-effect blue tooltipped" data-tooltip="Deshabilitar/Habilitar"><i class="material-icons">event_note</i></a>
+                    <a href="#" onclick="openAct(${row.id_calificacion})" class="btn waves-effect blue tooltipped" data-tooltip="Deshabilitar/Habilitar"><i class="material-icons">event_note</i></a>
                     <a href="#" onclick="openDeleteDialog(${row.id_calificacion})" class="btn waves-effect red tooltipped" data-tooltip="Eliminar"><i class="material-icons">delete</i></a>
                 </td>
             </tr>
@@ -57,28 +57,47 @@ function openAct(id) {
     // Se define un objeto con los datos del registro seleccionado.
     const data = new FormData();
     data.append('id_calificacion', id);
-    // Se llama a la función que elimina un registro. Se encuentra en el archivo components.js
-    fetch(API_VALORACIONES + 'update', {
-        method: 'post',
-        body: data
-    }).then(function (request) {
-        // Se verifica si la petición es correcta, de lo contrario se muestra un mensaje indicando el problema.
-        if (request.ok) {
-            request.json().then(function (response) {
-                // Se comprueba si la respuesta es satisfactoria, de lo contrario se muestra un mensaje con la excepción.
-                if (response.status) {
-                    // Se cargan nuevamente las filas en la tabla de la vista después de borrar un registro.
-                    readRows(API_VALORACIONES);
-                    sweetAlert(1, response.message, null);
+    swal({
+        title: 'Advertencia',
+        text: '¿Desea habilitar/deshabilitar la valoración?',
+        icon: 'warning',
+        buttons: ['No', 'Sí'],
+        closeOnClickOutside: false,
+        closeOnEsc: false
+    }).then(function (value) {
+        // Se verifica si fue cliqueado el botón Sí para hacer la petición de borrado, de lo contrario no se hace nada.
+        if (value) {
+            fetch(API_VALORACIONES + 'update', {
+                method: 'post',
+                body: data
+            }).then(function (request) {
+                // Se verifica si la petición es correcta, de lo contrario se muestra un mensaje indicando el problema.
+                if (request.ok) {
+                    request.json().then(function (response) {
+                        // Se comprueba si la respuesta es satisfactoria, de lo contrario se muestra un mensaje con la excepción.
+                        if (response.status) {
+                            // Se cargan nuevamente las filas en la tabla de la vista después de borrar un registro.
+                            readRows(API_VALORACIONES);
+                            sweetAlert(1, response.message, null);
+                        } else {
+                            sweetAlert(2, response.exception, null);
+                        }
+                    });
                 } else {
-                    sweetAlert(2, response.exception, null);
+                    console.log(request.status + ' ' + request.statusText);
                 }
+            }).catch(function (error) {
+                console.log(error);
             });
-        } else {
-            console.log(request.status + ' ' + request.statusText);
         }
-    }).catch(function (error) {
-        console.log(error);
     });
+}
+
+//Código para refrescar la vista después de realizar una búsqueda
+function openTable() {
+    // Se restauran los elementos del formulario.
+    document.getElementById('search').value = "";
+    //Se cargan nuevamente las filas en la tabla de la vista después de presionar el botón.
+    readRows(PI_VALORACIONES);
 }
 

@@ -87,7 +87,7 @@ class Valoraciones extends Validator
 
     public function readOne1()
     {
-        $this->estado1 = "Desabilitado";
+        $this->estado1 = "Deshabilitado";
         $sql = 'SELECT id_calificacion, comentario, estado
                 FROM calificaciones 
                 WHERE id_calificacion = ? and estado = ?';
@@ -107,7 +107,7 @@ class Valoraciones extends Validator
 
     public function updateRow1()
     {
-        $this->estado = "Desabilitado";
+        $this->estado = "Deshabilitado";
         $sql = 'UPDATE calificaciones
                 SET estado = ?
                 WHERE id_calificacion = ?';
