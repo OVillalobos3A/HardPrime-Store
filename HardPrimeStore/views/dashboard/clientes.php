@@ -47,7 +47,7 @@ Dashboard_Page::headerTemplate('Clientes');
                 <div class="row">
                     <div class="input-field col s6">
                         <i class="material-icons prefix">search</i>
-                        <input id="search" type="text" name="search" required/>
+                        <input id="search" type="text" name="search" maxlength="40" required/>
                         <label for="autocomplete-input">Nombre</label>
                     </div>
                     <div class="input-field col s6">
