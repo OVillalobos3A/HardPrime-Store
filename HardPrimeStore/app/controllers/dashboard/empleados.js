@@ -16,6 +16,7 @@ document.addEventListener('DOMContentLoaded', function () {
     let date = `${year}-${month}-${day}`;
     // Se asigna la fecha como valor máximo en el campo del formulario.
     document.getElementById('fecha').setAttribute('max', date);
+    
 });
 
 // Función para llenar la tabla con los datos de los registros. Se manda a llamar en la función readRows().

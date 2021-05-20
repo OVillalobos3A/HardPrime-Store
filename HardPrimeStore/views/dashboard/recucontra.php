@@ -27,7 +27,7 @@ Dashboard_Page::headerTemplate('Recu-contraseña');
                         <div class="row">
                             <!--Estableciendo el tamaño del que tomará el Input field-->
                             <div class="input-field col s12 m6">
-                                <input id="usuario" type="text" name="usuario" class="validate" required>
+                                <input id="usuario" type="text" name="usuario"  maxlength="10"class="validate" required>
                                 <label for="usuario">Ingrese su usuario:</label>
                             </div>
                         </div>
@@ -56,19 +56,19 @@ Dashboard_Page::headerTemplate('Recu-contraseña');
                         <div class="row">
                             <!--Estableciendo el tamaño del que tomará el Input field-->
                             <div class="input-field col s12 m6">
-                                <input id="codigo" type="text" name="codigo" class="validate" required>
+                                <input id="codigo" type="text" name="codigo"  maxlength="5" class="validate" required>
                                 <label for="codigo">Ingrese el código de confirmación:</label>
                             </div>
                         </div>
                         <div class="row">
                             <!--Estableciendo el tamaño del que tomará el Input field-->
                             <div class="input-field col s12 m6">
-                                <input id="clave" type="password" name="clave" class="validate" required>
+                                <input id="clave" type="password" name="clave" maxlength="120" class="validate" required>
                                 <label for="clave">Nueva contraseña:</label>
                             </div>
                             <!--Estableciendo el tamaño del que tomará el Input field-->
                             <div class="input-field col s12 m6">
-                                <input id="confirmar" type="password" name="confirmar" class="validate" required>
+                                <input id="confirmar" type="password" name="confirmar"  maxlength="120" class="validate" required>
                                 <label for="confirmar">Confirmar contraseña:</label>
                             </div>
                             <!--Estableciendo el tamaño del que tomará el Input field-->
