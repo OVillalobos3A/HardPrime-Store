@@ -71,13 +71,13 @@ Dashboard_Page::headerTemplate('Productos');
                     <!--Estableciendo el tamaño del que tomará el Input field-->
                     <div class="input-field col s12 m6">
                         <i class="material-icons prefix">inventory_2</i>
-                        <input id="nombre" type="text" name="nombre" class="validate" required>
+                        <input id="nombre" type="text" name="nombre"  maxlength="20" class="validate" required>
                         <label for="nombre">Nombre</label>
                     </div>
                     <!--Estableciendo el tamaño del que tomará el Input field-->
                     <div class="input-field col s12 m6">
                         <i class="material-icons prefix">attach_money</i>
-                        <input id="precio" type="text" name="precio" class="validate" max="9999.99" min="0.01" step="any" required>
+                        <input id="precio" type="text" name="precio" class="validate"  maxlength="7" max="9999.99" min="0.01" step="any" required>
                         <label for="precio">Precio $</label>
                     </div>
                 </div>
@@ -85,13 +85,13 @@ Dashboard_Page::headerTemplate('Productos');
                     <!--Estableciendo el tamaño del que tomará el Input field-->
                     <div class="input-field col s12 m6">
                     <i class="material-icons prefix">filter_none</i>
-                        <input id="stock" type="number" name="stock" data-length="150" max="999" min="1" required>
+                        <input id="stock" type="number" name="stock" data-length="150"  maxlength="3" max="999" min="1" required>
                         <label for="stock">Stock</label>
                     </div>
                     <!--Estableciendo el tamaño del que tomará el Input field-->
                     <div class="input-field col s12 m6">
                     <i class="material-icons prefix">short_text</i>
-                        <input id="descp" type="text" name="descp" class="validate" required>
+                        <input id="descp" type="text" name="descp"  maxlength="50" class="validate" required>
                         <label for="descp">Descripción</label>
                     </div>
                 </div>
