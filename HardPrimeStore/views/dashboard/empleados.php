@@ -70,13 +70,13 @@ Dashboard_Page::headerTemplate('Empleados');
                 <!--Estableciendo el tamaño del que tomará el Input field-->
                 <div class="input-field col s12 m6">
                     <i class="material-icons prefix">person</i>
-                    <input id="nombre" type="text" name="nombre" class="validate" required>
+                    <input id="nombre" type="text" maxlength="25" name="nombre" class="validate" required>
                     <label for="nombre">Nombres</label>
                 </div>
                 <!--Estableciendo el tamaño del que tomará el Input field-->
                 <div class="input-field col s12 m6">
                     <i class="material-icons prefix">person</i>
-                    <input id="apellido" type="text" name="apellido" class="validate" required>
+                    <input id="apellido" type="text" name="apellido" maxlength="25" class="validate" required>
                     <label for="apellido">Apellidos</label>
                 </div>
             </div>
@@ -84,13 +84,13 @@ Dashboard_Page::headerTemplate('Empleados');
                 <!--Estableciendo el tamaño del que tomará el Input field-->
                 <div class="input-field col s12 m6">
                     <i class="material-icons prefix">email</i>
-                    <input id="correo" type="text" name="correo" class="validate" required>
+                    <input id="correo" type="text" name="correo" maxlength="40" class="validate" required>
                     <label for="correo">Correo</label>
                 </div>
                 <!--Estableciendo el tamaño del que tomará el Input field-->
                 <div class="input-field col s12 m6">
                     <i class="material-icons prefix">phone</i>
-                    <input id="telefono" type="text" name="telefono" class="validate" required>
+                    <input id="telefono" type="text"  placeholder="0000-0000"  name="telefono" maxlength="9" class="validate" required>
                     <label for="telefono">Teléfono</label>
                 </div>
             </div>
