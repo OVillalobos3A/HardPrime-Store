@@ -188,7 +188,8 @@ class Sitio_Publico
                 </div>
                 
               </footer>
-            
+              <script type="text/javascript" src="../../resources/js/sweetalert.min.js"></script>
+              <script type="text/javascript" src="../../app/helpers/dashboard/components.js"></script>
               <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
               <script type="text/javascript" src="../../APP/controllers/public/' . $controller . '"></script>
             </body>            
