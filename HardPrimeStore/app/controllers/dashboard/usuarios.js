@@ -1,6 +1,6 @@
 // Constantes para establecer las rutas y parámetros de comunicación con la API.
 const API_USUARIOS = '../../app/api/dashboard/usuarios.php?action=';
-const ENDPOINT_EMPLEADOS = '../../app/api/dashboard/emp.php?action=readAll';
+const ENDPOINT_EMPLEADOS = '../../app/api/dashboard/emp.php?action=readAll2';
 const ENDPOINT_TIPO = '../../app/api/dashboard/tipo_usuario.php?action=readAll';
 
 // Método manejador de eventos que se ejecuta cuando el documento ha cargado.
@@ -57,7 +57,6 @@ function openCreateDialog() {
     // Se llama a la función que llena el select del formulario. Se encuentra en el archivo components.js
     fillSelect(ENDPOINT_EMPLEADOS, 'empleado', null);
     fillSelect(ENDPOINT_TIPO, 'tipo_usuario', null);
-    
 }
 
 function openUpdateDialog(id) {
@@ -111,15 +110,27 @@ function openUpdateDialog(id) {
 document.getElementById('save-form').addEventListener('submit', function (event) {
     // Se evita recargar la página web después de enviar el formulario.
     event.preventDefault();
-    // Se define una variable para establecer la acción a realizar en la API.
-    let action = '';
-    // Se comprueba si el campo oculto del formulario esta seteado para actualizar, de lo contrario será para crear.
-    if (document.getElementById('id_usuario').value) {
-        action = 'update';
-    } else {
-        action = 'create';
+    if (document.getElementById("estado").value == "0") {
+        swal({
+            title: 'Error',
+            text: 'Seleccione un estado',
+            icon: 'error',
+            button: 'Aceptar',
+            closeOnClickOutside: false,
+            closeOnEsc: false
+        });
     }
-    saveRow(API_USUARIOS, action, 'save-form', 'save-modal');
+    else {
+        // Se define una variable para establecer la acción a realizar en la API.
+        let action = '';
+        // Se comprueba si el campo oculto del formulario esta seteado para actualizar, de lo contrario será para crear.
+        if (document.getElementById('id_usuario').value) {
+            action = 'update';
+        } else {
+            action = 'create';
+        }
+        saveRow(API_USUARIOS, action, 'save-form', 'save-modal');
+    }
 });
 
 // Función para establecer el registro a eliminar y abrir una caja de dialogo de confirmación.

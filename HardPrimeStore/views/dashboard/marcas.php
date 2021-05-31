@@ -20,12 +20,12 @@ Dashboard_Page::headerTemplate('Marcas');
             <!--Se añade un input field el cual su función es buscar un empleado en especifico-->
             <form method="post" id="search-form">
                 <div class="row">
-                    <div class="input-field col s6">
+                    <div class="input-field col s12 m6">
                         <i class="material-icons prefix">search</i>
                         <input id="search" type="text" name="search" maxlength="20" required/>
                         <label for="autocomplete-input">Nombre de la marca</label>
                     </div>
-                    <div class="input-field col s6 m4">
+                    <div class="input-field s12 m6">
                         <button class="btn red" type="submit" name="action">Buscar
                             <i class="material-icons right">search</i>
                         </button>
@@ -36,18 +36,20 @@ Dashboard_Page::headerTemplate('Marcas');
             <!--Se construye la tabla de datos correspondiente a usuarios-->
             <!--Se especifica la clase para hacer responsive la tabla, y el tipo de tabla-->
             <!--Se especifica el detalle de cada fila y columna-->
-            <table class="responsive-table striped">
-                <thead>
-                    <tr>
-                        <th>Nombre</th>
-                        <th>Imagen</th>
-                        <th>Logo</th>
-                        <th>Acción</th>
-                    </tr>
-                </thead>
-                <tbody id="tbody-rows">
-                </tbody>
-            </table>
+            <div class="row">
+                <table class="responsive-table striped">
+                    <thead>
+                        <tr>
+                            <th>Nombre</th>
+                            <th>Imagen</th>
+                            <th>Logo</th>
+                            <th>Acción</th>
+                        </tr>
+                    </thead>
+                    <tbody id="tbody-rows">
+                    </tbody>
+                </table>
+            </div>
         </div>
     </div>
 </div>

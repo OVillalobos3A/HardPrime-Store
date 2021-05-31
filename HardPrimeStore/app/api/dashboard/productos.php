@@ -184,9 +184,9 @@ if (isset($_GET['action'])) {
                                                                                 if ($producto->updateRow($data['imagen'], $data['imagen2'])) {
                                                                                     $result['status'] = 1;
                                                                                     if ($producto->saveFile($_FILES['imagen'], $producto->getRuta(), $producto->getImagen())) {
-                                                                                        $result['message'] = 'Marca modificada correctamente';
+                                                                                        $result['message'] = 'Producto modificado correctamente';
                                                                                     } else {
-                                                                                        $result['message'] = 'Marca modificada pero no se guardó la imagen.';
+                                                                                        $result['message'] = 'Producto modificado pero no se guardó la imagen.';
                                                                                     }
                                                                                 } else {
                                                                                     $result['exception'] = Database::getException();
@@ -200,9 +200,9 @@ if (isset($_GET['action'])) {
                                                                                     if ($producto->updateRow($data['imagen'], $data['imagen2'])) {
                                                                                         $result['status'] = 1;
                                                                                         if ($producto->saveFile($_FILES['imagen2'], $producto->getRuta(), $producto->getImagen2())) {
-                                                                                            $result['message'] = 'Marca modificada correctamente';
+                                                                                            $result['message'] = 'Producto modificado correctamente';
                                                                                         } else {
-                                                                                            $result['message'] = 'Marca modificada pero no se guardó el logo.';
+                                                                                            $result['message'] = 'Producto modificado pero no se guardó el logo.';
                                                                                         }
                                                                                     } else {
                                                                                         $result['exception'] = Database::getException();
@@ -213,7 +213,7 @@ if (isset($_GET['action'])) {
                                                                             } else {
                                                                                 if ($producto->updateRow($data['imagen'], $data['imagen2'])) {
                                                                                     $result['status'] = 1;
-                                                                                    $result['message'] = 'Marca modificada correctamente';
+                                                                                    $result['message'] = 'Producto modificado correctamente';
                                                                                 } else {
                                                                                     $result['exception'] = Database::getException();
                                                                                 }

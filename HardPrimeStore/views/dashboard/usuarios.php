@@ -20,12 +20,12 @@ Dashboard_Page::headerTemplate('Administrar usuarios');
             <!--Se añade un input field el cual su función es buscar un empleado en especifico-->
             <form method="post" id="search-form">
                 <div class="row">
-                    <div class="input-field col s6">
+                    <div class="input-field col s12 m6">
                         <i class="material-icons prefix">search</i>
                         <input type="text" name="search" id="search" class="autocomplete"  maxlength="10" required/>
-                        <label for="search">Buscar usuario por alias</label>
+                        <label for="search">Alias(username)</label>
                     </div>
-                    <div class="input-field col s6 m4">
+                    <div class="input-field s12 m6">
                         <button class="btn red" type="submit" name="action">Buscar
                             <i class="material-icons right">search</i>
                         </button>
@@ -36,21 +36,23 @@ Dashboard_Page::headerTemplate('Administrar usuarios');
             <!--Se construye la tabla de datos correspondiente a usuarios-->
             <!--Se especifica la clase para hacer responsive la tabla, y el tipo de tabla-->
             <!--Se especifica el detalle de cada fila y columna-->
-            <table class="responsive-table striped">
-                <thead>
-                    <tr>
-                        <th>Empleado</th>
-                        <th>Usuario</th>
-                        <th>Estado</th>
-                        <th>Tipo empleado</th>
-                        <th>Acción</th>
-                    </tr>
-                </thead>
-                <tbody id="tbody-rows">
-                    <tr>
-                    </tr>
-                </tbody>
-            </table>
+            <div class="row">
+                <table class="responsive-table striped">
+                    <thead>
+                        <tr>
+                            <th>Empleado</th>
+                            <th>Usuario</th>
+                            <th>Estado</th>
+                            <th>Tipo empleado</th>
+                            <th>Acción</th>
+                        </tr>
+                    </thead>
+                    <tbody id="tbody-rows">
+                        <tr>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
         </div>
     </div>
 </div>
@@ -88,16 +90,15 @@ Dashboard_Page::headerTemplate('Administrar usuarios');
                     <!--Estableciendo el tamaño del que tomará el Input field-->
                     <div class="input-field col s12 m6">
                     <i class="material-icons prefix">account_box</i>
-                        <input id="usuario" name="usuario" type="text" class="validate" required>
+                        <input id="usuario" name="usuario" type="text" maxlength="10" class="validate" required>
                         <label for="telefono">Usuario</label>
                     </div>
-
                     <div class="input-field col s12 m6">
                         <i class="material-icons prefix">playlist_add_check</i>
-                        <select id="estado" name="estado">
-                            <option value="" disabled selected>Estado</option>
-                            <option value="Activo">Activo</option>
-                            <option value="Inactivo">Inactivo</option>
+                        <select id="estado" name="estado" required>
+                            <option value="0" disabled selected>Estado</option>
+                            <option value="activo">Activo</option>
+                            <option value="inactivo">Inactivo</option>
                         </select>
                     </div>  
                 </div>

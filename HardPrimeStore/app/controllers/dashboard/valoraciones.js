@@ -98,6 +98,6 @@ function openTable() {
     // Se restauran los elementos del formulario.
     document.getElementById('search').value = "";
     //Se cargan nuevamente las filas en la tabla de la vista después de presionar el botón.
-    readRows(PI_VALORACIONES);
+    readRows(API_VALORACIONES);
 }
 

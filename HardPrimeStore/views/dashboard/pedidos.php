@@ -26,18 +26,20 @@ Dashboard_Page::headerTemplate('Pedidos');
                 <!--Se especifica el detalle de cada fila y columna-->
                 <form method="post" id="form1" enctype="multipart/form-data">
                     <input class="hide" type="number" id="id_pedido" name="id_pedido"/>
-                    <table class="responsive-table striped">
-                        <thead>
-                            <tr>
-                                <th>Producto</th>
-                                <th>Cantidad</th>
-                                <th>Precio unitario</th>
-                                <th>Subtotal</th>
-                            </tr>
-                        </thead>
-                        <tbody id="tbody-rows1">
-                        </tbody>
-                    </table>
+                    <div class="row">
+                        <table class="responsive-table striped">
+                            <thead>
+                                <tr>
+                                    <th>Producto</th>
+                                    <th>Cantidad</th>
+                                    <th>Precio unitario</th>
+                                    <th>Subtotal</th>
+                                </tr>
+                            </thead>
+                            <tbody id="tbody-rows1">
+                            </tbody>
+                        </table>
+                    </div>
                 </form>
             </div>
         </div>
@@ -51,12 +53,12 @@ Dashboard_Page::headerTemplate('Pedidos');
                 <!--Se añade un input field el cual su función es buscar un pedido en especifico-->
                 <form method="post" id="search-form">
                     <div class="row">
-                        <div class="input-field col s6">
+                        <div class="input-field col s12 m6">
                             <i class="material-icons prefix">search</i>
-                            <input id="search" type="text" name="search"  maxlength="25" required/>
-                            <label for="autocomplete-input">Cliente, estado</label>
+                            <input id="search" type="text" name="search"  maxlength="40" required/>
+                            <label for="autocomplete-input">Cliente, estado, o dirección</label>
                         </div>
-                        <div class="input-field col s6 m4">
+                        <div class="input-field s12 m6">
                             <button class="btn red" type="submit" name="action">Buscar
                                 <i class="material-icons right">search</i>
                             </button>
@@ -69,20 +71,24 @@ Dashboard_Page::headerTemplate('Pedidos');
                 <!--Se especifica el detalle de cada fila y columna-->
                 <form method="post" id="save-form" enctype="multipart/form-data">
                     <!-- Campo oculto para asignar el id del registro al momento de modificar -->
-                    <table class="responsive-table striped">
-                        <thead>
-                            <tr>
-                                <th>Código pedido</th>
-                                <th>Estado</th>
-                                <th>Fecha de envío</th>
-                                <th>Fecha de realización</th>
-                                <th>Cliente</th>
-                                <th>Encargado</th>
-                            </tr>
-                        </thead>
-                        <tbody id="tbody-rows">
-                        </tbody>
-                    </table>
+                    <div class="row">
+                        <table class="responsive-table striped">
+                            <thead>
+                                <tr>
+                                    <th>Código pedido</th>
+                                    <th>Estado</th>
+                                    <th>Fecha de realización</th>
+                                    <th>Fecha de envío</th>
+                                    <th>Dirección de envío</th>
+                                    <th>Cliente</th>
+                                    <th>Encargado</th>
+                                    <th>Acciones</th>
+                                </tr>
+                            </thead>
+                            <tbody id="tbody-rows">
+                            </tbody>
+                        </table>
+                    </div>
                 </form>
             </div>
         </div>

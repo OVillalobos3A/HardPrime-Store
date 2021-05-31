@@ -28,7 +28,7 @@ function fillTable(dataset) {
                 <td>
                     <a href="#" onclick="openAct(${row.id_cliente})" class="btn waves-effect blue tooltipped" data-tooltip="Deshabilitar/Habilitar"><i class="material-icons">event_note</i></a>
                     <a href="#" onclick="openAct2(${row.id_cliente})" class="btn blue-grey tooltipped" data-tooltip="Ver pedidos"><i class="material-icons">local_mall</i></a>
-                    <a href="#" onclick="openDeleteDialog(${row.id_cliente})" class="btn waves-effect red tooltipped" data-tooltip="Eliminar"><i class="material-icons">delete</i></a>
+                    <a href="#" onclick="openDeleteDialog(${row.id_cliente})" class="hide btn waves-effect red tooltipped" data-tooltip="Eliminar"><i class="material-icons">delete</i></a>
                 </td>
             </tr>
         `;
@@ -158,8 +158,9 @@ function openAct2(id) {
             <tr>
                 <td>${row.id_pedido}</td>
                 <td>${row.estado}</td>
-                <td>${row.fecha_envio}</td>
                 <td>${row.fecha_pedido}</td>
+                <td>${row.fecha_envio}</td>
+                <td>${row.direccion}</td>
                 <td>${row.encargado}</td>
             </tr>
             `;

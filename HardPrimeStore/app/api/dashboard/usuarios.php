@@ -105,11 +105,15 @@ if (isset($_GET['action'])) {
                         if ($producto->setUsuario($_POST['usuario'])) {
                             if ($producto->setEmpleado($_POST['empleado'])) {
                                 if ($producto->setTipo_usuario($_POST['tipo_usuario'])) {
-                                    if ($producto->updateRow()) {
-                                        $result['status'] = 1;
-                                        $result['message'] = 'Usuario modificado correctamente';
+                                    if ($producto->setEstado($_POST['estado'])) {
+                                        if ($producto->updateRow()) {
+                                            $result['status'] = 1;
+                                            $result['message'] = 'Usuario modificado correctamente';
+                                        } else {
+                                            $result['exception'] = Database::getException();
+                                        }
                                     } else {
-                                        $result['exception'] = Database::getException();
+                                        $result['exception'] = 'El estado es incorrecto';
                                     }
                                 } else {
                                     $result['exception'] = 'El tipo de usuario es incorrecto';

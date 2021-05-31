@@ -26,8 +26,9 @@ Dashboard_Page::headerTemplate('Clientes');
                         <tr>
                             <th>Código pedido</th>
                             <th>Estado</th>
-                            <th>Fecha de envío</th>
                             <th>Fecha de realización</th>
+                            <th>Fecha de envío</th>
+                            <th>Dirección de envío</th>
                             <th>Encargado</th>
                         </tr>
                     </thead>
@@ -45,12 +46,12 @@ Dashboard_Page::headerTemplate('Clientes');
             <!--Se añade un input field el cual su función es buscar un empleado en especifico-->
             <form method="post" id="search-form">
                 <div class="row">
-                    <div class="input-field col s6">
+                    <div class="input-field col s12 m6">
                         <i class="material-icons prefix">search</i>
                         <input id="search" type="text" name="search" maxlength="40" required/>
-                        <label for="autocomplete-input">Nombre</label>
+                        <label for="autocomplete-input">Nombre o dirección</label>
                     </div>
-                    <div class="input-field col s6">
+                    <div class="input-field s12 m6">
                         <button class="btn red" type="submit" name="action">Buscar
                             <i class="material-icons right">search</i>
                         </button>

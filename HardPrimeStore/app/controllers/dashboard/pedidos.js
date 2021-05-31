@@ -21,8 +21,9 @@ function fillTable(dataset) {
             <tr>
                 <td>${row.id_pedido}</td>
                 <td>${row.estado}</td>
-                <td>${row.fecha_envio}</td>
                 <td>${row.fecha_pedido}</td>
+                <td>${row.fecha_envio}</td>
+                <td>${row.direccion}</td>
                 <td>${row.cliente}</td>
                 <td>${row.encargado}</td>
                 <td>
@@ -154,7 +155,9 @@ function openAct2(id) {
             // Se crean y concatenan las filas de la tabla con los datos de cada registro.
             content += `
             <tr>
-                <td>${row.nombre}</td>
+                <td> 
+                    ${row.nombre}<br><img src="../../resources/img/productos/${row.imagen}" class="materialboxed" height="100">
+                </td>
                 <td>${row.cantidad}</td>
                 <td>${row.precio}</td>
                 <td>${row.subtotal}</td>

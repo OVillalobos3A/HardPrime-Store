@@ -150,7 +150,7 @@ class Usuarios extends Validator
         $sql = 'SELECT id_usuario, usuario, usuarios.estado, empleados.nombre, tipo_usuario
         FROM usuarios INNER JOIN empleados USING(id_empleado)
         INNER JOIN tipo_usuario USING(id_tipo_usuario)      
-        WHERE usuario ILIKE ?
+        WHERE usuario ILIKE ? and usuarios.id_tipo_usuario <> 1
         ORDER BY usuario';
         $params = array("%$value%");
         return Database::getRows($sql, $params);
@@ -169,9 +169,10 @@ class Usuarios extends Validator
     public function readAll()
     {
         $sql = 'SELECT id_usuario, usuario, usuarios.estado, empleados.nombre, tipo_usuario, usuarios.estado
-        FROM usuarios INNER JOIN empleados USING(id_empleado)
-        INNER JOIN tipo_usuario USING(id_tipo_usuario)
-        ORDER BY usuario';
+                FROM usuarios INNER JOIN empleados USING(id_empleado)
+                INNER JOIN tipo_usuario USING(id_tipo_usuario)
+                where usuarios.id_tipo_usuario = 2 or usuarios.id_tipo_usuario = 3
+                ORDER BY usuario';
         $params = null;
         return Database::getRows($sql, $params);
     }

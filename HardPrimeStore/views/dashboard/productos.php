@@ -20,12 +20,12 @@ Dashboard_Page::headerTemplate('Productos');
             <!--Se añade un input field el cual su función es buscar un empleado en especifico-->
             <div class="row">
                 <form method="post" id="search-form">
-                    <div class="input-field col s6">
+                    <div class="input-field col s12 m6">
                         <i class="material-icons prefix">search</i>
-                        <input type="text" id="search" name="search" class="autocomplete" required>
-                        <label for="autocomplete-input">Buscar producto por nombre</label>
+                        <input type="text" id="search" name="search" class="autocomplete" maxlength="20" required>
+                        <label for="autocomplete-input">Nombre del producto</label>
                     </div>
-                    <div class="input-field col s6">
+                    <div class="input-field s12 m6">
                         <button class="btn red" type="submit" name="action">Buscar
                             <i class="material-icons right">search</i>
                         </button>
@@ -36,24 +36,27 @@ Dashboard_Page::headerTemplate('Productos');
             <!--Se construye la tabla de datos correspondiente a productos-->
             <!--Se especifica la clase para hacer responsive la tabla, y el tipo de tabla-->
             <!--Se especifica el detalle de cada fila y columna-->
-            <table class="responsive-table striped">
-                <thead>
-                    <tr>
-                        <th class="center-align">Nombre</th>
-                        <th class="center-align">Descripción</th>
-                        <th class="center-align">Stock</th>
-                        <th class="center-align">Precio ($)</th>
-                        <th class="center-align">Estado</th>
-                        <th class="center-align">Categoría</th>
-                        <th class="center-align">Marca</th>
-                        <th class="center-align">Imagenes</th>
-                        <th class="center-align">Acción</th>
-                    </tr>
-                </thead>
+            <div class="row">
+                <table class="responsive-table striped">
+                    <thead>
+                        <tr>
+                            <th class="center-align">Nombre</th>
+                            <th class="center-align">Descripción</th>
+                            <th class="center-align">Stock</th>
+                            <th class="center-align">Precio ($)</th>
+                            <th class="center-align">Estado</th>
+                            <th class="center-align">Categoría</th>
+                            <th class="center-align">Marca</th>
+                            <th class="center-align">Proveedor</th>
+                            <th class="center-align">Imagenes</th>
+                            <th class="center-align">Acción</th>
+                        </tr>
+                    </thead>
 
-                <tbody id="tbody-rows">
-                </tbody>
-            </table>
+                    <tbody id="tbody-rows">
+                    </tbody>
+                </table>
+            </div>
         </div>
     </div>
 </div>
@@ -71,13 +74,13 @@ Dashboard_Page::headerTemplate('Productos');
                     <!--Estableciendo el tamaño del que tomará el Input field-->
                     <div class="input-field col s12 m6">
                         <i class="material-icons prefix">inventory_2</i>
-                        <input id="nombre" type="text" name="nombre" class="validate" required>
+                        <input id="nombre" type="text" name="nombre"  maxlength="20" class="validate" required>
                         <label for="nombre">Nombre</label>
                     </div>
                     <!--Estableciendo el tamaño del que tomará el Input field-->
                     <div class="input-field col s12 m6">
                         <i class="material-icons prefix">attach_money</i>
-                        <input id="precio" type="text" name="precio" class="validate" max="9999.99" min="0.01" step="any" required>
+                        <input id="precio" type="text" name="precio" class="validate"  maxlength="7" max="9999.99" min="0.01" step="any" required>
                         <label for="precio">Precio $</label>
                     </div>
                 </div>
@@ -85,13 +88,13 @@ Dashboard_Page::headerTemplate('Productos');
                     <!--Estableciendo el tamaño del que tomará el Input field-->
                     <div class="input-field col s12 m6">
                     <i class="material-icons prefix">filter_none</i>
-                        <input id="stock" type="number" name="stock" data-length="150" max="999" min="1" required>
+                        <input id="stock" type="number" name="stock" data-length="150"  maxlength="3" max="999" min="1" required>
                         <label for="stock">Stock</label>
                     </div>
                     <!--Estableciendo el tamaño del que tomará el Input field-->
                     <div class="input-field col s12 m6">
                     <i class="material-icons prefix">short_text</i>
-                        <input id="descp" type="text" name="descp" class="validate" required>
+                        <input id="descp" type="text" name="descp"  maxlength="50" class="validate" required>
                         <label for="descp">Descripción</label>
                     </div>
                 </div>
@@ -102,7 +105,7 @@ Dashboard_Page::headerTemplate('Productos');
                         <select id="proveedor" name="proveedor">
                             <option value="" disabled selected>Proveedor</option>
                         </select>
-                        <label for="proveedor">proveedor</label>
+                        <label for="proveedor">Proveedor</label>
                     </div>
                     <!--Estableciendo el tamaño del que tomará el Input field-->
                     <div class="input-field col s12 m6">
@@ -157,7 +160,7 @@ Dashboard_Page::headerTemplate('Productos');
                                 <input type="file" id="imagen2" name="imagen2" accept=".gif, .jpg, .png">
                             </div>
                             <div class="file-path-wrapper">
-                                <input class="file-path validate" type="text" placeholder="Opcional">
+                                <input class="file-path validate" type="text" placeholder="Formatos aceptados: gif, jpg y png">
                             </div>
                         </div>
                     </div>

@@ -125,8 +125,12 @@ class Empleados extends Validator
 
     public function setGen($value)
     {
-        $this->gen = $value;
-        return true;
+        if ($this->validateGen($value)) {
+            $this->gen = $value;
+            return true;
+        } else {
+            return false;
+        }
     }
 
     public function setAlias($value)
@@ -210,7 +214,7 @@ class Empleados extends Validator
 
     public function getGen()
     {
-        return $this->genero;
+        return $this->gen;
     }
 
     public function getAlias()
@@ -242,8 +246,9 @@ class Empleados extends Validator
     */
     public function checkUser($alias)
     {
-        $sql = 'SELECT id_usuario FROM usuarios WHERE usuario = ?';
-        $params = array($alias);
+        $this->estado = "activo";
+        $sql = 'SELECT id_usuario FROM usuarios WHERE usuario = ? and estado = ? ';
+        $params = array($alias, $this->estado);
         if ($data = Database::getRow($sql, $params)) {
             $this->id = $data['id_usuario'];
             $this->alias = $alias;
@@ -307,8 +312,8 @@ class Empleados extends Validator
     {
         $sql = 'SELECT id_empleado, nombre, apellido, correo, telefono, estado, genero, estado, imagen
                 FROM empleados
-                WHERE nombre ILIKE ? OR apellido ILIKE ?';
-        $params = array("%$value%", "%$value%");
+                WHERE nombre ILIKE ? and id_empleado <> (Select MIN(id_empleado)from empleados)';
+        $params = array("%$value%");
         return Database::getRows($sql, $params);
     }
 
@@ -370,6 +375,16 @@ class Empleados extends Validator
         } else {
             return false;
         }
+    }
+
+    //Función para cargar a los empleados sin tener en cuenta el empleado root o 
+    public function readAll2()
+    {
+        $sql = 'SELECT id_empleado, nombre, apellido, correo, telefono, genero, estado, imagen
+                FROM empleados
+                where id_empleado <> (Select MIN(id_empleado)from empleados)';
+        $params = null;
+        return Database::getRows($sql, $params);
     }
 
     public function readAll()

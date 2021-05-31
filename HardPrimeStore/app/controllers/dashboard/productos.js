@@ -24,16 +24,17 @@ function fillTable(dataset) {
               <td>${row.precio}</td>
               <td><i class="material-icons">${icon}</i></td>
               <td>${row.categ}</td>              
-              <td>${row.nombre_marca}</td>                            
+              <td>${row.nombre_marca}</td>
+              <td>${row.proveedor}</td>                             
               <td>
-              <div class="row">
-              <div class="col s12 m6">
-              <img src="../../resources/img/productos/${row.imagen}" class="materialboxed" height="70">
-              </div>
-              <div class="col s12 m6">
-              <img src="../../resources/img/productos/${row.imagen2}" class="materialboxed" height="70">
-              </div>
-              </div>
+                <div class="row">
+                    <div class="col s12 m6">
+                        <img src="../../resources/img/productos/${row.imagen}" class="materialboxed" height="70">
+                    </div>
+                    <div class="col s12 m6">
+                        <img src="../../resources/img/productos/${row.imagen2}" class="materialboxed" height="70">
+                    </div>
+                </div>
               </td>
               <td>
                 <a href="#" onclick="openUpdateDialog(${row.id_producto})" class="btn-floating btn waves-effect light-blue darken-4 tooltipped" data-tooltip="Editar"><i class="material-icons" title="Editar registro">create</i></a>

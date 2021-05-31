@@ -61,16 +61,16 @@ if (isset($_GET['action'])) {
                                     $result['exception'] = Database::getException();
                                 }
                             } else {
-                                $result['exception'] = 'Teléfono incorrecto o campo vacío';
+                                $result['exception'] = 'Formato del teléfono incorrecto, recuerde que debe de ser así: 0000-0000 y debe de iniciar con 2, 6 o 7';
                             }
                         } else {
-                            $result['exception'] = 'Correo incorrecto o campo vacío';
+                            $result['exception'] = 'Formato de correo incorrecto';
                         }
                     } else {
-                        $result['exception'] = 'Dirección incorrecta o campo vacío';
+                        $result['exception'] = 'Formato de dirección incorrecta';
                     }
                 } else {
-                    $result['exception'] = 'Nombre incorrecto o campo vacío';
+                    $result['exception'] = 'Formato de nombre incorrecto';
                 }
                 break;
             case 'readOne':
@@ -103,16 +103,16 @@ if (isset($_GET['action'])) {
                                             $result['exception'] = Database::getException();
                                         }
                                     } else {
-                                        $result['exception'] = 'Teléfono incorrecto o campo vacío';
+                                        $result['exception'] = 'Formato del teléfono incorrecto, recuerde que debe de ser así: 0000-0000 y debe de iniciar con 2, 6 o 7';
                                     }
                                 } else {
-                                    $result['exception'] = 'Dirección incorrecta o campo vacío';
+                                    $result['exception'] = 'Formato de dirección incorrecto';
                                 }
                             } else {
-                                $result['exception'] = 'Correo incorrecto o campo vacío';
+                                $result['exception'] = 'Formato de correo incorrecto';
                             }
                         } else {
-                            $result['exception'] = 'Nombre incorrecto o campo vacío';
+                            $result['exception'] = 'Formato de nombre incorrecto';
                         }
                     } else {
                         $result['exception'] = 'Proveedor inexistente';

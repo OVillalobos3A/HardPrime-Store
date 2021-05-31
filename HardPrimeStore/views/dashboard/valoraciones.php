@@ -14,12 +14,12 @@ Dashboard_Page::headerTemplate('Valoraciones');
             <!--Se añade un input field el cual su función es buscar un empleado en especifico-->
             <form method="post" id="search-form">
                 <div class="row">
-                    <div class="input-field col s6">
+                    <div class="input-field col s12 m6">
                         <i class="material-icons prefix">search</i>
                         <input id="search" type="text" name="search" maxlength="40" required/>
-                        <label for="autocomplete-input">Cliente</label>
+                        <label for="autocomplete-input">Cliente o producto</label>
                     </div>
-                    <div class="input-field col s6 m4">
+                    <div class="input-field s12 m6">
                         <button class="btn red" type="submit" name="action">Buscar
                             <i class="material-icons right">search</i>
                         </button>
@@ -34,20 +34,22 @@ Dashboard_Page::headerTemplate('Valoraciones');
             <form method="post" id="save-form" enctype="multipart/form-data">
                 <!-- Campo oculto para asignar el id del registro al momento de modificar -->
                 <input class="hide" type="number" id="id_calificacion" name="id_calificacion"/>
-                <table class="responsive-table striped">
-                <thead>
-                    <tr>
-                        <th>Producto</th>
-                        <th>Calificación</th>
-                        <th>Comentario</th>
-                        <th>Cliente</th>
-                        <th>Fecha</th>
-                        <th>Estado</th>
-                    </tr>
-                </thead>
-                <tbody id="tbody-rows">
-                </tbody>
-                </table>
+                <div class="row">
+                    <table class="responsive-table striped">
+                        <thead>
+                            <tr>
+                                <th>Producto</th>
+                                <th>Calificación</th>
+                                <th>Comentario</th>
+                                <th>Cliente</th>
+                                <th>Fecha</th>
+                                <th>Estado</th>
+                            </tr>
+                        </thead>
+                        <tbody id="tbody-rows">
+                        </tbody>
+                    </table>
+                </div>
             </form>
         </div>
     </div>

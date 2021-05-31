@@ -131,12 +131,12 @@ Dashboard_Page::headerTemplate('Página Principal');
             <div class="row">                
                 <div class="input-field col s12 m6">
                     <i class="material-icons prefix">add_moderator</i>
-                    <input id="primer_contra" type="password" name="primer_contra" class="validate" required/>
+                    <input id="primer_contra" type="password" name="primer_contra" maxlength="16" class="validate" required/>
                     <label for="ncontra">Nueva contraseña</label>
                 </div>
                 <div class="input-field col s12 m6">
                     <i class="material-icons prefix">add_moderator</i>
-                    <input id="primer_contra2" type="password" name="primer_contra2" class="validate" required/>
+                    <input id="primer_contra2" type="password" name="primer_contra2" maxlength="16" class="validate" required/>
                     <label for="ncontra1">Confirmar contraseña</label>
                 </div>
                 </div>

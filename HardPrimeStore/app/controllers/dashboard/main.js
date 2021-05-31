@@ -39,8 +39,6 @@ function openPrimerUso() {
     });
 }
 
-
-
 // Función para preparar el formulario al momento de modificar un registro.
 function openName() {
     fetch(API_PROFILE + 'openName', {

@@ -21,7 +21,7 @@ Dashboard_Page::headerTemplate('Entradas');
                         </div>
                         <div class="input-field col s12 m6">
                             <i class="material-icons prefix">note_add</i>
-                            <input id="cantidad" type="number" class="validate" name="cantidad" max="999" min="1" required>
+                            <input id="cantidad" type="number" class="validate" name="cantidad" maxlength="3" max="999" min="1" required>
                             <label for="cantidad">Cantidad</label>
                         </div>
                         <div class="input-field col s12 m6">
@@ -48,12 +48,12 @@ Dashboard_Page::headerTemplate('Entradas');
             <!--Se añade un input field el cual su función es buscar un empleado en especifico-->
             <form method="post" id="search-form">
                 <div class="row">
-                    <div class="input-field col s6">
+                    <div class="input-field col s12 m6">
                         <i class="material-icons prefix">search</i>
                         <input id="search" type="text" name="search" maxlength="20" required/>
                         <label for="autocomplete-input">Producto</label>
                     </div>
-                    <div class="input-field col s6 m4">
+                    <div class="input-field s12 m6">
                         <button class="btn red" type="submit" name="action">Buscar
                             <i class="material-icons right">search</i>
                         </button>

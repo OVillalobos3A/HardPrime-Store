@@ -3,7 +3,7 @@ const API_EMPLEADOS = '../../app/api/dashboard/emp.php?action=';
 
 document.addEventListener('DOMContentLoaded', function () {
     // Se llama a la función que obtiene los registros para llenar la tabla. Se encuentra en el archivo components.js
-    readRows(API_EMPLEADOS);
+    readRows1(API_EMPLEADOS);
     // Se declara e inicializa un objeto para obtener la fecha y hora actual.
     let today = new Date();
     // Se declara e inicializa una variable para guardar el día en formato de 2 dígitos.
@@ -16,6 +16,7 @@ document.addEventListener('DOMContentLoaded', function () {
     let date = `${year}-${month}-${day}`;
     // Se asigna la fecha como valor máximo en el campo del formulario.
     document.getElementById('fecha').setAttribute('max', date);
+
 });
 
 // Función para llenar la tabla con los datos de los registros. Se manda a llamar en la función readRows().
@@ -97,11 +98,9 @@ function openUpdateDialog(id) {
                     document.getElementById('apellido').value = response.dataset.apellido;
                     document.getElementById('correo').value = response.dataset.correo;
                     document.getElementById('telefono').value = response.dataset.telefono;
-                    document.getElementById('estado').value = response.dataset.estado;
                     document.getElementById('genero').value = response.dataset.genero;
+                    document.getElementById('estado').value = response.dataset.estado;
                     document.getElementById('fecha').value = response.dataset.fecha_nac;
-
-
                     // Se actualizan los campos para que las etiquetas (labels) no queden sobre los datos.
                     M.updateTextFields();
                 } else {
@@ -120,15 +119,39 @@ function openUpdateDialog(id) {
 document.getElementById('save-form').addEventListener('submit', function (event) {
     // Se evita recargar la página web después de enviar el formulario.
     event.preventDefault();
-    // Se define una variable para establecer la acción a realizar en la API.
-    let action = '';
-    // Se comprueba si el campo oculto del formulario esta seteado para actualizar, de lo contrario será para crear.
-    if (document.getElementById('id_empleado').value) {
-        action = 'update';
-    } else {
-        action = 'create';
+    if (document.getElementById("genero").value == "0") {
+        swal({
+            title: 'Error',
+            text: 'Seleccione un género',
+            icon: 'error',
+            button: 'Aceptar',
+            closeOnClickOutside: false,
+            closeOnEsc: false
+        });
     }
-    saveRow(API_EMPLEADOS, action, 'save-form', 'save-modal');
+    else {
+        if (document.getElementById("estado").value == "0") {
+            swal({
+                title: 'Error',
+                text: 'Seleccione un estado',
+                icon: 'error',
+                button: 'Aceptar',
+                closeOnClickOutside: false,
+                closeOnEsc: false
+            });
+        }
+        else {
+            // Se define una variable para establecer la acción a realizar en la API.
+            let action = '';
+            // Se comprueba si el campo oculto del formulario esta seteado para actualizar, de lo contrario será para crear.
+            if (document.getElementById('id_empleado').value) {
+                action = 'update';
+            } else {
+                action = 'create';
+            }
+            saveRow3(API_EMPLEADOS, action, 'save-form', 'save-modal');
+        }
+    }
 });
 
 // Función para establecer el registro a eliminar y abrir una caja de dialogo de confirmación.
@@ -137,7 +160,7 @@ function openDeleteDialog(id) {
     const data = new FormData();
     data.append('id_empleado', id);
     // Se llama a la función que elimina un registro. Se encuentra en el archivo components.js
-    confirmDelete(API_EMPLEADOS, data);
+    confirmDelete1(API_EMPLEADOS, data);
 }
 
 //Código para refrescar la vista después de realizar una búsqueda
@@ -145,5 +168,5 @@ function openTable() {
     // Se restauran los elementos del formulario.
     document.getElementById('search').value = "";
     //Se cargan nuevamente las filas en la tabla de la vista después de presionar el botón.
-    readRows(API_EMPLEADOS);
+    readRows1(API_EMPLEADOS);
 }

@@ -28,7 +28,7 @@ if (isset($_GET['action'])) {
                                 $mail = new PHPMailer();
                                 $mail->IsSMTP();
                                 //Configuracion servidor mail
-                                $mail->From = "HardPrimeStore@gmail.com"; //remitente
+                                $mail->setFrom('hardprimestore@gmail.com', 'HardPrimeStore'); //remitente
                                 $mail->SMTPAuth = true;
                                 $mail->SMTPSecure = 'tls'; //seguridad
                                 $mail->Host = "smtp.gmail.com"; // servidor smtp

@@ -44,18 +44,18 @@ class Pedidos extends Validator
     */
     public function searchRows($value)
     {
-        $sql = 'SELECT id_pedido, pedido.estado as estado, fecha_envio, fecha_pedido, clientes.nombre as cliente, empleados.nombre as encargado
+        $sql = 'SELECT id_pedido, pedido.estado as estado, fecha_envio, fecha_pedido, clientes.nombre as cliente, empleados.nombre as encargado, clientes.direccion as direccion
                 FROM pedido INNER JOIN clientes ON pedido.id_cliente = clientes.id_cliente
                 INNER JOIN empleados ON pedido.id_empleado = empleados.id_empleado
-                WHERE clientes.nombre ILIKE ? OR pedido.estado ILIKE ?
+                WHERE clientes.nombre ILIKE ? OR pedido.estado ILIKE ? OR clientes.direccion ILIKE ?
                 ORDER BY clientes';
-        $params = array("%$value%", "%$value%");
+        $params = array("%$value%", "%$value%", "%$value%");
         return Database::getRows($sql, $params);
     }
 
     public function readAll()
     {
-        $sql = 'SELECT id_pedido, pedido.estado as estado, fecha_envio, fecha_pedido, clientes.nombre as cliente, empleados.nombre as encargado
+        $sql = 'SELECT id_pedido, pedido.estado as estado, fecha_envio, fecha_pedido, clientes.nombre as cliente, empleados.nombre as encargado, clientes.direccion as direccion
                 FROM pedido INNER JOIN clientes ON pedido.id_cliente = clientes.id_cliente
                 INNER JOIN empleados ON pedido.id_empleado = empleados.id_empleado
                 ORDER BY cliente';
@@ -65,7 +65,7 @@ class Pedidos extends Validator
 
     public function viewShop()
     {
-        $sql = 'SELECT  productos.nombre as nombre, cantidad, productos.precio as precio, (productos.precio*cantidad) as subtotal
+        $sql = 'SELECT  productos.nombre as nombre, cantidad, productos.precio as precio, (productos.precio*cantidad) as subtotal, productos.imagen as imagen
                 FROM detalle_pedido INNER JOIN pedido ON detalle_pedido.id_pedido = pedido.id_pedido
                 INNER JOIN productos ON detalle_pedido.id_producto = productos.id_producto
                 WHERE detalle_pedido.id_pedido = ?';

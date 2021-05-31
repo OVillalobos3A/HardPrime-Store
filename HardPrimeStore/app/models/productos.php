@@ -205,9 +205,10 @@ class Productos extends Validator
     */
     public function searchRows($value)
     {
-        $sql = 'SELECT id_producto, productos.nombre as nombre_p, precio, productos.descripcion, stock, estado, productos.imagen, nombre_marca, categoria.nombre as categ
+        $sql = 'SELECT id_producto, productos.nombre as nombre_p, precio, productos.descripcion, stock, estado, productos.imagen, imagen2, nombre_marca, proveedor.nombre as proveedor, categoria.nombre as categ
                 FROM productos INNER JOIN categoria USING(id_categoria)
                 INNER JOIN marca USING(id_marca)
+                INNER JOIN proveedor USING(id_proveedor)
                 WHERE productos.nombre ILIKE ?
                 ';
         $params = array("%$value%");
@@ -224,9 +225,10 @@ class Productos extends Validator
 
     public function readAll()
     {
-        $sql = 'SELECT id_producto, productos.nombre as nombre_p, precio, productos.descripcion, stock, estado, productos.imagen, imagen2, nombre_marca, categoria.nombre as categ
+        $sql = 'SELECT id_producto, productos.nombre as nombre_p, precio, productos.descripcion, stock, estado, productos.imagen, imagen2, nombre_marca, proveedor.nombre as proveedor, categoria.nombre as categ
                 FROM productos INNER JOIN categoria USING(id_categoria)
                 INNER JOIN marca USING(id_marca)
+                INNER JOIN proveedor USING(id_proveedor)
                 ORDER BY nombre_p';
         $params = null;
         return Database::getRows($sql, $params);

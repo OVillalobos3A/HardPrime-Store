@@ -124,7 +124,6 @@ class Validator
             return false;
         }
     }
-
     /*
     *   Método para validar un dato booleano.
     *
@@ -135,6 +134,15 @@ class Validator
     public function validateBoolean($value)
     {
         if ($value == 1 || $value == 0 || $value == true || $value == false) {
+            return true;
+        } else {
+            return false;
+        }
+    }
+
+    public function validateGen($value)
+    {
+        if ($value == "M" || $value == "F") {
             return true;
         } else {
             return false;

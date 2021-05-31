@@ -34,6 +34,17 @@ if (isset($_GET['action'])) {
                     }
                 }
                 break;
+            case 'readAll2':
+                if ($result['dataset'] = $usuario->readAll2()) {
+                    $result['status'] = 1;
+                } else {
+                    if (Database::getException()) {
+                        $result['exception'] = Database::getException();
+                    } else {
+                        $result['exception'] = 'No hay empleados registrados';
+                    }
+                }
+                break;
             case 'search':
                 $_POST = $usuario->validateForm($_POST);
                 if ($_POST['search'] != '') {
@@ -84,19 +95,19 @@ if (isset($_GET['action'])) {
                                                 $result['exception'] = 'Seleccione una imagen';
                                             }
                                         } else {
-                                            $result['exception'] = 'Estado incorrecto.';
+                                            $result['exception'] = 'Estado no seleccionado';
                                         }
                                     } else {
                                         $result['exception'] = 'Fecha incorrecta';
                                     }
                                 } else {
-                                    $result['exception'] = $usuario->getPasswordError();
+                                    $result['exception'] = 'Genero no seleccionado';
                                 }
                             } else {
                                 $result['exception'] = 'Teléfono incorrecto';
                             }
                         } else {
-                            $result['exception'] = 'Correo incorrecto';
+                            $result['exception'] = 'Formato de correo incorrecto';
                         }
                     } else {
                         $result['exception'] = 'Apellidos incorrectos';
@@ -469,7 +480,7 @@ if (isset($_GET['action'])) {
                     if (Database::getException()) {
                         $result['exception'] = Database::getException();
                     } else {
-                        $result['exception'] = 'Usuario incorrecto';
+                        $result['exception'] = 'Usuario incorrecto o inactivo';
                     }
                 }
                 break;

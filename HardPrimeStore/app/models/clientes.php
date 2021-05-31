@@ -75,7 +75,7 @@ class Clientes extends Validator
 
     public function viewOrder()
     {
-        $sql = 'SELECT id_pedido, pedido.estado as estado, fecha_envio, fecha_pedido, empleados.nombre as encargado
+        $sql = 'SELECT id_pedido, pedido.estado as estado, fecha_envio, fecha_pedido, clientes.nombre as cliente, empleados.nombre as encargado, clientes.direccion as direccion
                 FROM pedido INNER JOIN clientes ON pedido.id_cliente = clientes.id_cliente
                 INNER JOIN empleados ON pedido.id_empleado = empleados.id_empleado
                 WHERE pedido.id_cliente = ?';
