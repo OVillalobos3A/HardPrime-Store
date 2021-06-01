@@ -1,6 +1,6 @@
 <?php
-require_once('../../helpers/database.php');
-require_once('../../helpers/validator.php');
+require_once('../../helpers/dashboard/database.php');
+require_once('../../helpers/dashboard/validator.php');
 require_once('../../models/clientes.php');
 
 // Se comprueba si existe una acción a realizar, de lo contrario se finaliza el script con un mensaje de error.
@@ -15,6 +15,13 @@ if (isset($_GET['action'])) {
     if (isset($_SESSION['id_cliente'])) {
         // Se compara la acción a realizar cuando un cliente ha iniciado sesión.
         switch ($_GET['action']) {
+            case 'sesion':
+                if (isset($_SESSION['id_cliente'])) {
+                    $result['status'] = 1;                    
+                } else {
+                    //$result['exception'] = 'Ocurrió un problema al cerrar la sesión';
+                }
+                break;
             case 'logOut':
                 if (session_destroy()) {
                     $result['status'] = 1;
@@ -32,104 +39,84 @@ if (isset($_GET['action'])) {
             case 'register':
                 $_POST = $cliente->validateForm($_POST);
                 // Se sanea el valor del token para evitar datos maliciosos.
-                $token = filter_input(INPUT_POST, 'g-recaptcha-response', FILTER_SANITIZE_STRING);
-                if ($token) {
-                    $secretKey = '6LdBzLQUAAAAAL6oP4xpgMao-SmEkmRCpoLBLri-';
-                    $ip = $_SERVER['REMOTE_ADDR'];
+                if ($cliente->setNombre($_POST['nombre'])) {
+                    if ($cliente->setApellido($_POST['apellido'])) {
+                        if ($cliente->setCorreo($_POST['correo'])) {
+                            if ($cliente->setDireccion($_POST['direct'])) {
+                                if ($cliente->setFecha($_POST['fecha'])) {
+                                    if ($cliente->setCelular($_POST['telefono'])) {
+                                        if ($cliente->setUsuario($_POST['alias'])) {
+                                            if ($_POST['clave1'] == $_POST['clave2']) {
+                                                if ($cliente->setContraseña($_POST['clave1'])) {
+                                                    if (is_uploaded_file($_FILES['imagen']['tmp_name'])) {
+                                                        if ($cliente->setImagen($_FILES['imagen'])) {
 
-                    $data = array(
-                        'secret' => $secretKey,
-                        'response' => $token,
-                        'remoteip' => $ip
-                    );
-
-                    $options = array(
-                        'http' => array(
-                            'header'  => "Content-type: application/x-www-form-urlencoded\r\n",
-                            'method'  => 'POST',
-                            'content' => http_build_query($data)
-                        ),
-                        'ssl' => array(
-                            'verify_peer' => false,
-                            'verify_peer_name' => false
-                        )
-                    );
-
-                    $url = 'https://www.google.com/recaptcha/api/siteverify';
-                    $context  = stream_context_create($options);
-                    $response = file_get_contents($url, false, $context);
-                    $captcha = json_decode($response, true);
-
-                    if ($captcha['success']) {
-                        if ($cliente->setNombres($_POST['nombres_cliente'])) {
-                            if ($cliente->setApellidos($_POST['apellidos_cliente'])) {
-                                if ($cliente->setCorreo($_POST['correo_cliente'])) {
-                                    if ($cliente->setDireccion($_POST['direccion_cliente'])) {
-                                        if ($cliente->setDUI($_POST['dui_cliente'])) {
-                                            if ($cliente->setNacimiento($_POST['nacimiento_cliente'])) {
-                                                if ($cliente->setTelefono($_POST['telefono_cliente'])) {
-                                                    if ($_POST['clave_cliente'] == $_POST['confirmar_clave']) {
-                                                        if ($cliente->setClave($_POST['clave_cliente'])) {
-                                                            if ($cliente->createRow()) {
-                                                                $result['status'] = 1;
-                                                                $result['message'] = 'Cliente registrado correctamente';
+                                                            if ($cliente->saveFile($_FILES['imagen'], $cliente->getRuta(), $cliente->getImagen())) {
+                                                                if ($cliente->createClient()) {
+                                                                    $result['status'] = 1;
+                                                                    $result['message'] = 'Se han ingresado correctamente los datos';
+                                                                } else {
+                                                                    $result['exception'] = Database::getException();
+                                                                    $result['message'] = 'Error desconocido';
+                                                                }
                                                             } else {
-                                                                $result['exception'] = Database::getException();
+                                                                $result['message'] = 'Empleado creado pero no se guardó la imagen';
                                                             }
                                                         } else {
-                                                            $result['exception'] = $cliente->getPasswordError();
+                                                            $result['exception'] = 'Imagen incorrecta';
                                                         }
                                                     } else {
-                                                        $result['exception'] = 'Claves diferentes';
+                                                        $result['exception'] = 'Selecciona una imagen';
                                                     }
                                                 } else {
-                                                    $result['exception'] = 'Teléfono incorrecto';
+                                                    $result['exception'] = 'Contraseña incorrecta';
                                                 }
                                             } else {
-                                                $result['exception'] = 'Fecha de nacimiento incorrecta';
+                                                $result['exception'] = 'Claves diferentes';
                                             }
                                         } else {
-                                            $result['exception'] = 'DUI incorrecto';
+                                            $result['exception'] = 'Usuario incorrecto';
                                         }
                                     } else {
-                                        $result['exception'] = 'Dirección incorrecta';
+                                        $result['exception'] = 'Teléfono incorrecto';
                                     }
                                 } else {
-                                    $result['exception'] = 'Correo incorrecto';
+                                    $result['exception'] = 'Fecha de nacimiento incorrecta';
                                 }
                             } else {
-                                $result['exception'] = 'Apellidos incorrectos';
+                                $result['exception'] = 'Dirección incorrecta';
                             }
                         } else {
-                            $result['exception'] = 'Nombres incorrectos';
+                            $result['exception'] = 'Correo incorrecto';
                         }
                     } else {
-                        $result['recaptcha'] = 1;
-                        $result['exception'] = 'No eres un humano';
+                        $result['exception'] = 'Apellidos incorrectos';
                     }
                 } else {
-                    $result['exception'] = 'Ocurrió un problema al cargar el reCAPTCHA';
+                    $result['exception'] = 'Nombres incorrectos';
                 }
+
                 break;
             case 'logIn':
                 $_POST = $cliente->validateForm($_POST);
                 if ($cliente->checkUser($_POST['usuario'])) {
-                    if ($cliente->getEstado()) {
-                        if ($cliente->checkPassword($_POST['clave'])) {
-                            $_SESSION['id_cliente'] = $cliente->getId();
-                            $_SESSION['correo_cliente'] = $cliente->getCorreo();
-                            $result['status'] = 1;
-                            $result['message'] = 'Autenticación correcta';
-                        } else {
-                            if (Database::getException()) {
-                                $result['exception'] = Database::getException();
-                            } else {
-                                $result['exception'] = 'Clave incorrecta';
-                            }
-                        }
+                    //if ($cliente->getEstado()) {
+                    if ($cliente->checkPassword($_POST['clave'])) {
+                        $_SESSION['id_cliente'] = $cliente->getId();
+                        $_SESSION['usuario'] = $cliente->getUsuario();
+                        //$_SESSION['correo_cliente'] = $cliente->getCorreo();
+                        $result['status'] = 1;
+                        $result['message'] = 'Autenticación correcta';
                     } else {
-                        $result['exception'] = 'La cuenta ha sido desactivada';
+                        if (Database::getException()) {
+                            $result['exception'] = Database::getException();
+                        } else {
+                            $result['exception'] = 'Contraseña incorrecta';
+                        }
                     }
+                    //} else {
+                    //  $result['exception'] = 'La cuenta ha sido desactivada';
+                    //}
                 } else {
                     if (Database::getException()) {
                         $result['exception'] = Database::getException();

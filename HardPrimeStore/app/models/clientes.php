@@ -8,6 +8,18 @@ class Clientes extends Validator
     private $id = null;
     private $estado = null;
     private $estado1 = null;
+    private $imagen = null;
+    private $direccion = null;
+    private $nombre = null;
+    private $apellido = null;
+    private $usuario = null;
+    private $contraseña = null;
+    private $correo = null;
+    private $celular = null;
+    private $fecha = null;
+    private $codigo_recu = null;
+    private $ruta = '../../../resources/img/productos/';
+
     /*
     *   Métodos para asignar valores a los atributos.
     */
@@ -33,6 +45,106 @@ class Clientes extends Validator
         return true;
     }
 
+    public function setImagen($file)
+    {
+        if ($this->validateImageFile($file, 500, 500)) {
+            $this->imagen = $this->getImageName();
+            return true;
+        } else {
+            return false;
+        }
+    }
+
+    public function setNombre($value)
+    {
+        if ($this->validateAlphabetic($value, 1, 50)) {
+            $this->nombre = $value;
+            return true;
+        } else {
+            return false;
+        }
+    }
+
+    public function setDireccion($value)
+    {
+        if ($this->validateAlphabetic($value, 1, 50)) {
+            $this->direccion = $value;
+            return true;
+        } else {
+            return false;
+        }
+    }
+
+    public function setApellido($value)
+    {
+        if ($this->validateAlphabetic($value, 1, 50)) {
+            $this->apellido = $value;
+            return true;
+        } else {
+            return false;
+        }
+    }
+
+    public function setUsuario($value)
+    {
+        if ($this->validateAlphanumeric($value, 1, 50)) {
+            $this->usuario = $value;
+            return true;
+        } else {
+            return false;
+        }
+    }
+
+    public function setContraseña($value)
+    {
+        if ($this->validatePassword($value)) {
+            $this->contraseña = $value;
+            return true;
+        } else {
+            return false;
+        }
+    }
+
+    public function setCorreo($value)
+    {
+        if ($this->validateEmail($value)) {
+            $this->correo = $value;
+            return true;
+        } else {
+            return false;
+        }
+    }
+
+    public function setCelular($value)
+    {
+        if ($this->validatePhone($value)) {
+            $this->celular = $value;
+            return true;
+        } else {
+            return false;
+        }
+    }
+
+    public function setFecha($value)
+    {
+        if ($this->validateDate($value)) {
+            $this->fecha = $value;
+            return true;
+        } else {
+            return false;
+        }
+    }
+
+    public function setCodigo($value)
+    {
+        if ($this->validateNaturalNumber($value)) {
+            $this->codigo_recu = $value;
+            return true;
+        } else {
+            return false;
+        }
+    }
+
     /*
     *   Métodos para obtener valores de los atributos.
     */
@@ -49,6 +161,56 @@ class Clientes extends Validator
     public function getEstado1()
     {
         return $this->estado1;
+    }
+
+    public function getImagen()
+    {
+        return $this->imagen;
+    }
+
+    public function getNombre()
+    {
+        return $this->nombre;
+    }
+
+    public function getApellido()
+    {
+        return $this->apellido;
+    }
+
+    public function getUsuario()
+    {
+        return $this->usuario;
+    }
+
+    public function getContraseña()
+    {
+        return $this->contraseña;
+    }
+
+    public function getCorreo()
+    {
+        return $this->correo;
+    }
+
+    public function getCelular()
+    {
+        return $this->celular;
+    }
+
+    public function getFecha()
+    {
+        return $this->fecha;
+    }
+
+    public function getCodigo()
+    {
+        return $this->codigo_recu;
+    }
+
+    public function getRuta()
+    {
+        return $this->ruta;
     }
 
     /*
@@ -128,5 +290,46 @@ class Clientes extends Validator
                 WHERE id_cliente = ?';
         $params = array($this->id);
         return Database::executeRow($sql, $params);
+    }
+
+    public function checkUser($usuario)
+    {
+        $this->estado = "activo";
+        $sql = 'SELECT id_cliente, usuario FROM clientes WHERE usuario = ? and estado = ? ';
+        $params = array($usuario, $this->estado);
+        if ($data = Database::getRow($sql, $params)) {
+            $this->id = $data['id_cliente'];
+            $this->usuario = $data['usuario'];
+            $this->alias = $usuario;
+            return true;
+        } else {
+            return false;
+        }
+    }
+
+    public function checkPassword($password)
+    {
+        $sql = 'SELECT contraseña FROM clientes WHERE id_cliente = ?';
+        $params = array($this->id);
+        $data = Database::getRow($sql, $params);
+        if (password_verify($password, $data['contraseña'])) {
+            return true;
+        } else {
+            return false;
+        }
+    }
+
+    public function createClient()
+    {
+        $hash = password_hash($this->contraseña, PASSWORD_DEFAULT);
+        $this->estado = "activo";
+        $sql = 'INSERT INTO clientes(imagen, nombre, apellido, correo, celular, fecha_nac, direccion, estado, usuario, contraseña)
+                VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?, ?)';
+        $params = array($this->imagen, $this->nombre, $this->apellido, $this->correo, $this->celular, $this->fecha, $this->direccion, $this->estado, $this->usuario, $hash);
+        if ($this->ide = Database::getLastRow($sql, $params)) {
+            return true;
+        } else {
+            return false;
+        }
     }
 }

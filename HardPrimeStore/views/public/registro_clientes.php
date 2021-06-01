@@ -12,7 +12,7 @@ Sitio_Publico::headerTemplate('Crear cuenta');
                     <span class="card-title blue-grey-text center-align"><b>Crear cuenta</b></span>
                     <form method="post" id="save-form" enctype="multipart/form-data">
                         <!-- Campo oculto para asignar el id del registro al momento de modificar -->
-                        <input class="hide" type="number" id="id_empleado" name="id_empleado" />
+                        <!--<input class="hide" type="number" id="id_empleado" name="id_empleado" />-->
                         <div class="row">
                             <div class="input-field col s12 m6">
                                 <i class="material-icons prefix">person</i>
@@ -21,8 +21,7 @@ Sitio_Publico::headerTemplate('Crear cuenta');
                             </div>
                             <div class="input-field col s12 m6">
                                 <i class="material-icons prefix">person</i>
-                                <input id="apellido" type="text" name="apellido" maxlength="25" class="validate"
-                                    required>
+                                <input id="apellido" type="text" name="apellido" maxlength="25" class="validate" required>
                                 <label for="apellido">Apellidos</label>
                             </div>
                             <div class="input-field col s12 m6">
@@ -32,8 +31,7 @@ Sitio_Publico::headerTemplate('Crear cuenta');
                             </div>
                             <div class="input-field col s12 m6">
                                 <i class="material-icons prefix">phone</i>
-                                <input id="telefono" type="text" name="telefono" maxlength="9" class="validate"
-                                    required>
+                                <input id="telefono" type="text" name="telefono" maxlength="9" class="validate" required>
                                 <label for="telefono">Teléfono</label>
                             </div>
                             <div class="input-field col s12">
@@ -52,8 +50,7 @@ Sitio_Publico::headerTemplate('Crear cuenta');
                                     <input id="imagen" type="file" name="imagen" accept=".gif, .jpg, .png">
                                 </div>
                                 <div class="file-path-wrapper">
-                                    <input type="text" class="file-path validate"
-                                        placeholder="Formatos aceptados: gif, jpg y png">
+                                    <input type="text" class="file-path validate" placeholder="Formatos aceptados: gif, jpg y png">
                                 </div>
                             </div>
                             <div class="input-field col s12 m6">
@@ -63,33 +60,28 @@ Sitio_Publico::headerTemplate('Crear cuenta');
                             </div>
                             <div class="input-field col s12 m6">
                                 <i class="material-icons prefix">vpn_key</i>
-                                <input id="clave1" type="password" name="clave1" class="validate" maxlength="16"
-                                    required />
+                                <input id="clave1" type="password" name="clave1" class="validate" maxlength="16" required />
                                 <label for="clave1">Clave</label>
                             </div>
                             <div class="input-field col s12 m6">
                                 <i class="material-icons prefix">vpn_key</i>
-                                <input id="clave2" type="password" name="clave2" class="validate" maxlength="16"
-                                    required />
+                                <input id="clave2" type="password" name="clave2" class="validate" maxlength="16" required />
                                 <label for="clave2">Confirmar clave</label>
                             </div>
+                        </div>                        
+                        <div class="row center-align">
+                            <button class="btn waves-effect light-blue darken-4 tooltipped" type="submit" id="btnregistrar" data-tooltip="Registrarse"><i class="material-icons">check</i></button>
                         </div>
-                        <div class="container" id="terminos">
+                        <div class="row" id="terminos">
                             <form action="#">
                                 <p>
-                                    <label>
-                                        <br><br>
-                                        <input type="checkbox" class="filled-in" checked="checked" id="check1" />
+                                    <label>                                        
+                                        <input type="checkbox" class="filled-in" id="check1" name="check1" required/>
                                         <span><a href="#modal1" class="modal-trigger"><b> Acepto los terminos de
                                                     uso</b></a></span>
                                     </label>
                                 </p>
                             </form>
-                        </div>
-                        <br>
-                        <div class="row center-align">
-                            <button type="submit" class="btn waves-effect light-blue darken-4 tooltipped"
-                                data-tooltip="Registrarse"><i class="material-icons">check</i></button>
                         </div>
                     </form>
                 </div>
