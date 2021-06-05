@@ -247,3 +247,20 @@ VALUES ('Muy buen producto', '16/03/2021', 5, 2, 2),
 ('Me gustó pero el precio deberia ser mas bajo', '16/03/2021', 4, 2, 5);
 
 
+Create table pedido(
+	id_pedido serial primary key,
+	estado varchar(25) not null default 'En preparacion',
+	fecha_pedido date null,
+	id_cliente integer not null,
+	FOREIGN KEY (id_cliente) REFERENCES clientes (id_cliente)
+);
+
+Create table detalle_pedido(
+	id_detalle serial primary key,
+	cantidad integer,
+	id_producto integer not null,
+	id_pedido integer not null,
+	precio_producto numeric(8,2) not null,
+	FOREIGN KEY (id_producto) REFERENCES productos (id_producto),
+	FOREIGN KEY (id_pedido) REFERENCES pedido (id_pedido)
+);
