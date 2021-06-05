@@ -12,7 +12,7 @@ if (isset($_GET['action'])) {
     // Se declara e inicializa un arreglo para guardar el resultado que retorna la API.
     $result = array('status' => 0, 'message' => null, 'exception' => null);
     // Se verifica si existe una sesión iniciada como administrador, de lo contrario se finaliza el script con un mensaje de error.
-    if (isset($_SESSION['id_usuario'])) {
+    if (isset($_SESSION['id_usuario']) || isset($_SESSION['id_cliente'])) {
         // Se compara la acción a realizar cuando un administrador ha iniciado sesión.
         switch ($_GET['action']) {
             case 'readAll':
@@ -105,12 +105,120 @@ if (isset($_GET['action'])) {
                     if ($data = $pedidos->readOne1()) {
                         $result['exception'] = 'Este pedido ya fue finalizado';
                     } else {
-                        if ($pedidos->updateRow()) {
+                        if ($data = $pedidos->readOne2()) {
+                            $result['exception'] = 'Este pedido ya no se puede modificar, ha sido cancelado.';
+                        } else {
+                            if ($data = $pedidos->readState2()) {
+                                $result['exception'] = 'Este pedido ya no se puede modificar, ha sido entregado.';
+                            } else {
+                                if ($pedidos->updateRow()) {
+                                    $result['status'] = 1;
+                                    $result['message'] = 'Se ha dado por finalizado el pedido';
+                                } else {
+                                    $result['exception'] = Database::getException();
+                                    $result['message'] = 'Ha ocurrido un error';
+                                } 
+                            }
+                        }
+                    }
+                } else {
+                    $result['exception'] = 'Pedido incorrecto';
+                }
+                break;
+            case 'cancelpedido1':
+                $_POST = $pedidos->validateForm($_POST);
+                if ($pedidos->setId($_POST['id_pedido'])) {
+                    if ($data = $pedidos->readOne2()) {
+                        $result['exception'] = 'Este pedido ya fue cancelado';
+                    } else {
+                        if ($data = $pedidos-> readState2()) {
+                            $result['exception'] = 'Este pedido ya a sido entregado, no se puede modificar.';
+                        } else {
+                            if ($pedidos->updateRowCancel()) {
+                                $result['status'] = 1;
+                                $result['message'] = 'Se ha dado por cancelado el pedido';
+                            } else {
+                                $result['exception'] = Database::getException();
+                                $result['message'] = 'Ha ocurrido un error';
+                            }
+                        }
+                    }
+                } else {
+                    $result['exception'] = 'Pedido incorrecto';
+                }
+                break;
+            case 'cancelpedido':
+                $_POST = $pedidos->validateForm($_POST);
+                if ($pedidos->setId($_POST['id_pedido'])) {
+                    if ($data = $pedidos->readOne2()) {
+                        $result['exception'] = 'Este pedido ya fue cancelado';
+                    } else {
+                        if ($pedidos->updateRowCancel()) {
                             $result['status'] = 1;
-                            $result['message'] = 'Se ha dado por finalizado el pedido';
+                            $result['message'] = 'Se ha dado por cancelado el pedido';
                         } else {
                             $result['exception'] = Database::getException();
                             $result['message'] = 'Ha ocurrido un error';
+                        }
+                    }
+                } else {
+                    $result['exception'] = 'Pedido incorrecto';
+                }
+                break;
+            case 'entrega':
+                $_POST = $pedidos->validateForm($_POST);
+                if ($pedidos->setId($_POST['id_pedido'])) {
+                    if ($data = $pedidos-> readState2()) {
+                        $result['exception'] = 'Este pedido ya fue entregado';
+                    } else {
+                        if ($data = $pedidos-> readState()) {
+                            $result['exception'] = 'Este pedido ha sido cancelado, no se puede dar por entregado';
+                        } else {
+                            if ($data = $pedidos-> readState3()) {
+                                $result['exception'] = 'Este pedido se encuentra aún en proceso, no se puede dar por entregado';
+                            } else {
+                                if ($pedidos->updateRowDelivery()) {
+                                    $result['status'] = 1;
+                                    $result['message'] = 'Se ha dado por entregado el pedido';
+                                } else {
+                                    $result['exception'] = Database::getException();
+                                    $result['message'] = 'Ha ocurrido un error';
+                                }
+                            }
+                        }
+                    }
+                } else {
+                    $result['exception'] = 'Pedido incorrecto';
+                }
+                break;
+                //Acciones para los pedidos del cliente
+            case 'readPedido':
+                if ($result['dataset'] = $pedidos->readPedido()) {
+                    $result['status'] = 1;
+                } else {
+                    if (Database::getException()) {
+                        $result['exception'] = Database::getException();
+                    } else {
+                        $result['exception'] = 'No hay pedidos registrados';
+                    }
+                }
+                break;
+            case 'cancel':
+                $_POST = $pedidos->validateForm($_POST);
+                if ($pedidos->setId($_POST['id_pedido'])) {
+                    if ($data = $pedidos->readState()) {
+                        $result['exception'] = 'Este pedido ya fue cancelado';
+                    } else {
+                        if ($data = $pedidos->readState2()) {
+                            $result['exception'] = 'Este pedido ya fue entregado no se puede cancelar.';
+                        } else {
+                            if ($pedidos->updateRowCancel()) {
+                                $result['status'] = 1;
+                                $result['message'] = 'Se ha dado por cancelado el pedido';
+                            } else {
+                                $result['exception'] = Database::getException();
+                                $result['message'] = 'Ha ocurrido un error';
+                            }
                         }
                     }
                 } else {

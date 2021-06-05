@@ -44,21 +44,19 @@ class Pedidos extends Validator
     */
     public function searchRows($value)
     {
-        $sql = 'SELECT id_pedido, pedido.estado as estado, fecha_envio, fecha_pedido, clientes.nombre as cliente, empleados.nombre as encargado, clientes.direccion as direccion
+        $sql = "SELECT id_pedido, pedido.estado as estado, fecha_pedido, (clientes.nombre || ' ' || clientes.apellido) as cliente, clientes.direccion as direccion
                 FROM pedido INNER JOIN clientes ON pedido.id_cliente = clientes.id_cliente
-                INNER JOIN empleados ON pedido.id_empleado = empleados.id_empleado
                 WHERE clientes.nombre ILIKE ? OR pedido.estado ILIKE ? OR clientes.direccion ILIKE ?
-                ORDER BY clientes';
+                ORDER BY clientes";
         $params = array("%$value%", "%$value%", "%$value%");
         return Database::getRows($sql, $params);
     }
 
     public function readAll()
     {
-        $sql = 'SELECT id_pedido, pedido.estado as estado, fecha_envio, fecha_pedido, clientes.nombre as cliente, empleados.nombre as encargado, clientes.direccion as direccion
+        $sql = "SELECT id_pedido, pedido.estado as estado, fecha_pedido, (clientes.nombre || ' ' || clientes.apellido) as cliente, clientes.direccion as direccion
                 FROM pedido INNER JOIN clientes ON pedido.id_cliente = clientes.id_cliente
-                INNER JOIN empleados ON pedido.id_empleado = empleados.id_empleado
-                ORDER BY cliente';
+                ORDER BY cliente";
         $params = null;
         return Database::getRows($sql, $params);
     }
@@ -75,10 +73,9 @@ class Pedidos extends Validator
 
     public function readOne()
     {
-        $sql = 'SELECT id_pedido, pedido.estado as estado, fecha_envio, fecha_pedido, clientes.nombre as cliente, empleados.nombre as encargado
+        $sql = "SELECT id_pedido, pedido.estado as estado, fecha_pedido, (clientes.nombre || ' ' || clientes.apellido) as cliente, clientes.direccion as direccion
                 FROM pedido INNER JOIN clientes ON pedido.id_cliente = clientes.id_cliente
-                INNER JOIN empleados ON pedido.id_empleado = empleados.id_empleado
-                WHERE id_pedido = ?';
+                WHERE id_pedido = ?";
         $params = array($this->id);
         return Database::getRow($sql, $params);
     }
@@ -86,6 +83,16 @@ class Pedidos extends Validator
     public function readOne1()
     {
         $this->estado1 = "Finalizado";
+        $sql = 'SELECT id_pedido, estado
+                FROM pedido 
+                WHERE id_pedido = ? and estado = ?';
+        $params = array($this->id, $this->estado1);
+        return Database::getRow($sql, $params);
+    }
+
+    public function readOne2()
+    {
+        $this->estado1 = "Cancelado";
         $sql = 'SELECT id_pedido, estado
                 FROM pedido 
                 WHERE id_pedido = ? and estado = ?';
@@ -102,5 +109,78 @@ class Pedidos extends Validator
         $params = array($this->estado, $this->id);
         return Database::executeRow($sql, $params);
     }
+
+    public function updateRowCancel()
+    {
+        $this->estado = "Cancelado";
+        $sql = 'UPDATE pedido
+                SET estado = ?
+                WHERE id_pedido = ?';
+        $params = array($this->estado, $this->id);
+        return Database::executeRow($sql, $params);
+    }
+
+    public function updateRowDelivery()
+    {
+        $this->estado = "Entregado";
+        $sql = 'UPDATE pedido
+                SET estado = ?
+                WHERE id_pedido = ?';
+        $params = array($this->estado, $this->id);
+        return Database::executeRow($sql, $params);
+    }
+
+    //Funciones para la gestión de los pedidos de cliente.
+    public function readPedido()
+    {
+        $sql = "SELECT id_pedido, pedido.estado as estado, fecha_pedido, clientes.direccion as direccion, ('$' || ' ' || sum(detalle_pedido.precio_producto*detalle_pedido.cantidad)) as total
+                FROM pedido INNER JOIN detalle_pedido USING(id_pedido) INNER JOIN clientes USING(id_cliente)
+                WHERE pedido.id_cliente = ? and pedido.estado <> 'En preparacion' and pedido.estado <> 'Cancelado'
+                GROUP BY pedido.id_pedido, clientes.direccion";
+        $params = array($_SESSION['id_cliente']);
+        return Database::getRows($sql, $params);
+    }
+
+    public function readState()
+    {
+        $this->estado1 = "Cancelado";
+        $sql = 'SELECT id_pedido, estado
+                FROM pedido 
+                WHERE id_pedido = ? and estado = ?';
+        $params = array($this->id, $this->estado1);
+        return Database::getRow($sql, $params);
+    }
+
+    public function readState1()
+    {
+        $this->estado1 = "Finalizado";
+        $sql = 'SELECT id_pedido, estado
+                FROM pedido 
+                WHERE id_pedido = ? and estado = ?';
+        $params = array($this->id, $this->estado1);
+        return Database::getRow($sql, $params);
+    }
+
+    public function readState2()
+    {
+        $this->estado1 = "Entregado";
+        $sql = 'SELECT id_pedido, estado
+                FROM pedido 
+                WHERE id_pedido = ? and estado = ?';
+        $params = array($this->id, $this->estado1);
+        return Database::getRow($sql, $params);
+    }
+
+    public function readState3()
+    {
+        $this->estado1 = "En preparacion";
+        $sql = 'SELECT id_pedido, estado
+                FROM pedido 
+                WHERE id_pedido = ? and estado = ?';
+        $params = array($this->id, $this->estado1);
+        return Database::getRow($sql, $params);
+    }
+
+    
 
 }

@@ -16,22 +16,41 @@ function fillTable(dataset) {
     let content = '';
     // Se recorre el conjunto de registros (dataset) fila por fila a través del objeto row.
     dataset.map(function (row) {
+        fechape = row.fecha_pedido;
         // Se crean y concatenan las filas de la tabla con los datos de cada registro.
-        content += `
-            <tr>
-                <td>${row.id_pedido}</td>
-                <td>${row.estado}</td>
-                <td>${row.fecha_pedido}</td>
-                <td>${row.fecha_envio}</td>
-                <td>${row.direccion}</td>
-                <td>${row.cliente}</td>
-                <td>${row.encargado}</td>
-                <td>
-                    <a href="#" onclick="openAct(${row.id_pedido})" class="btn waves-effect blue tooltipped" data-tooltip="Finalizar pedido"><i class="material-icons">task_alt</i></a>
-                    <a href="#" onclick="openAct2(${row.id_pedido})" class="btn blue-grey tooltipped" data-tooltip="Ver detalle"><i class="material-icons">shopping_cart</i></a>
-                </td>
-            </tr>
-        `;
+        if (fechape == null) {
+            content += `
+                <tr>
+                    <td>${row.id_pedido}</td>
+                    <td>${row.estado}</td>
+                    <td>No definida</td>
+                    <td>${row.direccion}</td>
+                    <td>${row.cliente}</td>
+                    <td>
+                        <a href="#" onclick="openAct(${row.id_pedido})" class="btn waves-effect blue tooltipped" data-tooltip="Finalizar pedido"><i class="material-icons">task_alt</i></a>
+                        <a href="#" onclick="openEntrega(${row.id_pedido})" class="btn waves-effect green tooltipped" data-tooltip="Dar por entregado"><i class="material-icons">local_shipping</i></a>
+                        <a href="#" onclick="openCancel(${row.id_pedido})" class="btn waves-effect red tooltipped" data-tooltip="Cancelar pedido"><i class="material-icons">event_busy</i></a>
+                        <a href="#" onclick="openAct2(${row.id_pedido})" class="btn blue-grey tooltipped" data-tooltip="Ver detalle"><i class="material-icons">shopping_cart</i></a>
+                    </td>
+                </tr>
+            `;
+        } else {
+            content += `
+                <tr>
+                    <td>${row.id_pedido}</td>
+                    <td>${row.estado}</td>
+                    <td>${row.fecha_pedido}</td>
+                    <td>${row.direccion}</td>
+                    <td>${row.cliente}</td>
+                    <td>
+                        <a href="#" onclick="openAct(${row.id_pedido})" class="btn waves-effect blue tooltipped" data-tooltip="Finalizar pedido"><i class="material-icons">task_alt</i></a>
+                        <a href="#" onclick="openEntrega(${row.id_pedido})" class="btn waves-effect green tooltipped" data-tooltip="Dar por entregado"><i class="material-icons">local_shipping</i></a>
+                        <a href="#" onclick="openCancel(${row.id_pedido})" class="btn waves-effect red tooltipped" data-tooltip="Cancelar pedido"><i class="material-icons">event_busy</i></a>
+                        <a href="#" onclick="openAct2(${row.id_pedido})" class="btn blue-grey tooltipped" data-tooltip="Ver detalle"><i class="material-icons">shopping_cart</i></a>
+                    </td>
+                </tr>
+            `;
+        }
     });
     // Se agregan las filas al cuerpo de la tabla mediante su id para mostrar los registros.
     document.getElementById('tbody-rows').innerHTML = content;
@@ -170,6 +189,86 @@ function openAct2(id) {
     }
 }
 
+function openCancel(id) {
+    // Se define un objeto con los datos del registro seleccionado.
+    const data = new FormData();
+    data.append('id_pedido', id);
+    swal({
+        title: 'Advertencia',
+        text: '¿Desea cancelar el pedido?',
+        icon: 'warning',
+        buttons: ['No', 'Sí'],
+        closeOnClickOutside: false,
+        closeOnEsc: false
+    }).then(function (value) {
+        // Se verifica si fue cliqueado el botón Sí para hacer la petición de borrado, de lo contrario no se hace nada.
+        if (value) {
+            fetch(API_PEDIDOS + 'cancelpedido1', {
+                method: 'post',
+                body: data
+            }).then(function (request) {
+                // Se verifica si la petición es correcta, de lo contrario se muestra un mensaje indicando el problema.
+                if (request.ok) {
+                    request.json().then(function (response) {
+                        // Se comprueba si la respuesta es satisfactoria, de lo contrario se muestra un mensaje con la excepción.
+                        if (response.status) {
+                            // Se cargan nuevamente las filas en la tabla de la vista después de borrar un registro.
+                            readRows(API_PEDIDOS);
+                            sweetAlert(1, response.message, null);
+                        } else {
+                            sweetAlert(2, response.exception, null);
+                        }
+                    });
+                } else {
+                    console.log(request.status + ' ' + request.statusText);
+                }
+            }).catch(function (error) {
+                console.log(error);
+            });
+        }
+    });
+}
+
+function openEntrega(id) {
+    // Se define un objeto con los datos del registro seleccionado.
+    const data = new FormData();
+    data.append('id_pedido', id);
+    swal({
+        title: 'Advertencia',
+        text: '¿Desea dar por entregado el pedido?',
+        icon: 'warning',
+        buttons: ['No', 'Sí'],
+        closeOnClickOutside: false,
+        closeOnEsc: false
+    }).then(function (value) {
+        // Se verifica si fue cliqueado el botón Sí para hacer la petición de borrado, de lo contrario no se hace nada.
+        if (value) {
+            fetch(API_PEDIDOS + 'entrega', {
+                method: 'post',
+                body: data
+            }).then(function (request) {
+                // Se verifica si la petición es correcta, de lo contrario se muestra un mensaje indicando el problema.
+                if (request.ok) {
+                    request.json().then(function (response) {
+                        // Se comprueba si la respuesta es satisfactoria, de lo contrario se muestra un mensaje con la excepción.
+                        if (response.status) {
+                            // Se cargan nuevamente las filas en la tabla de la vista después de borrar un registro.
+                            readRows(API_PEDIDOS);
+                            sweetAlert(1, response.message, null);
+                        } else {
+                            sweetAlert(2, response.exception, null);
+                        }
+                    });
+                } else {
+                    console.log(request.status + ' ' + request.statusText);
+                }
+            }).catch(function (error) {
+                console.log(error);
+            });
+        }
+    });
+}
+
 //Método para ocultar y mostrar secciones en la página correspondiente a pedidos.
 element = document.getElementById('ocultable');
 element.style.display = 'none';
@@ -189,3 +288,4 @@ function mostrarOcultar() {
         element.style.display = 'none';
     }
 }
+
