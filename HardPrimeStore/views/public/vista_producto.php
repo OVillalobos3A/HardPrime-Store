@@ -3,27 +3,27 @@ include('../../app/Helpers/public/sitio_publico.php');
 Sitio_Publico::headerTemplate('HardPrimeStore - Producto');
 ?>
 <main>
-
-    <div class="row">
+    <h4 class="center indigo-text" id="title"></h4>
+    <div class="row" id="justp">
         <div class="row container">
             <div class="col s12">
                 <div class="card whithe">
                     <div class="card-content black-text center-align">
-                        <span class="card-title">Pantalla Dell S2421HS</span>
+                        <span class="card-title" id="nombre"></span>
                     </div>
                 </div>
             </div>
             <div class="col s12 m6">
                 <div class="card whithe">
                     <div class="card-content black-text center-align">
-                        <img width="400" class="responsive-img img2" src="../../resources/img/public/dell2.jpg">
+                        <img img width="400" class="responsive-img img2" id="imagen" src="../../resources/img/">
                     </div>
                 </div>
             </div>
             <div class="col s12 m6">
                 <div class="card whithe">
                     <div class="card-content black-text center-align">
-                        <img width="400" class="responsive-img img2" src="../../resources/img/public/dell1.jpg">
+                     <img img width="400" class="responsive-img img2" id="imagen2" src="../../resources/img/">
                     </div>
                 </div>
             </div>
@@ -32,23 +32,24 @@ Sitio_Publico::headerTemplate('HardPrimeStore - Producto');
                     <!--Card en la que se muestra la información del producto-->
                     <div class="card-stacked">
                         <div class="card-content center-align">
-                            <h5>Dell S2421HS - Monitor de bisel ultrafino (24 pulgadas, Full HD, 1080p, IPS, color
-                                plateado, negro.</h5>
+                            <h5 id="descripcion"></h5>
                             <div class="row">
                                 <div class="col s12 m6">
-                                    <h5 class="">Precio: <b class="orange-text text-darken-4">$299.99</b></h5>
+                                    <h5 class="">Precio: <b class="orange-text text-darken-4"  id="precio"></b></h5>
                                 </div>
-                                <div class="col s12 m6">
-                                    <div class="input-field col s12 m6">
-                                        <i class="material-icons prefix">control_point</i>
-                                        <input id="icon_prefix" type="number" class="validate">
-                                        <label for="icon_prefix">Cantidad</label>
+                                <form method="post" id="shopping-form">
+                                    <input type="hidden" id="id_producto" name="id_producto"/>
+                                    <div class="col s12 m6">
+                                        <div class="input-field col s12 m6">
+                                            <i class="material-icons prefix">control_point</i>
+                                            <input type="number" id="cantidad_producto" name="cantidad_producto" min="1" class="validate" required/>
+                                            <label for="cantidad_producto">Cantidad</label>
+                                        </div>
                                     </div>
-                                </div>
-                                <div class="col s12">
-                                    <a class="waves-effect blue-grey btn center"><i
-                                            class="material-icons right">add_shopping_cart</i>Agregar al carrito</a>
-                                </div>
+                                    <div class="col s12">
+                                        <button type="submit" class="btn waves-effect waves-light blue tooltipped" data-tooltip="Agregar al carrito"><i class="material-icons">add_shopping_cart</i></button>
+                                    </div>
+                                </form>
                             </div>
                         </div>
                     </div>
@@ -172,11 +173,7 @@ Sitio_Publico::headerTemplate('HardPrimeStore - Producto');
             </ul>
         </div>
         <!--Apartado en el que se muestran los comentarios y calificaciones del producto-->
-
-
-
     </div>
-
 </main>
 
 <?php
