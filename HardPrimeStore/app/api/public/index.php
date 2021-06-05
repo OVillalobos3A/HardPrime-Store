@@ -34,6 +34,36 @@ if (isset($_GET['action'])) {
                 }
             }
             break;
+        case 'openProductmarcas':
+            if ($index->setId($_POST['id_marca'])) {
+                if ($result['dataset'] = $index->readPM()) {
+                    $result['status'] = 1;
+                } else {
+                    if (Database::getException()) {
+                        $result['exception'] = Database::getException();
+                    } else {
+                        $result['exception'] = 'No existen productos para mostrar';
+                    }
+                }
+            } else {
+                $result['exception'] = 'Marca incorrecta';
+            }
+            break;
+        case 'openProduct':
+            if ($index->setId($_POST['id_producto'])) {
+                if ($result['dataset'] = $index->readOne()) {
+                    $result['status'] = 1;
+                } else {
+                    if (Database::getException()) {
+                        $result['exception'] = Database::getException();
+                    } else {
+                        $result['exception'] = 'Ha ocurrido un error';
+                    }
+                }
+            } else {
+                $result['exception'] = 'Producto incorrecto';
+            }
+            break;
         default:
             $result['exception'] = 'Acción no disponible';
     }

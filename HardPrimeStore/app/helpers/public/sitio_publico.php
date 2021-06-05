@@ -209,7 +209,7 @@ class Sitio_Publico
                         </form>
                       </li>
             
-                      <li class="right"><a class="waves-effect light-blue darken-4 btn-large btn-flat white-text tooltipped" href="carrito_compras.php" data-position="bottom" data-tooltip="0 productos"><i class="material-icons left">shopping_cart</i>Carrito de compras</a></li>
+                      
                     </ul>
             
                   </div>
