@@ -5,81 +5,76 @@ include('../../app/helpers/public/sitio_publico.php');
 Sitio_Publico::headerTemplate('HardPrimeStore - Carrito de compras');
 ?>
 <main>
-    <div class="tabla">    
-        <h4>&nbsp;&nbsp;Carrito de compras</h4>
-        <hr>
-        <div class="row">
-            <div class="col s12 m12">
+    <br>
+    <div class="row container">
+        <div class="col s12 m12">
             <!--Card que va a contener la tabla-->
-                <div class="card white darken-1">
-                    <div class="card-content black-text">
+            <div class="card white darken-1">
+                <div class="card-content black-text">
+                    <span class="card-title center-align"><b>Carrito de compras</b></span>
+                    <br>
                     <!--Creacion de la tabla para los productos del pedido-->
-                        <table class="striped responsive-table">
-                            <thead>
-                            <!--Se crean las filas con los elementos que va a llevar la tabla-->
-                                <tr>
-                                    <th>Producto</th>
-                                    <th>Nombre</th>
-                                    <th>Precio</th>
-                                    <th>Cantidad</th>
-                                    <th>Total</th>
-                                    <th> </th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                            <!--Creacion de las columnas para las filas ya previamente creadas-->
-                                <tr>
-                                    <td><img src="../../resources/img/public/DiscoInterno.jpg" width="80" height="80"></td>
-                                    <td>Lollipop</td>
-                                    <td>$7.00</td>
-                                    <td>$7.00</td>
-                                    <td>$7.00</td>
-                                    <td><a class="btn-floating btn-small btn tooltipped waves-effect waves-light orange darken-4" data-position="right" data-tooltip="remover"><i class="material-icons">remove</i></a></td>
-                                </tr>
-                                <tr>
-                                    <td><img src="../../resources/img/public/Monitor.jpg" width="80" height="80"></td>
-                                    <td>Lollipop</td>
-                                    <td>$7.00</td>
-                                    <td>$7.00</td>
-                                    <td>$7.00 </td>
-                                    <td><a class="btn-floating btn-small btn tooltipped waves-effect waves-light orange darken-4" data-position="right" data-tooltip="remover"><i class="material-icons">remove</i></a></td>
-                                </tr>
-                                <tr>
-                                    <td><img src="../../resources/img/public/Teclado.jpg" width="80" height="80"></td>
-                                    <td>Lollipop</td>
-                                    <td>$7.00</td>
-                                    <td>$7.00</td>
-                                    <td>$7.00</td>
-                                    <td><a class="btn-floating btn-small btn tooltipped waves-effect waves-light orange darken-4" data-position="right" data-tooltip="remover"><i class="material-icons">remove</i></a></td>
-                                </tr>
-                            </tbody>
-                        </table>
+                    <table class="responsive-table">
+                        <thead>
+                        <!--Se crean las filas con los elementos que va a llevar la tabla-->
+                            <tr>
+                                <th>Producto</th>
+                                <th>Nombre</th>
+                                <th>Precio</th>
+                                <th>Cantidad</th>
+                                <th>Subtotal</th>
+                                <th>Acciones</th>
+                            </tr>
+                        </thead>
+                        <tbody id="tabla-carrito">
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+        <div class="row container">
+            <div class="col s12" id="confirmar">
+                <div class="card white">
+                    <div class="card-content black-text">
+                        <span class="card-title"><b>Resumen del pedido</b></span>
+                        <h6><b>Total a pagar : </b><b>$</b><b id="total"></b></h6>
+                    </div>
+                    <!--Boton para ir a la pagina de confirmar pedido-->
+                    <div class="card-action" id="btnconfirmar">
+                        <a onclick="finishOrder()" class="waves-effect deep-orange lighten-1 btn"><i class="material-icons left">task</i>Finalizar pedido</a>
+                        <a class="waves-effect red btn"><i class="material-icons left">cancel_presentation</i>Cancelar pedido</a>
+                    </div>
+                    <div class="card-action" id="btnconfirmar">
+                        <a class="waves-effect deep-orange lighten-1 btn"><i class="material-icons left">keyboard_return</i>Seguir comprando</a>
                     </div>
                 </div>
             </div>
         </div>
-
     </div>
-    <!--Apartado para que el cliente vea mas a detalle la suma para el costo total-->
-    <div class="row">
-        <div class="col s12 m5" id="confirmar">
-            <div class="card grey lighten-2">
-                <div class="card-content black-text">
-                    <span class="card-title"><b>Costos</b></span>
-                    <h6><b>Sub Total :</b> $300.00 &nbsp;+ &nbsp;<b>Costo de envío:</b> $20.00</h6>
-
-                    <h6><b>Total : $320.00</b></h6>
+    <!-- Componente Modal para mostrar una caja de dialogo -->
+    <div id="item-modal" class="modal">
+        <div class="modal-content">
+            <!-- Título para la caja de dialogo -->
+            <h4 class="center-align">Cambiar cantidad</h4>
+            <!-- Formulario para cambiar la cantidad de producto -->
+            <form method="post" id="item-form">
+                <!-- Campo oculto para asignar el id del registro al momento de modificar -->
+                <input type="number" id="id_detalle" name="id_detalle" class="hide"/>
+                <input type="number" id="id_producto" name="id_producto" class="hide"/>
+                <div class="row">
+                    <div class="input-field col s12 m4 offset-m4">
+                        <i class="material-icons prefix">list</i>
+                        <input type="number" id="cantidad_producto" name="cantidad_producto" min="1" class="validate" required/>
+                        <label for="cantidad_producto">Cantidad</label>
+                    </div>
                 </div>
-                <!--Boton para ir a la pagina de confirmar pedido-->
-                <div class="card-action" id="btnconfirmar">
-                    <a class="waves-effect orange darken-4 btn" href="confirmar_pedido.php"><i class="material-icons right">done</i>Confirmar Compra</a>
+                <div class="row center-align">
+                    <a href="#" class="btn waves-effect grey tooltipped modal-close" data-tooltip="Cancelar"><i class="material-icons">cancel</i></a>
+                    <button type="submit" class="btn waves-effect blue tooltipped" data-tooltip="Guardar"><i class="material-icons">save</i></button>
                 </div>
-            </div>
+            </form>
         </div>
     </div>
-    <br>
-    <br>
-
 </main>
 
 <?php
