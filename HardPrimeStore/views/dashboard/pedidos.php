@@ -77,11 +77,9 @@ Dashboard_Page::headerTemplate('Pedidos');
                                 <tr>
                                     <th>Código pedido</th>
                                     <th>Estado</th>
-                                    <th>Fecha de realización</th>
-                                    <th>Fecha de envío</th>
+                                    <th>Fecha del pedido</th>
                                     <th>Dirección de envío</th>
                                     <th>Cliente</th>
-                                    <th>Encargado</th>
                                     <th>Acciones</th>
                                 </tr>
                             </thead>
