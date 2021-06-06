@@ -98,6 +98,183 @@ div#colorp{
 	
 	color: #e65100;
 }
+
+
+
+
+
+#estrella2:hover a {
+	color: #888
+}
+
+/*
+ * El selector de hijo, es necesario para aumentar la especifidad
+ */
+#estrella2 > a:hover ~ a {
+	color: #888;
+}
+#estrella2 a {
+	text-decoration: none;
+	display: inline-block;
+	/* Volver a dar tamaño al texto */
+	font-size: 32px;
+	font-size: 2rem;
+	
+	color: #888;
+}
+
+#estrella3:hover a {
+	color: #888
+}
+
+/*
+ * El selector de hijo, es necesario para aumentar la especifidad
+ */
+#estrella3 > a:hover ~ a {
+	color: #888;
+}
+#estrella3 a {
+	text-decoration: none;
+	display: inline-block;
+	/* Volver a dar tamaño al texto */
+	font-size: 32px;
+	font-size: 2rem;
+	
+	color: #888;
+}
+
+
+#estrella4:hover a {
+	color: #888
+}
+
+/*
+ * El selector de hijo, es necesario para aumentar la especifidad
+ */
+#estrella4 > a:hover ~ a {
+	color: #888;
+}
+#estrella4 a {
+	text-decoration: none;
+	display: inline-block;
+	/* Volver a dar tamaño al texto */
+	font-size: 32px;
+	font-size: 2rem;
+	
+	color: #888;
+}
+
+
+#estrella5:hover a {
+	color: #888
+}
+
+/*
+ * El selector de hijo, es necesario para aumentar la especifidad
+ */
+#estrella5 > a:hover ~ a {
+	color: #888;
+}
+#estrella5 a {
+	text-decoration: none;
+	display: inline-block;
+	/* Volver a dar tamaño al texto */
+	font-size: 32px;
+	font-size: 2rem;
+	
+	color: #888;
+}
+
+
+
+
+#estrellas2:hover a {
+	color: #e65100;
+}
+
+/*
+ * El selector de hijo, es necesario para aumentar la especifidad
+ */
+#estrellas2 > a:hover ~ a {
+	color: #e65100;
+}
+#estrellas2 a {
+	text-decoration: none;
+	display: inline-block;
+	/* Volver a dar tamaño al texto */
+	font-size: 32px;
+	font-size: 2rem;
+	
+	color: #e65100;
+}
+
+#estrellas3:hover a {
+	color: #e65100
+}
+
+/*
+ * El selector de hijo, es necesario para aumentar la especifidad
+ */
+#estrellas3 > a:hover ~ a {
+	color: #e65100;
+}
+#estrellas3 a {
+	text-decoration: none;
+	display: inline-block;
+	/* Volver a dar tamaño al texto */
+	font-size: 32px;
+	font-size: 2rem;
+	
+	color: #e65100;
+}
+
+
+#estrellas4:hover a {
+	color: #e65100
+}
+
+/*
+ * El selector de hijo, es necesario para aumentar la especifidad
+ */
+#estrellas4 > a:hover ~ a {
+	color: #e65100;
+}
+#estrellas4 a {
+	text-decoration: none;
+	display: inline-block;
+	/* Volver a dar tamaño al texto */
+	font-size: 32px;
+	font-size: 2rem;
+	
+	color: #e65100;
+}
+
+
+#estrellas5:hover a {
+	color: #e65100;
+}
+
+/*
+ * El selector de hijo, es necesario para aumentar la especifidad
+ */
+#estrellas5 > a:hover ~ a {
+	color: #e65100;
+}
+#estrellas5 a {
+	text-decoration: none;
+	display: inline-block;
+	/* Volver a dar tamaño al texto */
+	font-size: 32px;
+	font-size: 2rem;
+	
+	color: #e65100;
+}
+
+
+
+
+
+
 .select-dropdown.dropdown-trigger{
 color: black;
 

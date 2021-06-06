@@ -57,11 +57,43 @@ class Index extends Validator
         return Database::getRows($sql, $params);
     }
 
+    //Para leer productos por categoría
+    public function readPC()
+    {
+        $sql = "SELECT productos.nombre as nombre, id_producto,  productos.imagen as imagen, productos.descripcion as descripcion, Concat('$' || ' ' || precio) as precio
+                FROM productos INNER JOIN categoria USING(id_categoria)
+                WHERE id_categoria = ?
+                ORDER BY nombre";
+        $params = array($this->id);
+        return Database::getRows($sql, $params);
+    }
+
     public function readProduct()
     {
         $sql = "SELECT nombre, id_producto, imagen, imagen2, descripcion, Concat('$' || ' ' || precio) as precio
                 FROM productos
-                WHERE id_producto = ?";
+                WHERE id_producto = ? 
+                ORDER BY nombre";
+        $params = array($this->id);
+        return Database::getRows($sql, $params);
+    }
+
+    public function readTittle()
+    {
+        $sql = "SELECT id_marca, nombre_marca
+                FROM marca
+                WHERE id_marca = ? 
+                ORDER BY nombre_marca";
+        $params = array($this->id);
+        return Database::getRows($sql, $params);
+    }    
+
+    public function tittleCateg()
+    {
+        $sql = "SELECT id_categoria, nombre
+                FROM categoria
+                WHERE id_categoria = ? 
+                ORDER BY nombre";
         $params = array($this->id);
         return Database::getRows($sql, $params);
     }
@@ -73,5 +105,14 @@ class Index extends Validator
                 WHERE id_producto = ?";
         $params = array($this->id);
         return Database::getRow($sql, $params);
+    }
+
+    public function readProduct2()
+    {
+        $sql = "SELECT nombre, id_producto, imagen, imagen2, descripcion, Concat('$' || ' ' || precio) as precio
+                FROM productos                
+                ORDER BY nombre";
+        $params = null;
+        return Database::getRows($sql, $params);
     }
 }

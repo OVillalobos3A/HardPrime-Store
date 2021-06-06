@@ -27,6 +27,18 @@ document.addEventListener('DOMContentLoaded', function() {
     let dropdowns = document.querySelectorAll('.dropdown-trigger');
     let instancia_dropwdown = M.Dropdown.init(dropdowns, {
     hover:false});
+
+    let today = new Date();
+    // Se declara e inicializa una variable para guardar el día en formato de 2 dígitos.
+    let day = ('0' + today.getDate()).slice(-2);
+    // Se declara e inicializa una variable para guardar el mes en formato de 2 dígitos.
+    var month = ('0' + (today.getMonth() + 1)).slice(-2);
+    // Se declara e inicializa una variable para guardar el año con la mayoría de edad.
+    let year = today.getFullYear() - 18;
+    // Se declara e inicializa una variable para establecer el formato de la fecha.
+    let date = `${year}-${month}-${day}`;
+    // Se asigna la fecha como valor máximo en el campo del formulario.
+    document.getElementById('fecha').setAttribute('max', date);
   });
   
 

@@ -38,6 +38,7 @@ document.addEventListener('DOMContentLoaded', function() {
 
 // Constante para establecer la ruta y parámetros de comunicación con la API.
 const API_PEDIDOS = '../../app/api/dashboard/pedidos.php?action=';
+const API_COMENTARIOS = '../../app/api/public/valoraciones.php?action=';
 
 // Método manejador de eventos que se ejecuta cuando el documento ha cargado.
 document.addEventListener('DOMContentLoaded', function () {
@@ -47,6 +48,9 @@ document.addEventListener('DOMContentLoaded', function () {
 
 
 element = document.getElementById('ocultable');
+element.style.display = 'none';
+
+element = document.getElementById('ocultable_2');
 element.style.display = 'none';
 
 function readPedido() {
@@ -90,6 +94,7 @@ function readPedido() {
         console.log(error);
     });
 }
+
 
 // Método manejador de eventos que se ejecuta cuando se envía el formulario de buscar.
 document.getElementById('search-form').addEventListener('submit', function (event) {
@@ -191,6 +196,7 @@ function openAct(id) {
             }).catch(function (error) {
                 console.log(error);
             });
+            
         }
     });
 }
@@ -199,6 +205,7 @@ function openAct2(id) {
     //Método para ocultar y mostrar secciones en la página correspondiente a pedidos.
     const data = new FormData();
     data.append('id_pedido', id);
+    
     searchRows2(API_PEDIDOS, data);
     function searchRows2(api, data) {
         fetch(api + 'viewShop', {
@@ -242,6 +249,7 @@ function openAct2(id) {
         let content = '';
         // Se recorre el conjunto de registros (dataset) fila por fila a través del objeto row.
         dataset.map(function (row) {
+            openComments(row.id_pedido);
             // Se crean y concatenan las filas de la tabla con los datos de cada registro.
             content += `
             <tr>
@@ -260,16 +268,79 @@ function openAct2(id) {
     }
 }
 
+function openComments(id) {
+    //Método para ocultar y mostrar secciones en la página correspondiente a pedidos.
+    const data = new FormData();
+    data.append('id_pedido', id);
+    searchRows2(API_COMENTARIOS, data);
+    function searchRows2(api, data) {
+        fetch(api + 'detalleComentarios', {
+            method: 'post',
+            body: data
+        }).then(function (request) {
+            // Se verifica si la petición es correcta, de lo contrario se muestra un mensaje indicando el problema.
+            if (request.ok) {
+                request.json().then(function (response) {
+                    // Se comprueba si la respuesta es satisfactoria, de lo contrario se muestra un mensaje con la excepción.
+                    if (response.status) {
+                        // Se envían los datos a la función del controlador para que llene la tabla en la vista.
+                        fillTable1(response.dataset);
+                        sweetAlert(1, response.message, null);
+                        element = document.getElementById('ocultable_2');
+                        estado = element.style.display;
+                        if (estado == 'none') {
+                            element.style.display = 'block'
+                        } else {
+                            element.style.display = 'none';
+                        }                       
+                    } else {
+                        sweetAlert(2, response.exception, null);
+                    }
+                });
+            } else {
+                console.log(request.status + ' ' + request.statusText);
+            }
+        }).catch(function (error) {
+            console.log(error);
+        });
+    }
+    function fillTable1(dataset) {
+        let content = '';
+        // Se recorre el conjunto de registros (dataset) fila por fila a través del objeto row.
+        dataset.map(function (row) {
+            // Se crean y concatenan las filas de la tabla con los datos de cada registro.
+            content += `
+            <tr>                            
+                <td class="center align">${row.nombre}</td>   
+                <td class="center align">${row.estado}</td>
+                <td class="center align">${row.calificacion}</td>                
+                <td class="center align">${row.fecha}</td>
+                <td class="center align">${row.comentario}</td>
+            </tr>
+            `;
+        });
+        // Se agregan las filas al cuerpo de la tabla mediante su id para mostrar los registros.
+        document.getElementById('tbody-rows_2').innerHTML = content;
+        // Se inicializa el componente Material Box asignado a las imagenes para que funcione el efecto Lightbox.
+    }
+}
+
 //Método para ocultar y mostrar secciones en la página correspondiente a pedidos.
 element = document.getElementById('ocultable');
 element.style.display = 'none';
+element2 = document.getElementById('ocultable_2');
+element2.style.display = 'none';
 function mostrarOcultar() {
-    element = document.getElementById('ocultable');
+    element = document.getElementById('ocultable');    
     estado = element.style.display;
+    element2 = document.getElementById('ocultable_2');
+    estado2 = element.style.display;
     if (estado == 'none') {
         element.style.display = 'block'
+        element2.style.display = 'block'
     } else {
         element.style.display = 'none';
+        element2.style.display = 'none';
     }
     element = document.getElementById('ocultable1');
     estado = element.style.display;

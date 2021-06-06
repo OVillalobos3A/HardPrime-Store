@@ -23,6 +23,36 @@ if (isset($_GET['action'])) {
                 }
             }
             break;
+        case 'readTittle':
+            if ($index->setId($_POST['id_marca'])) {
+                if ($result['dataset'] = $index->readTittle()) {
+                    $result['status'] = 1;
+                } else {
+                    if (Database::getException()) {
+                        $result['exception'] = Database::getException();
+                    } else {
+                        $result['exception'] = 'Error al mostrar el titulo';
+                    }
+                }
+            } else {
+                $result['exception'] = 'Marca incorrecta';
+            }
+            break;
+            case 'tittleCateg':
+                if ($index->setId($_POST['id_categoria'])) {
+                    if ($result['dataset'] = $index->tittleCateg()) {
+                        $result['status'] = 1;
+                    } else {
+                        if (Database::getException()) {
+                            $result['exception'] = Database::getException();
+                        } else {
+                            $result['exception'] = 'Error al mostrar el titulo';
+                        }
+                    }
+                } else {
+                    $result['exception'] = 'Categoría incorrecta';
+                }
+                break;
         case 'openCat':
             if ($result['dataset'] = $index->readCategorias()) {
                 $result['status'] = 1;
@@ -30,10 +60,25 @@ if (isset($_GET['action'])) {
                 if (Database::getException()) {
                     $result['exception'] = Database::getException();
                 } else {
-                    $result['exception'] = 'No existen marcas para mostrar';
+                    $result['exception'] = 'No existen categorías para mostrar';
                 }
             }
             break;
+            case 'openProductCategorias':
+                if ($index->setId($_POST['id_categoria'])) {
+                    if ($result['dataset'] = $index->readPC()) {
+                        $result['status'] = 1;
+                    } else {
+                        if (Database::getException()) {
+                            $result['exception'] = Database::getException();
+                        } else {
+                            $result['exception'] = 'No existen categorías para mostrar';
+                        }
+                    }
+                } else {
+                    $result['exception'] = 'Categorías incorrecta';
+                }
+                break;
         case 'openProductmarcas':
             if ($index->setId($_POST['id_marca'])) {
                 if ($result['dataset'] = $index->readPM()) {
@@ -49,21 +94,32 @@ if (isset($_GET['action'])) {
                 $result['exception'] = 'Marca incorrecta';
             }
             break;
-        case 'openProduct':
-            if ($index->setId($_POST['id_producto'])) {
-                if ($result['dataset'] = $index->readOne()) {
-                    $result['status'] = 1;
-                } else {
-                    if (Database::getException()) {
-                        $result['exception'] = Database::getException();
+            case 'openProduct':
+                if ($index->setId($_POST['id_producto'])) {
+                    if ($result['dataset'] = $index->readOne()) {
+                        $result['status'] = 1;
                     } else {
-                        $result['exception'] = 'Ha ocurrido un error';
+                        if (Database::getException()) {
+                            $result['exception'] = Database::getException();
+                        } else {
+                            $result['exception'] = 'Ha ocurrido un error';
+                        }
                     }
+                } else {
+                    $result['exception'] = 'Producto incorrecto';
                 }
-            } else {
-                $result['exception'] = 'Producto incorrecto';
-            }
-            break;
+                break;
+                case 'openProduct2':                    
+                        if ($result['dataset'] = $index->readProduct2()) {
+                            $result['status'] = 1;
+                        } else {
+                            if (Database::getException()) {
+                                $result['exception'] = Database::getException();
+                            } else {
+                                $result['exception'] = 'Ha ocurrido un error';
+                            }
+                        }                    
+                    break;
         default:
             $result['exception'] = 'Acción no disponible';
     }

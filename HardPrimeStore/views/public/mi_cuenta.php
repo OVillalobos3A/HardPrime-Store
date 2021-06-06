@@ -43,6 +43,38 @@ Sitio_Publico::headerTemplate('HardPrimeStore - Mi cuenta');
                     </form>
                 </div>
             </div>
+
+            <div class="card whithe" id="ocultable_2">
+                <div class="card-content Black-text">
+                    <!--Se especifica el titulo de la card-->
+                    <span class="card-title center-align">Comentarios del pedido</span>
+                    <br>
+                    <!--Se añade un boton para regresar a los pedidos-->                    
+                    <br>
+                    <br>
+                    <!--Se construye la tabla de datos correspondiente al detalle del pedido-->
+                    <!--Se especifica la clase para hacer responsive la tabla, y el tipo de tabla-->
+                    <!--Se especifica el detalle de cada fila y columna-->
+                    <form method="post" id="form2" enctype="multipart/form-data">
+                        <input class="hide" type="number" id="id_pedido" name="id_pedido"/>
+                        <div class="row">
+                            <table class="responsive-table striped">
+                                <thead>
+                                    <tr>                     
+                                        <th class="center align">Producto</th>                                                           
+                                        <th class="center align">Estado</th>
+                                        <th class="center align">Calificación</th>                                        
+                                        <th class="center align">Fecha</th>
+                                        <th class="center align">Comentario</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="tbody-rows_2">
+                                </tbody>
+                            </table>
+                        </div>
+                    </form>
+                </div>
+            </div>
             <!--Contenedor para mostrar la card contenedora de la tabla de datos correspondiente a pedidos.-->
             <!--Se le asigna el id "ocultable1" lo que nos permite que cuando cargue esta sección desaparezca-->
             <!--la sección número 1-->

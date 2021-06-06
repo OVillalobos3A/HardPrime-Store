@@ -59,7 +59,7 @@ function loadMarcas() {
                     let url = '';
                     // Se recorre el conjunto de registros devuelto por la API (dataset) fila por fila a través del objeto row.
                     response.dataset.map(function (row) {
-                        url = `pmarcas.php?id=${row.id_marca}`;
+                        url = `buscar_marcas.php?id=${row.id_marca}`;
                         // Se crean y concatenan las tarjetas con los datos de cada categoría.
                         content += `
                             <div class="col s12 m6 l3">
@@ -99,28 +99,26 @@ function loadCategorias() {
         if (request.ok) {
             request.json().then(function (response) {
                 // Se comprueba si la respuesta es satisfactoria, de lo contrario se muestra un mensaje con la excepción.
-                if (response.status) {
+                if (response.status) {                    
                     let content = '';
+                    let url = '';
                     // Se recorre el conjunto de registros devuelto por la API (dataset) fila por fila a través del objeto row.
                     response.dataset.map(function (row) {
+                        url = `buscar_categorias.php?id=${row.id_categoria}`;
                         // Se crean y concatenan las tarjetas con los datos de cada categoría.
                         content += `
-                            <div class="col s12 m6 l3">
-                                <div class="card">
-                                    <div class="card-image waves-effect waves-block waves-light">
-                                        <img src="../../resources/img/categorias/${row.imagen}" width="100" height="200">
-                                    </div>
-                                    <div class="card-content">
-                                        <span class="card-title activator grey-text text-darken-4">${row.nombre}<i class="material-icons right">wysiwyg</i></span>
-                                        <p> <a href="vista_producto.php" id="link1">Ver categoría</a></p>
-                                    </div>
-                                    <div class="card-reveal">
-                                        <span class="card-title grey-text text-darken-4">${row.nombre}<i
-                                                class="material-icons right">close</i></span>
-                                        <p>${row.descripcion}</p>
-                                    </div>
-                                </div>
+                        <div class="col s12 m6 l3">
+                        <div class="card">
+                            <div class="card-image">
+                                <img src="../../resources/img/categorias/${row.imagen}" width="100" height="200">
                             </div>
+                            <div class="card-content center-align">
+                                <!--Nombre del producto, precio  y descripción-->
+                                <span class="card-title indigo-text text-darken-4"><b>${row.nombre}</b></span>
+                                <a href="${url}">Ver marca</a>
+                            </div>
+                        </div>
+                    </div>
                         `;
                     });
                     // Se agregan las tarjetas a la etiqueta div mediante su id para mostrar las categorías.

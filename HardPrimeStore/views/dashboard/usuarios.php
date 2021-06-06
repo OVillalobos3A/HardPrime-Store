@@ -22,7 +22,7 @@ Dashboard_Page::headerTemplate('Administrar usuarios');
                 <div class="row">
                     <div class="input-field col s12 m6">
                         <i class="material-icons prefix">search</i>
-                        <input type="text" name="search" id="search" class="autocomplete"  maxlength="10" required/>
+                        <input type="text" name="search" id="search" class="autocomplete" maxlength="10" required />
                         <label for="search">Alias(username)</label>
                     </div>
                     <div class="input-field s12 m6">
@@ -67,11 +67,11 @@ Dashboard_Page::headerTemplate('Administrar usuarios');
             <form method="post" id="save-form" name="save-form" enctype="multipart/form-data" class="col-md-4">
                 <!-- Campo oculto para asignar el id del registro al momento de modificar -->
                 <input class="hide" type="number" id="id_usuario" name="id_usuario" />
-                <input class="hide" type="text" id="contraseña" name="contraseña" value="123456"/>
+                <input class="hide" type="text" id="contraseña" name="contraseña" value="123456" />
                 <div class="row">
                     <!--Estableciendo el tamaño del que tomará el Input field-->
                     <div class="input-field col s12 m6">
-                    <i class="material-icons prefix">person</i>
+                        <i class="material-icons prefix">person</i>
                         <select id="empleado" name="empleado">
                             <option value="" disabled selected>Empleado</option>
                         </select>
@@ -79,9 +79,9 @@ Dashboard_Page::headerTemplate('Administrar usuarios');
                     </div>
                     <!--Estableciendo el tamaño del que tomará el Input field-->
                     <div class="input-field col s12 m6">
-                    <i class="material-icons prefix">supervisor_account</i>
-                        <select id="tipo_usuario"  name="tipo_usuario">
-                            <option value="" disabled selected>Tipo de usuario</option>                            
+                        <i class="material-icons prefix">supervisor_account</i>
+                        <select id="tipo_usuario" name="tipo_usuario">
+                            <option value="" disabled selected>Tipo de usuario</option>
                         </select>
                         <label for="tipo_usuario">Tipo de usuario</label>
                     </div>
@@ -89,7 +89,7 @@ Dashboard_Page::headerTemplate('Administrar usuarios');
                 <div class="row">
                     <!--Estableciendo el tamaño del que tomará el Input field-->
                     <div class="input-field col s12 m6">
-                    <i class="material-icons prefix">account_box</i>
+                        <i class="material-icons prefix">account_box</i>
                         <input id="usuario" name="usuario" type="text" maxlength="10" class="validate" required>
                         <label for="telefono">Usuario</label>
                     </div>
@@ -100,7 +100,7 @@ Dashboard_Page::headerTemplate('Administrar usuarios');
                             <option value="activo">Activo</option>
                             <option value="inactivo">Inactivo</option>
                         </select>
-                    </div>  
+                    </div>
                 </div>
                 <div class="row">
                     <div class="col s10 offset-s1 center-align">
