@@ -17,35 +17,52 @@ function fillTable(dataset) {
     // Se recorre el conjunto de registros (dataset) fila por fila a través del objeto row.
     dataset.map(function (row) {
         fechape = row.fecha_pedido;
+        estado = row.estado;
         // Se crean y concatenan las filas de la tabla con los datos de cada registro.
-        if (fechape == null) {
+        if (fechape == null && estado == "En preparacion") {
             content += `
                 <tr>
                     <td>${row.id_pedido}</td>
                     <td>${row.estado}</td>
+                    <td>${row.total}</td>
                     <td>No definida</td>
                     <td>${row.direccion}</td>
                     <td>${row.cliente}</td>
+                    <td>${row.usuario}</td>
                     <td>
                         <a href="#" onclick="openAct(${row.id_pedido})" class="btn waves-effect blue tooltipped" data-tooltip="Finalizar pedido"><i class="material-icons">task_alt</i></a>
-                        <a href="#" onclick="openEntrega(${row.id_pedido})" class="btn waves-effect green tooltipped" data-tooltip="Dar por entregado"><i class="material-icons">local_shipping</i></a>
-                        <a href="#" onclick="openCancel(${row.id_pedido})" class="btn waves-effect red tooltipped" data-tooltip="Cancelar pedido"><i class="material-icons">event_busy</i></a>
                         <a href="#" onclick="openAct2(${row.id_pedido})" class="btn blue-grey tooltipped" data-tooltip="Ver detalle"><i class="material-icons">shopping_cart</i></a>
                     </td>
                 </tr>
             `;
-        } else {
+
+        } else if(fechape != null && estado == "Finalizado") {
             content += `
                 <tr>
                     <td>${row.id_pedido}</td>
                     <td>${row.estado}</td>
+                    <td>${row.total}</td>
                     <td>${row.fecha_pedido}</td>
                     <td>${row.direccion}</td>
                     <td>${row.cliente}</td>
+                    <td>${row.usuario}</td>
                     <td>
-                        <a href="#" onclick="openAct(${row.id_pedido})" class="btn waves-effect blue tooltipped" data-tooltip="Finalizar pedido"><i class="material-icons">task_alt</i></a>
                         <a href="#" onclick="openEntrega(${row.id_pedido})" class="btn waves-effect green tooltipped" data-tooltip="Dar por entregado"><i class="material-icons">local_shipping</i></a>
-                        <a href="#" onclick="openCancel(${row.id_pedido})" class="btn waves-effect red tooltipped" data-tooltip="Cancelar pedido"><i class="material-icons">event_busy</i></a>
+                        <a href="#" onclick="openAct2(${row.id_pedido})" class="btn blue-grey tooltipped" data-tooltip="Ver detalle"><i class="material-icons">shopping_cart</i></a>
+                    </td>
+                </tr>
+            `;
+        } else if(fechape != null && estado == "Entregado") {
+            content += `
+                <tr>
+                    <td>${row.id_pedido}</td>
+                    <td>${row.estado}</td>
+                    <td>${row.total}</td>
+                    <td>${row.fecha_pedido}</td>
+                    <td>${row.direccion}</td>
+                    <td>${row.cliente}</td>
+                    <td>${row.usuario}</td>
+                    <td>
                         <a href="#" onclick="openAct2(${row.id_pedido})" class="btn blue-grey tooltipped" data-tooltip="Ver detalle"><i class="material-icons">shopping_cart</i></a>
                     </td>
                 </tr>

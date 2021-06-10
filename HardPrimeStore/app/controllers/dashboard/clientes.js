@@ -21,6 +21,7 @@ function fillTable(dataset) {
             <tr>
                 <td>${row.nombre}</td>
                 <td>${row.apellido}</td>
+                <td>${row.usuario}</td>
                 <td>${row.correo}</td>
                 <td>${row.direccion}</td>
                 <td>${row.celular}</td>
@@ -153,17 +154,29 @@ function openAct2(id) {
         let content = '';
         // Se recorre el conjunto de registros (dataset) fila por fila a través del objeto row.
         dataset.map(function (row) {
-            // Se crean y concatenan las filas de la tabla con los datos de cada registro.
-            content += `
-            <tr>
-                <td>${row.id_pedido}</td>
-                <td>${row.estado}</td>
-                <td>${row.fecha_pedido}</td>
-                <td>${row.fecha_envio}</td>
-                <td>${row.direccion}</td>
-                <td>${row.encargado}</td>
-            </tr>
-            `;
+            estado = row.fecha_pedido;
+            if (estado ==  null) {
+                content += `
+                    <tr>
+                        <td>${row.id_pedido}</td>
+                        <td>${row.estado}</td>
+                        <td>No definida</td>
+                        <td>${row.direccion}</td>
+                        <td>${row.total}</td>
+                        </tr>
+                `;
+            } else {
+                content += `
+                    <tr>
+                        <td>${row.id_pedido}</td>
+                        <td>${row.estado}</td>
+                        <td>${row.fecha_pedido}</td>
+                        <td>${row.direccion}</td>
+                        <td>${row.total}</td>
+                    </tr>
+                `;
+
+            }
         });
         // Se agregan las filas al cuerpo de la tabla mediante su id para mostrar los registros.
         document.getElementById('tbody-rows1').innerHTML = content;

@@ -8,9 +8,9 @@ require_once('../../models/public_valoraciones.php');
 if (isset($_GET['action'])) {
     session_start();
     // Se instancian las clases correspondientes.
-    $valorar = new Valoraciones;
-    // Se declara e inicializa un arreglo para guardar el resultado que retorna la API.
-    $result = array('status' => 0, 'message' => null, 'exception' => null);
+    $valorar = new Public_valoraciones;
+    // Se declara e inicializa un arreglo para guardar el resultado que retorna la API.    
+    $result = array('status' => 0, 'error' => 0, 'message' => null, 'exception' => null);
     // Se compara la acción a realizar según la petición del controlador.
     switch ($_GET['action']) {
         case 'createValoracion':
@@ -62,30 +62,68 @@ if (isset($_GET['action'])) {
                     if (Database::getException()) {
                         $result['exception'] = Database::getException();
                     } else {
-                        $result['exception'] = 'No existen comentarios para mostrar';
+                        $result['exception'] = 'Este producto aun no tiene comentarios.';
                     }
                 }
             } else {
                 $result['exception'] = 'Producto incorrecto';
             }
             break;
-        case 'detalleComentarios':
-            if ($valorar->setIdetalle($_POST['id_pedido'])) {
-                if ($valorar->setIdcliente($_SESSION['id_cliente'])) {
-                    if ($result['dataset'] = $valorar->viewComentarios()) {
-                        $result['status'] = 1;                                                
+            case 'readActualizar':
+                if ($valorar->setId($_POST['id_calificacion'])) {
+                    if ($result['dataset'] = $valorar->readOne()) {
+                        $result['status'] = 1;
                     } else {
                         if (Database::getException()) {
                             $result['exception'] = Database::getException();
                         } else {
-                            $result['exception'] = 'Aun no tienes comentarios en ningun producto de este pedido';
+                            $result['exception'] = 'Calificacion inexistente';
                         }
                     }
                 } else {
-                    $result['exception'] = 'Usuario incorrecto';
+                    $result['exception'] = 'Calificación incorrecto';
+                }
+                break;
+        case 'updateComentario':
+            $_POST = $valorar->validateForm($_POST);
+            if ($valorar->setId($_POST['id_calificacion_act'])) {
+                
+                    if ($valorar->setComentario($_POST['comentario'])) {
+                        if ($valorar->setCalificacion($_POST['calificacion'])) {
+                            if ($valorar->setFecha($_POST['fecha'])) {
+                                if ($valorar->updateComentario()) {
+                                    $result['status'] = 1;
+                                    $result['message'] = 'Calificación modificado correctamente';
+                                } else {
+                                    $result['exception'] = Database::getException();
+                                }
+                            } else {
+                                $result['exception'] = 'Fecha incorrecta';
+                            }
+                        } else {
+                            $result['exception'] = 'La calificación is invalida';
+                        }
+                    } else {
+                        $result['exception'] = 'Comentario incorrecto';
+                    }
+                
+            } else {
+                $result['exception'] = 'No se pudo obtener el comentario';
+            }
+            break;
+        case 'readAll':
+            if ($valorar->setIdcliente($_SESSION['id_cliente'])) {
+                if ($result['dataset'] = $valorar->viewComentarios()) {
+                    $result['status'] = 1;
+                } else {
+                    if (Database::getException()) {
+                        $result['exception'] = Database::getException();
+                    } else {
+                        $result['exception'] = 'Aun no tienes comentarios en ningun producto de este pedido';
+                    }
                 }
             } else {
-                $result['exception'] = 'Pedido incorrecto';
+                $result['exception'] = 'No se ha iniciado sesión';
             }
             break;
         case 'validarComentario':
