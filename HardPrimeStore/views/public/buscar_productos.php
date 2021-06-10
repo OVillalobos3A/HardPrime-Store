@@ -2,7 +2,7 @@
 //Se incluye la clase con las plantillas del documento
 include('../../app/helpers/public/sitio_publico.php');
 //Se imprime la plantilla del encabezado y se envía el titulo para la página web
-Sitio_Publico::headerTemplate('HardPrimeStore - Categorías');
+Sitio_Publico::headerTemplate('HardPrimeStore - Productos');
 ?>
 <main>
     

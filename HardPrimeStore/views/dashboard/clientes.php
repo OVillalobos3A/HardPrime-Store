@@ -26,10 +26,9 @@ Dashboard_Page::headerTemplate('Clientes');
                         <tr>
                             <th>Código pedido</th>
                             <th>Estado</th>
-                            <th>Fecha de realización</th>
-                            <th>Fecha de envío</th>
+                            <th>Fecha del pedido</th>
                             <th>Dirección de envío</th>
-                            <th>Encargado</th>
+                            <th>Total</th>
                         </tr>
                     </thead>
                     <tbody id="tbody-rows1">
@@ -72,10 +71,12 @@ Dashboard_Page::headerTemplate('Clientes');
                         <tr>
                             <th>Nombre</th>
                             <th>Apellido</th>
+                            <th>Usuario</th>
                             <th>Correo</th>
                             <th>Dirección</th>
-                            <th>Celeluar</th>
+                            <th>Celular</th>
                             <th>Estado</th>
+                            <th>Acciones</th>
                         </tr>
                     </thead>
                     <tbody id="tbody-rows">

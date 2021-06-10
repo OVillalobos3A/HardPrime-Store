@@ -107,18 +107,23 @@ function loadCategorias() {
                         url = `buscar_categorias.php?id=${row.id_categoria}`;
                         // Se crean y concatenan las tarjetas con los datos de cada categoría.
                         content += `
-                        <div class="col s12 m6 l3">
-                        <div class="card">
-                            <div class="card-image">
-                                <img src="../../resources/img/categorias/${row.imagen}" width="100" height="200">
-                            </div>
-                            <div class="card-content center-align">
-                                <!--Nombre del producto, precio  y descripción-->
-                                <span class="card-title indigo-text text-darken-4"><b>${row.nombre}</b></span>
-                                <a href="${url}">Ver marca</a>
+                        <div class="col s12 m3">
+                            <div class="card">
+                                <div class="card-image">
+                                    <img src="../../resources/img/categorias/${row.imagen}" width="100" height="200">                                        
+                                </div>
+                                <div class="card-content">
+                                    <br>
+                                    <span class="card-title activator indigo-text text-darken-4"><b>${row.nombre}</b><i class="material-icons right">wysiwyg</i></span>  
+                                    <a href="${url}">Ver categoría</a>
+                                </div>
+                                <div class="card-reveal">
+                                    <span class="card-title grey-text text-darken-4">${row.nombre}<i
+                                            class="material-icons right">close</i></span>
+                                    <p>${row.descripcion}</p>
+                                </div>
                             </div>
                         </div>
-                    </div>
                         `;
                     });
                     // Se agregan las tarjetas a la etiqueta div mediante su id para mostrar las categorías.

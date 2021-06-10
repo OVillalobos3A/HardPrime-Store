@@ -71,12 +71,12 @@ Sitio_Publico::headerTemplate('HardPrimeStore - Producto');
                                 <div class="input-field col s12 m12">
                                     <i class="material-icons prefix">stars</i>
                                     <select id="calificacion" name="calificacion">
-                                        <option value="" disabled selected>Tipo de usuario</option>
-                                        <option value="1" selected>1 estrellas</option>
-                                        <option value="2" selected>2 estrellas</option>
-                                        <option value="3" selected>3 estrellas</option>
-                                        <option value="4" selected>4 estrellas</option>
-                                        <option value="5" selected>5 estrellas</option>
+                                        <option value="" disabled selected>Elige una calificación</option>
+                                        <option value="1">1 estrellas</option>
+                                        <option value="2">2 estrellas</option>
+                                        <option value="3">3 estrellas</option>
+                                        <option value="4">4 estrellas</option>
+                                        <option value="5">5 estrellas</option>
                                     </select>
                                     <label for="calificacion">Ingrese una calificación</label>
                                 </div>
