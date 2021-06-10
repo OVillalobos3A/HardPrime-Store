@@ -7,6 +7,7 @@ class Clientes extends Validator
     // Declaración de atributos (propiedades).
     private $id = null;
     private $estado = null;
+    private $numproducts = null;
     private $estado1 = null;
     private $imagen = null;
     private $direccion = null;
@@ -17,6 +18,7 @@ class Clientes extends Validator
     private $correo = null;
     private $celular = null;
     private $fecha = null;
+    private $cantidad = null;
     private $codigo_recu = null;
     private $ruta = '../../../resources/img/productos/';
 
@@ -33,9 +35,25 @@ class Clientes extends Validator
         }
     }
 
+    public function setNumproducts($value)
+    {
+        if ($this->validateNaturalNumber($value)) {
+            $this->numproducts = $value;
+            return true;
+        } else {
+            return false;
+        }
+    }
+
     public function setEstado($value)
     {
         $this->estado = $value;
+        return true;
+    }
+
+    public function setCantidad($value)
+    {
+        $this->cantidad = $value;
         return true;
     }
 
@@ -153,6 +171,16 @@ class Clientes extends Validator
         return $this->id;
     }
 
+    public function getNumproducts()
+    {
+        return $this->numproducts;
+    }
+
+    public function getCantidad()
+    {
+        return $this->cantidad;
+    }
+
     public function getEstado()
     {
         return $this->estado;
@@ -218,7 +246,7 @@ class Clientes extends Validator
     */
     public function searchRows($value)
     {
-        $sql = 'SELECT id_cliente, nombre, apellido, correo, direccion, celular, estado
+        $sql = 'SELECT id_cliente, nombre, apellido, correo, direccion, celular, estado, usuario
                 FROM clientes 
                 WHERE nombre ILIKE ? OR direccion ILIKE ?
                 ORDER BY nombre';
@@ -228,7 +256,7 @@ class Clientes extends Validator
 
     public function readAll()
     {
-        $sql = 'SELECT id_cliente, nombre, apellido, correo, direccion, celular, estado
+        $sql = 'SELECT id_cliente, nombre, apellido, correo, direccion, celular, estado, usuario
                 FROM clientes 
                 ORDER BY nombre';
         $params = null;
@@ -237,10 +265,10 @@ class Clientes extends Validator
 
     public function viewOrder()
     {
-        $sql = 'SELECT id_pedido, pedido.estado as estado, fecha_envio, fecha_pedido, clientes.nombre as cliente, empleados.nombre as encargado, clientes.direccion as direccion
-                FROM pedido INNER JOIN clientes ON pedido.id_cliente = clientes.id_cliente
-                INNER JOIN empleados ON pedido.id_empleado = empleados.id_empleado
-                WHERE pedido.id_cliente = ?';
+        $sql = "SELECT id_pedido, pedido.estado as estado, fecha_pedido, clientes.direccion as direccion, ('$' || ' ' || sum(detalle_pedido.precio_producto*detalle_pedido.cantidad)) as total
+                FROM pedido INNER JOIN detalle_pedido USING(id_pedido) INNER JOIN clientes USING(id_cliente)
+                WHERE pedido.id_cliente = ?
+                GROUP BY pedido.id_pedido, clientes.direccion";
         $params = array($this->id);
         return Database::getRows($sql, $params);
     }
@@ -295,10 +323,12 @@ class Clientes extends Validator
     public function checkUser($usuario)
     {
         $this->estado = "activo";
-        $sql = 'SELECT id_cliente, usuario FROM clientes WHERE usuario = ? and estado = ? ';
+        $sql = 'SELECT id_cliente, usuario, imagen, correo FROM clientes WHERE usuario = ? and estado = ? ';
         $params = array($usuario, $this->estado);
         if ($data = Database::getRow($sql, $params)) {
             $this->id = $data['id_cliente'];
+            $this->imagen = $data['imagen'];
+            $this->correo = $data['correo'];
             $this->usuario = $data['usuario'];
             $this->alias = $usuario;
             return true;
@@ -331,5 +361,20 @@ class Clientes extends Validator
         } else {
             return false;
         }
+    }
+
+    public function readCantprods()
+    {
+        $sql = "SELECT count(id_detalle) as cantidad
+                FROM pedido INNER JOIN detalle_pedido USING(id_pedido) INNER JOIN clientes USING(id_cliente)          
+                WHERE pedido.estado = 'En preparacion' AND pedido.id_cliente = ?";
+        $params = array($_SESSION['id_cliente']);
+        if ($data = Database::getRow($sql, $params)) {
+            $this->numproducts = $data['cantidad'];
+            return true;
+        } else {
+            return false;
+        }
+        
     }
 }

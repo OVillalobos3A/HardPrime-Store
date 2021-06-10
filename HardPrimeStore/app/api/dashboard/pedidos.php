@@ -69,6 +69,28 @@ if (isset($_GET['action'])) {
                     $result['exception'] = 'Ingrese un valor para buscar';
                 }
                 break;
+            case 'searchPedido':
+                $_POST = $pedidos->validateForm($_POST);
+                if ($_POST['search'] != '') {
+                    if ($result['dataset'] = $pedidos->searchPedido($_POST['search'])) {
+                        $result['status'] = 1;
+                        $rows = count($result['dataset']);
+                        if ($rows > 1) {
+                            $result['message'] = 'Se encontraron ' . $rows . ' coincidencias';
+                        } else {
+                            $result['message'] = 'Solo existe una coincidencia';
+                        }
+                    } else {
+                        if (Database::getException()) {
+                            $result['exception'] = Database::getException();
+                        } else {
+                            $result['exception'] = 'No hay coincidencias';
+                        }
+                    }
+                } else {
+                    $result['exception'] = 'Ingrese un valor para buscar';
+                }
+                break;
             case 'readOne':
                 if ($pedidos->setId($_POST['id_pedido'])) {
                     if ($result['dataset'] = $pedidos->readOne()) {

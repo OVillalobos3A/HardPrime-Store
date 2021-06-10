@@ -77,9 +77,11 @@ Dashboard_Page::headerTemplate('Pedidos');
                                 <tr>
                                     <th>Código pedido</th>
                                     <th>Estado</th>
+                                    <th>Total</th>
                                     <th>Fecha del pedido</th>
                                     <th>Dirección de envío</th>
                                     <th>Cliente</th>
+                                    <th>Usuario(cliente)</th>
                                     <th>Acciones</th>
                                 </tr>
                             </thead>

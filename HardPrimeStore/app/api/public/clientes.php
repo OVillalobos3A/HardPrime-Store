@@ -50,7 +50,6 @@ if (isset($_GET['action'])) {
                                                 if ($cliente->setContraseña($_POST['clave1'])) {
                                                     if (is_uploaded_file($_FILES['imagen']['tmp_name'])) {
                                                         if ($cliente->setImagen($_FILES['imagen'])) {
-
                                                             if ($cliente->saveFile($_FILES['imagen'], $cliente->getRuta(), $cliente->getImagen())) {
                                                                 if ($cliente->createClient()) {
                                                                     $result['status'] = 1;
@@ -104,9 +103,20 @@ if (isset($_GET['action'])) {
                     if ($cliente->checkPassword($_POST['clave'])) {
                         $_SESSION['id_cliente'] = $cliente->getId();
                         $_SESSION['usuario'] = $cliente->getUsuario();
+                        $_SESSION['imagen'] = $cliente->getImagen();
+                        $_SESSION['correo'] = $cliente->getCorreo();
                         //$_SESSION['correo_cliente'] = $cliente->getCorreo();
                         $result['status'] = 1;
                         $result['message'] = 'Autenticación correcta';
+                        if ($cliente->readCantprods()) {
+                            $_SESSION['numcarrito'] = $cliente->getNumproducts();
+                        } else {
+                            if (Database::getException()) {
+                                $result['exception'] = Database::getException();
+                            } else {
+                                $result['exception'] = 'Error desconocido';
+                            }
+                        }
                     } else {
                         if (Database::getException()) {
                             $result['exception'] = Database::getException();
