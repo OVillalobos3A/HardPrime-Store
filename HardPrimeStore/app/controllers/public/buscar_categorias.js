@@ -69,22 +69,26 @@ function openProductC(id) {
                   response.dataset.map(function (row) {
                       url = `vista_producto.php?id=${row.id_producto}`;
                       // Se crean y concatenan las tarjetas con los datos de cada producto.
-                      content += `                  
-                          <div class="col s12 m3">
-                    <div class="card">
-                        <div class="card-image">
-                            <img src="../../resources/img/productos/${row.imagen}"  width="100" height="200">
-                            <a class="btn-floating halfway-fab waves-effect waves-light red"><i class="material-icons">add_shopping_cart</i></a>
-                        </div>
-
-                        <div class="card-content">
-                            <span class="card-title indigo-text text-darken-4"><b>${row.nombre}</b></span>
-                            <h6 class="orange-text text-darken-4"><b>${row.precio}</b></h6>
-                            <p>${row.descripcion}</p>
-                            <a href="${url}" id="link1">Ver producto</a>
-                        </div>
-                    </div>
-                </div>
+                      content += `                                          
+                            <div class="col s12 m3">
+                                <div class="card">
+                                    <div class="card-image">
+                                        <img src="../../resources/img/productos/${row.imagen}" width="100" height="200">
+                                        <a href="#" onclick="openCreateDialog()" class="btn-floating halfway-fab waves-effect waves-light red"><i class="material-icons">add_shopping_cart</i></a>
+                                    </div>
+                                    <div class="card-content">
+                                        <br>
+                                        <span class="card-title activator grey-text text-darken-4">${row.nombre}<i class="material-icons right">wysiwyg</i></span>
+                                        <h6 class="orange-text text-darken-4"><b>${row.precio}</b></h6>
+                                        <a href="${url}">Ver producto</a>
+                                    </div>
+                                    <div class="card-reveal">
+                                        <span class="card-title grey-text text-darken-4">${row.nombre}<i
+                                                class="material-icons right">close</i></span>
+                                        <p>${row.descripcion}</p>
+                                    </div>
+                                </div>
+                            </div>
                       `;
                   });
                   // Se agregan las tarjetas a la etiqueta div mediante su id para mostrar los productos.
