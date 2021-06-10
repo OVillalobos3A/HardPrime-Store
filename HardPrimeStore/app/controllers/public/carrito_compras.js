@@ -97,7 +97,7 @@ function readOrderDetail() {
 }
 
 // Función para abrir una caja de dialogo (modal) con el formulario de cambiar cantidad de producto.
-function openUpdateDialog(id, quantity, product) {
+function openUpdateDialog(id, quantity, product) {    
     // Se abre la caja de dialogo (modal) que contiene el formulario.
     let instance = M.Modal.getInstance(document.getElementById('item-modal'));
     instance.open();
@@ -105,6 +105,7 @@ function openUpdateDialog(id, quantity, product) {
     document.getElementById('id_detalle').value = id;
     document.getElementById('cantidad_producto').value = quantity;
     document.getElementById('id_producto').value = product;
+    document.getElementById('stock').value = quantity;
     // Se actualizan los campos para que las etiquetas (labels) no queden sobre los datos.
     M.updateTextFields();
 }
@@ -113,32 +114,68 @@ function openUpdateDialog(id, quantity, product) {
 document.getElementById('item-form').addEventListener('submit', function (event) {
     // Se evita recargar la página web después de enviar el formulario.
     event.preventDefault();
-
-    fetch(API_CARRITO + 'updateDetail', {
-        method: 'post',
-        body: new FormData(document.getElementById('item-form'))
-    }).then(function (request) {
-        // Se verifica si la petición es correcta, de lo contrario se muestra un mensaje indicando el problema.
-        if (request.ok) {
-            request.json().then(function (response) {
-                // Se comprueba si la respuesta es satisfactoria, de lo contrario se muestra un mensaje con la excepción.
-                if (response.status) {
-                    // Se actualiza la tabla en la vista para mostrar el cambio de la cantidad de producto.
-                    readOrderDetail();
-                    // Se cierra la caja de dialogo (modal) del formulario.
-                    let instance = M.Modal.getInstance(document.getElementById('item-modal'));
-                    instance.close();
-                    sweetAlert(1, response.message, null);
+    let stock = document.getElementById('stock').value;
+    let nquantity = document.getElementById('cantidad_producto').value;
+    if (stock == nquantity) {
+        document.getElementById('mensaje').textContent = "Por favor ingrese una cantidad que no sea igual, para poder efectuar un cambio.";
+    } else {
+        if (stock > nquantity) {
+            fetch(API_CARRITO + 'updateDetail', {
+                method: 'post',
+                body: new FormData(document.getElementById('item-form'))
+            }).then(function (request) {
+                // Se verifica si la petición es correcta, de lo contrario se muestra un mensaje indicando el problema.
+                if (request.ok) {
+                    request.json().then(function (response) {
+                        // Se comprueba si la respuesta es satisfactoria, de lo contrario se muestra un mensaje con la excepción.
+                        if (response.status) {
+                            // Se actualiza la tabla en la vista para mostrar el cambio de la cantidad de producto.
+                            readOrderDetail();
+                            // Se cierra la caja de dialogo (modal) del formulario.
+                            let instance = M.Modal.getInstance(document.getElementById('item-modal'));
+                            instance.close();
+                            sweetAlert(1, response.message, null);
+                        } else {
+                            sweetAlert(2, response.exception, null);
+                        }
+                    });
                 } else {
-                    sweetAlert(2, response.exception, null);
+                    console.log(request.status + ' ' + request.statusText);
                 }
+            }).catch(function (error) {
+                console.log(error);
             });
-        } else {
-            console.log(request.status + ' ' + request.statusText);
+        } else if (stock < nquantity){
+            let total = nquantity - stock;
+            document.getElementById('sbuscar').value = total;
+            fetch(API_CARRITO + 'updateDetail1', {
+                method: 'post',
+                body: new FormData(document.getElementById('item-form'))
+            }).then(function (request) {
+                // Se verifica si la petición es correcta, de lo contrario se muestra un mensaje indicando el problema.
+                if (request.ok) {
+                    request.json().then(function (response) {
+                        // Se comprueba si la respuesta es satisfactoria, de lo contrario se muestra un mensaje con la excepción.
+                        if (response.status) {
+                            // Se actualiza la tabla en la vista para mostrar el cambio de la cantidad de producto.
+                            readOrderDetail();
+                            // Se cierra la caja de dialogo (modal) del formulario.
+                            let instance = M.Modal.getInstance(document.getElementById('item-modal'));
+                            instance.close();
+                            sweetAlert(1, response.message, null);
+                        } else {
+                            sweetAlert(2, response.exception, null);
+                        }
+                    });
+                } else {
+                    console.log(request.status + ' ' + request.statusText);
+                }
+            }).catch(function (error) {
+                console.log(error);
+            });
         }
-    }).catch(function (error) {
-        console.log(error);
-    });
+        
+    }
 });
 
 // Función para mostrar un mensaje de confirmación al momento de eliminar un producto del carrito.
@@ -218,6 +255,10 @@ function finishOrder() {
             sweetAlert(4, 'Puede seguir comprando', null);
         }
     });
+}
+
+function clearField() {
+    document.getElementById('mensaje').textContent = "";
 }
 
   

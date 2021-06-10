@@ -14,21 +14,23 @@ Sitio_Publico::headerTemplate('HardPrimeStore - Carrito de compras');
                     <span class="card-title center-align"><b>Carrito de compras</b></span>
                     <br>
                     <!--Creacion de la tabla para los productos del pedido-->
-                    <table class="responsive-table">
-                        <thead>
-                        <!--Se crean las filas con los elementos que va a llevar la tabla-->
-                            <tr>
-                                <th>Producto</th>
-                                <th>Nombre</th>
-                                <th>Precio</th>
-                                <th>Cantidad</th>
-                                <th>Subtotal</th>
-                                <th>Acciones</th>
-                            </tr>
-                        </thead>
-                        <tbody id="tabla-carrito">
-                        </tbody>
-                    </table>
+                    <div class="row">
+                        <table class="responsive-table">
+                            <thead>
+                            <!--Se crean las filas con los elementos que va a llevar la tabla-->
+                                <tr>
+                                    <th>Producto</th>
+                                    <th>Nombre</th>
+                                    <th>Precio</th>
+                                    <th>Cantidad</th>
+                                    <th>Subtotal</th>
+                                    <th>Acciones</th>
+                                </tr>
+                            </thead>
+                            <tbody id="tabla-carrito">
+                            </tbody>
+                        </table>
+                    </div>
                 </div>
             </div>
         </div>
@@ -42,10 +44,9 @@ Sitio_Publico::headerTemplate('HardPrimeStore - Carrito de compras');
                     <!--Boton para ir a la pagina de confirmar pedido-->
                     <div class="card-action" id="btnconfirmar">
                         <a onclick="finishOrder()" class="waves-effect deep-orange lighten-1 btn"><i class="material-icons left">task</i>Finalizar pedido</a>
-                        <a class="waves-effect red btn"><i class="material-icons left">cancel_presentation</i>Cancelar pedido</a>
                     </div>
                     <div class="card-action" id="btnconfirmar">
-                        <a class="waves-effect deep-orange lighten-1 btn"><i class="material-icons left">keyboard_return</i>Seguir comprando</a>
+                        <a href="index.php" class="waves-effect deep-orange lighten-1 btn"><i class="material-icons left">keyboard_return</i>Seguir comprando</a>
                     </div>
                 </div>
             </div>
@@ -61,6 +62,8 @@ Sitio_Publico::headerTemplate('HardPrimeStore - Carrito de compras');
                 <!-- Campo oculto para asignar el id del registro al momento de modificar -->
                 <input type="number" id="id_detalle" name="id_detalle" class="hide"/>
                 <input type="number" id="id_producto" name="id_producto" class="hide"/>
+                <input type="number" id="stock" name="stock" class="hide"/>
+                <input type="number" id="sbuscar" name="sbuscar" class="hide"/>
                 <div class="row">
                     <div class="input-field col s12 m4 offset-m4">
                         <i class="material-icons prefix">list</i>
@@ -69,8 +72,9 @@ Sitio_Publico::headerTemplate('HardPrimeStore - Carrito de compras');
                     </div>
                 </div>
                 <div class="row center-align">
-                    <a href="#" class="btn waves-effect grey tooltipped modal-close" data-tooltip="Cancelar"><i class="material-icons">cancel</i></a>
+                    <a onclick="clearField()" href="#" class="btn waves-effect grey tooltipped modal-close" data-tooltip="Cancelar"><i class="material-icons">cancel</i></a>
                     <button type="submit" class="btn waves-effect blue tooltipped" data-tooltip="Guardar"><i class="material-icons">save</i></button>
+                    <h6><b id="mensaje"></b></h6>
                 </div>
             </form>
         </div>

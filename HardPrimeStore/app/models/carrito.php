@@ -6,10 +6,12 @@ class Pedidos extends Validator
 {
     // Declaración de atributos (propiedades).
     private $id_pedido = null;
+    private $numproducts = null;
     private $id_detalle = null;
     private $cliente = null;
     private $producto = null;
     private $cantidad = null;
+    private $cantidad1 = null;
     private $precio = null;
     private $estado = null; // Valor por defecto en la base de datos: 0
     /*
@@ -17,7 +19,6 @@ class Pedidos extends Validator
     *   "En preparacion". Es cuando el pedido esta en proceso por parte del cliente y se puede modificar el detalle.
     *   "Finalizado". Es cuando el cliente finaliza el pedido y ya no es posible modificar el detalle.
     *   "Entregado". Es cuando la tienda ha entregado el pedido al cliente.
-    *   "Cancelado". Es cuando el cliente se arrepiente de haber realizado el pedido.
     */
 
     /*
@@ -27,6 +28,16 @@ class Pedidos extends Validator
     {
         if ($this->validateNaturalNumber($value)) {
             $this->id_pedido = $value;
+            return true;
+        } else {
+            return false;
+        }
+    }
+
+    public function setNumproducts($value)
+    {
+        if ($this->validateNaturalNumber($value)) {
+            $this->numproducts = $value;
             return true;
         } else {
             return false;
@@ -73,6 +84,16 @@ class Pedidos extends Validator
         }
     }
 
+    public function setCantidad1($value)
+    {
+        if ($this->validateNaturalNumber($value)) {
+            $this->cantidad1 = $value;
+            return true;
+        } else {
+            return false;
+        }
+    }
+
     public function setPrecio($value)
     {
         if ($this->validateMoney($value)) {
@@ -95,6 +116,11 @@ class Pedidos extends Validator
     public function getIdPedido()
     {
         return $this->id_pedido;
+    }
+
+    public function getNumproducts()
+    {
+        return $this->numproducts;
     }
 
     /*
@@ -188,6 +214,15 @@ class Pedidos extends Validator
         return Database::getRows($sql, $params);
     }
 
+    public function verifyQuantity()
+    {
+        $sql = "SELECT nombre, stock 
+                FROM productos 
+                WHERE id_producto = ? and stock >= ?";
+        $params = array($this->producto,$this->cantidad1);
+        return Database::getRows($sql, $params);
+    }
+
     public function verifyProduct()
     {
         $sql = "SELECT id_producto
@@ -198,7 +233,31 @@ class Pedidos extends Validator
             $this->producto = $data['id_producto'];
         } else {
         }
-    }  
+    } 
+    
+    //Función para obtener el número de productos que se encuentran en el carrito
+    public function readCantprods()
+    {
+        $sql = "SELECT count(id_detalle) as cantidad
+                FROM pedido INNER JOIN detalle_pedido USING(id_pedido) INNER JOIN clientes USING(id_cliente)          
+                WHERE pedido.estado = 'En preparacion' AND pedido.id_cliente = ?";
+        $params = array($_SESSION['id_cliente']);
+        if ($data = Database::getRow($sql, $params)) {
+            $this->numproducts = $data['cantidad'];
+            return true;
+        } else {
+            return false;
+        }
+        
+    }
 
-
+    //Verificando que el producto elegido no se haya elgido previamente
+    public function verifyDuplicidad()
+    {
+        $sql = "SELECT id_producto
+                FROM detalle_pedido INNER JOIN pedido USING(id_pedido)
+                WHERE id_producto = ? and detalle_pedido.id_pedido = ?";
+        $params = array($this->producto, $_SESSION['id_pedido']);
+        return Database::getRows($sql, $params);
+    }
 }

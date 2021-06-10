@@ -16,31 +16,45 @@ if (isset($_GET['action'])) {
         $result['session'] = 1;
         // Se compara la acción a realizar cuando un cliente ha iniciado sesión.
         switch ($_GET['action']) {
-            case 'createDetail':
-                if ($pedido->startOrder()) {
-                    $_POST = $pedido->validateForm($_POST);
-                    if ($pedido->setProducto($_POST['id_producto'])) {
-                        if ($pedido->setCantidad($_POST['cantidad_producto'])) {
+        case 'createDetail':
+            if ($pedido->startOrder()) {
+                $_SESSION['id_pedido'] = $pedido->getIdPedido();
+                $_POST = $pedido->validateForm($_POST);
+                if ($pedido->setProducto($_POST['id_producto'])) {
+                    if ($pedido->setCantidad($_POST['cantidad_producto'])) {
+                        if ($pedido->verifyDuplicidad()) {
+                            $result['exception'] = 'Este producto ya ha sido agregado al carrito';
+                        } else {
                             if ($pedido->verifyCantidad()) {
                                 if ($pedido->createDetail()) {
                                     $result['status'] = 1;
                                     $result['message'] = 'Producto agregado correctamente';
+                                    if ($pedido->readCantprods()) {
+                                        $_SESSION['numcarrito'] = $pedido->getNumproducts();
+                                    } else {
+                                        if (Database::getException()) {
+                                            $result['exception'] = Database::getException();
+                                        } else {
+                                            $result['exception'] = 'Error desconocido';
+                                        }
+                                    }
                                 } else {
                                     $result['exception'] = 'Ocurrió un problema al agregar el producto';
                                 }
                             } else {
                                 $result['exception'] = 'No puede elegir más producto de lo que ya hay';
                             }
-                        } else {
-                            $result['exception'] = 'Cantidad incorrecta';
                         }
                     } else {
-                        $result['exception'] = 'Producto incorrecto';
+                        $result['exception'] = 'Cantidad incorrecta';
                     }
                 } else {
-                    $result['exception'] = 'Ocurrió un problema al obtener el pedido';
+                    $result['exception'] = 'Producto incorrecto';
                 }
-                break;
+            } else {
+                $result['exception'] = 'Ocurrió un problema al obtener el pedido';
+            }
+            break;
             case 'readOrderDetail':
                 if ($pedido->startOrder()) {
                     if ($result['dataset'] = $pedido->readOrderDetail()) {
@@ -57,20 +71,45 @@ if (isset($_GET['action'])) {
                     $result['exception'] = 'Debe agregar un producto al carrito';
                 }
                 break;
+            case 'updateDetail1':
+                $_POST = $pedido->validateForm($_POST);
+                if ($pedido->setIdDetalle($_POST['id_detalle'])) {
+                    if ($pedido->setProducto($_POST['id_producto'])) {
+                        if ($pedido->setCantidad($_POST['cantidad_producto'])) {
+                            if ($pedido->setCantidad1($_POST['sbuscar'])) {
+                                if ($pedido->verifyQuantity()) {
+                                    if ($pedido->updateDetail()) {
+                                        $result['status'] = 1;
+                                        $result['message'] = 'Cantidad modificada correctamente';
+                                    } else {
+                                        $result['exception'] = 'Ocurrió un problema al modificar la cantidad';
+                                    }
+                                } else {
+                                    $result['exception'] = 'No puede elegir más producto de lo que ya hay';
+                                }
+                            } else {
+                                $result['exception'] = 'Cantidad1 incorrecta';
+                            }
+                        } else {
+                            $result['exception'] = 'Cantidad incorrecta';
+                        }
+                    } else {
+                        $result['exception'] = 'Producto incorrecto';
+                    }
+                } else {
+                    $result['exception'] = 'Detalle incorrecto';
+                }
+                break;
             case 'updateDetail':
                 $_POST = $pedido->validateForm($_POST);
                 if ($pedido->setIdDetalle($_POST['id_detalle'])) {
                     if ($pedido->setProducto($_POST['id_producto'])) {
                         if ($pedido->setCantidad($_POST['cantidad_producto'])) {
-                            if ($pedido->verifyCantidad()) {
-                                if ($pedido->updateDetail()) {
-                                    $result['status'] = 1;
-                                    $result['message'] = 'Cantidad modificada correctamente';
-                                } else {
-                                    $result['exception'] = 'Ocurrió un problema al modificar la cantidad';
-                                }
+                            if ($pedido->updateDetail()) {
+                                $result['status'] = 1;
+                                $result['message'] = 'Cantidad modificada correctamente';
                             } else {
-                                $result['exception'] = 'No puede elegir más producto de lo que ya hay';
+                                $result['exception'] = 'Ocurrió un problema al modificar la cantidad';
                             }
                         } else {
                             $result['exception'] = 'Cantidad incorrecta';
@@ -87,6 +126,15 @@ if (isset($_GET['action'])) {
                     if ($pedido->deleteDetail()) {
                         $result['status'] = 1;
                         $result['message'] = 'Producto removido correctamente';
+                        if ($pedido->readCantprods()) {
+                            $_SESSION['numcarrito'] = $pedido->getNumproducts();
+                        } else {
+                            if (Database::getException()) {
+                                $result['exception'] = Database::getException();
+                            } else {
+                                $result['exception'] = 'Error desconocido';
+                            }
+                        }
                     } else {
                         $result['exception'] = 'Ocurrió un problema al remover el producto';
                     }
@@ -98,6 +146,15 @@ if (isset($_GET['action'])) {
                 if ($pedido->finishOrder()) {
                     $result['status'] = 1;
                     $result['message'] = 'Pedido finalizado correctamente';
+                    if ($pedido->readCantprods()) {
+                        $_SESSION['numcarrito'] = $pedido->getNumproducts();
+                    } else {
+                        if (Database::getException()) {
+                            $result['exception'] = Database::getException();
+                        } else {
+                            $result['exception'] = 'Error desconocido';
+                        }
+                    }
                 } else {
                     $result['exception'] = 'Ocurrió un problema al finalizar el pedido';
                 }
