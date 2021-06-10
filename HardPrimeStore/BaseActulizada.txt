@@ -264,3 +264,72 @@ Create table detalle_pedido(
 	FOREIGN KEY (id_producto) REFERENCES productos (id_producto),
 	FOREIGN KEY (id_pedido) REFERENCES pedido (id_pedido)
 );
+
+--Trigger para la resta de productos cuando se agregue un detalle por primera vez al carrito--
+Create function restProduct() returns Trigger
+as
+$$
+
+begin
+
+update productos set stock = stock - new.cantidad where id_producto = new.id_producto;
+
+return new;
+end
+$$
+Language plpgsql
+
+Create trigger RestP after insert on detalle_pedido
+for each row
+execute procedure restProduct()
+
+
+--Trigger para la suma de productos cuando se elimine un detalle en el  carrito--
+Create function returnProduct() returns Trigger
+as
+$$
+
+begin
+
+update productos set stock = stock + old.cantidad where id_producto = old.id_producto;
+
+return new;
+end
+$$
+Language plpgsql
+
+Create trigger AddP after delete on detalle_pedido
+for each row
+execute procedure  returnProduct()
+
+
+
+------Trigger para controlar las modificaciones de la cantidad de los productos en el carrito----
+Create function actuproduct() returns Trigger
+as 
+$$
+declare
+quantityold integer :=old.cantidad;
+quantitynew integer :=new.cantidad;
+total integer = 0;
+begin
+
+if (quantityold < quantitynew) then
+	total = quantitynew - quantityold;
+	update productos set stock = stock - total where id_producto = old.id_producto;
+end if;
+
+if (quantityold > quantitynew)then
+	total = quantityold - quantitynew;
+	update productos set stock = stock + total where id_producto = old.id_producto;
+end if;
+
+return new;
+End
+$$
+Language plpgsql;
+
+Create trigger Actp after update on detalle_pedido
+for each row
+execute procedure  actuproduct()
+	
