@@ -16,6 +16,8 @@ class Sitio_Publico
               <!--Let browser know website is optimized for mobile-->
               <meta name="viewport" content="width=device-width, initial-scale=1.0" />
               <link type="text/css" rel="stylesheet" href="../../resources/css/styles.css" />
+              <!--Título del documento-->
+              <title>'.$title.'</title>
             </head>            
             <body>
             ');
@@ -33,22 +35,20 @@ class Sitio_Publico
                   <a href="index.php" class="brand-logo hide-on-large-only"> &nbsp;&nbsp;<img class="responsive-img" src="../../resources/img/public/Logo2.png" width="200"></a>
                   <a href="#" data-target="slide-out" class="sidenav-trigger"><i class="material-icons">menu</i></a>                  
                   <ul class="right hide-on-med-and-down">                  
-                  <li><a href="#" class="dropdown-trigger" data-target="dropdown"><i class="material-icons left">account_circle</i>Usuario: <b>' . $_SESSION['usuario'] . '</b></a></li>
+                  <li><a href="mi_cuenta.php" data-target="dropdown"><i class="material-icons left">account_circle</i>Usuario: <b>' . $_SESSION['usuario'] . '</b></a></li>
+                  <a class="waves-effect waves-light btn blue-grey" onclick="logOut()"><i class="material-icons right">exit_to_app</i> Cerrar Sesión</a>
               </ul>
                   <ul id="dropdown" class="dropdown-content">                                        
-                                        <li><a href="#" onclick="logOut()"><i class="material-icons">clear</i>Salir</a></li>
+                      
                   </ul> 
                                       
                   </div>
                   <div class="nav-content nav-wrapper">
                     <ul class="tabs tabs-transparent hide-on-med-and-down" id="nav-mobile">
-                      <li class="tab"><a href="buscar_productos.php">Categorías</a></li>
-                      <li class="tab"><a class="active" href="sobre_nosotros.php">Sobre nosotros</a></li>
-                      <li class="tab"><a href="servicio_al_cliente.php">Servicio al cliente</a></li>
-                      <li class="tab"><a href="mi_cuenta.php">Mi cuenta</a></li>
-            
-            
-            
+                      <li class="tab"><a class="active" href="index.php">Inicio</a></li>
+                      <li class="tab"><a class="active" href="buscar_productos.php">Productos</a></li>
+                      <li class="tab"><a class="active" href="sobre_nosotros.php">Sobre nosotros</a></li>                      
+                      <li class="tab"><a class="active" href="mi_cuenta.php">Mi cuenta</a></li>
                       <!--Formulario para el buscador-->
                       <li class="tab">
                         <form>
@@ -60,7 +60,7 @@ class Sitio_Publico
                         </form>
                       </li>
             
-                      <li class="right"><a class="waves-effect light-blue darken-4 btn-large btn-flat white-text tooltipped" href="carrito_compras.php" data-position="bottom" data-tooltip="0 productos"><i class="material-icons left">shopping_cart</i>Carrito de compras</a></li>
+                      <li class="right"><a class="waves-effect light-blue darken-4 btn-large btn-flat white-text tooltipped" href="carrito_compras.php" data-position="bottom" data-tooltip="' . $_SESSION['numcarrito'] . ' productos"><i class="material-icons left">shopping_cart</i>Carrito de compras</a></li>
                     </ul>
             
                   </div>
@@ -72,107 +72,33 @@ class Sitio_Publico
                     <div class="user-view">
                       <div class="background light-blue darken-4">
                       </div>
-                      <img class="circle" src="../../resources/img/public/Monitor.jpg">
-                      <span class="white-text name">John Doe</span>
-                      <span class="white-text email">jdandturk@gmail.com</span>
+                      <img class="circle" src="../../resources/img/productos/' . $_SESSION['imagen'] . '">
+                      <span class="white-text name">' . $_SESSION['usuario'] . '</span>
+                      <span class="white-text email">' . $_SESSION['correo'] . '</span>
                     </div>
                   </li>
-                  <li><a href="login.php"><i class="material-icons">person</i>Iniciar sesion</a></li>
+                  <li><a href="index.php"><i class="material-icons">home</i>Inicio</a></li>
+                  <li>
+                    <div class="divider"></div>
+                  </li>
                   <li><a href="mi_cuenta.php"><i class="material-icons">person</i>Mi cuenta</a></li>
+                  <li>
+                    <div class="divider"></div>
+                  </li>
                   <li><a href="carrito_compras.php"><i class="material-icons">shopping_cart</i>Carrito de compras</a></li>
                   <li>
                     <div class="divider"></div>
                   </li>
+                  <li><a href="buscar_productos.php"><i class="material-icons">keyboard</i>Productos</a></li>
                   <li>
-                    <form>
-                      <div class="input-field">
-                        <input id="search" type="search" required>
-                        <label class="label-icon" for="search"><i class="material-icons">search</i></label>
-                        <i class="material-icons">close</i>
-                      </div>
-                    </form>
+                    <div class="divider"></div>
                   </li>
-                  
-                  <li><a class="waves-effect" href="servicio_al_cliente.php">Servicio al cliente</a></li>
-                  <li><a class="waves-effect" href="sobre_nosotros.php">Sobre Nosotros</a></li>
-            
-                  <li class="no-padding">
-                    <ul class="collapsible collapsible-accordion">
-                      <li>
-                        <a class="collapsible-header">Categorías<i class="material-icons">arrow_drop_down</i></a>
-                        <div class="collapsible-body">
-                          <ul>
-                            <li class="no-padding">
-                              <ul class="collapsible collapsible-accordion">
-                                <li>
-                                  <a class="collapsible-header">Perifericos<i class="material-icons">arrow_drop_down</i></a>
-                                  <div class="collapsible-body">
-                                    <ul>
-                                      <li><a href="buscar_productos.php">Teclados</a></li>
-                                      <li><a href="buscar_productos.php">Mouse</a></li>
-                                      <li><a href="buscar_productos.php">Camaras</a></li>
-                                      <li><a href="buscar_productos.php">Microfonos</a></li>
-                                      <li><a href="buscar_productos.php">Audifonos</a></li>
-                                    </ul>
-                                  </div>
-                                </li>
-                              </ul>
-                            </li>
-                            <li class="no-padding">
-                    <ul class="collapsible collapsible-accordion">
-                      <li>
-                        <a class="collapsible-header">Repuestos<i class="material-icons">arrow_drop_down</i></a>
-                        <div class="collapsible-body">
-                          <ul>
-                            <li><a href="buscar_productos.php">Disco Duro</a></li>
-                            <li><a href="buscar_productos.php">Tarjeta Gráfica</a></li>
-                            <li><a href="buscar_productos.php">Memorias</a></li>
-                            <li><a href="buscar_productos.php">Baterías</a></li>
-                            <li><a href="buscar_productos.php">Pantallas</a></li>
-                            <li><a href="buscar_productos.php">Cargadores</a></li>
-                          </ul>
-                        </div>
-                      </li>
-                    </ul>
+                  <li><a href="sobre_nosotros.php"><i class="material-icons">import_contacts</i>Sobre nosotros</a></li>
+                  <li>
+                    <div class="divider"></div>
                   </li>
-                  <li class="no-padding">
-                    <ul class="collapsible collapsible-accordion">
-                      <li>
-                        <a class="collapsible-header">Componentes<i class="material-icons">arrow_drop_down</i></a>
-                        <div class="collapsible-body">
-                          <ul>
-                            <li><a href="buscar_productos.php">Tarjetas de video</a></li>
-                            <li><a href="buscar_productos.php">Fuentes de poder</a></li>
-                            <li><a href="buscar_productos.php">Cases</a></li>                            
-                          </ul>
-                        </div>
-                      </li>
-                    </ul>
-                  </li>
-                  <li class="no-padding">
-                  <ul class="collapsible collapsible-accordion">
-                      <li>
-                          <a class="collapsible-header">Marcas<i class="material-icons">arrow_drop_down</i></a>
-                          <div class="collapsible-body">
-                              <ul>
-                                  <li><a href="buscar_productos.php">HP</a></li>
-                                  <li><a href="buscar_productos.php">Dell</a></li>
-                                  <li><a href="buscar_productos.php">Logitech</a></li>
-                                  <li><a href="buscar_productos.php">Lenovo</a></li>
-                                  <li><a href="buscar_productos.php">Acer</a></li>                                                    
-                              </ul>
-                          </div>
-                      </li>
-                  </ul>
-              </li>
-             </ul>
-         </div>
-        </li>
-       </ul>
-      </li>      
-     </ul>
-            
-            
+                  <li><a class="waves-effect waves-light btn blue-grey" onclick="logOut()"> Cerrar Sesión</a></li>
+                </ul>
               </header>
             ');            
           }else{            
@@ -191,12 +117,9 @@ class Sitio_Publico
                   </div>
                   <div class="nav-content nav-wrapper">
                     <ul class="tabs tabs-transparent hide-on-med-and-down">
-                      <li class="tab"><a href="buscar_productos.php">Categorías</a></li>
-                      <li class="tab"><a class="active" href="sobre_nosotros.php">Sobre nosotros</a></li>
-                      <li class="tab"><a href="servicio_al_cliente.php">Servicio al cliente</a></li>
-                      <li class="tab"><a href="mi_cuenta.php">Mi cuenta</a></li>
-            
-            
+                      <li class="tab"><a class="active" href="index.php">Inicio</a></li>
+                      <li class="tab"><a class="active" href="buscar_productos.php">Productos</a></li>
+                      <li class="tab"><a class="active" href="sobre_nosotros.php">Sobre nosotros</a></li>                      
             
                       <!--Formulario para el buscador-->
                       <li class="tab">
@@ -221,107 +144,27 @@ class Sitio_Publico
                     <div class="user-view">
                       <div class="background light-blue darken-4">
                       </div>
-                      <img class="circle" src="../../resources/img/public/Monitor.jpg">
-                      <span class="white-text name">John Doe</span>
-                      <span class="white-text email">jdandturk@gmail.com</span>
+                      <span class="white-text name">¡Bienvenido a HardPrime Store!</span>
+                      <span class="white-text email">Por favor, inicia sesión para disfrutar de nuestros servicios.</span>
                     </div>
                   </li>
-                  <li><a href="login.php"><i class="material-icons">person</i>Iniciar sesion</a></li>
-                  <li><a href="mi_cuenta.php"><i class="material-icons">person</i>Mi cuenta</a></li>
-                  <li><a href="carrito_compras.php"><i class="material-icons">shopping_cart</i>Carrito de compras</a></li>
+                  <li><a href="index.php"><i class="material-icons">home</i>Inicio</a></li>
                   <li>
                     <div class="divider"></div>
                   </li>
+                  <li><a href="login.php"><i class="material-icons">person</i>Iniciar sesión</a></li>
                   <li>
-                    <form>
-                      <div class="input-field">
-                        <input id="search" type="search" required>
-                        <label class="label-icon" for="search"><i class="material-icons">search</i></label>
-                        <i class="material-icons">close</i>
-                      </div>
-                    </form>
+                    <div class="divider"></div>
                   </li>
-                  
-                  <li><a class="waves-effect" href="servicio_al_cliente.php">Servicio al cliente</a></li>
-                  <li><a class="waves-effect" href="sobre_nosotros.php">Sobre Nosotros</a></li>
-            
-                  <li class="no-padding">
-                    <ul class="collapsible collapsible-accordion">
-                      <li>
-                        <a class="collapsible-header">Categorías<i class="material-icons">arrow_drop_down</i></a>
-                        <div class="collapsible-body">
-                          <ul>
-                            <li class="no-padding">
-                              <ul class="collapsible collapsible-accordion">
-                                <li>
-                                  <a class="collapsible-header">Perifericos<i class="material-icons">arrow_drop_down</i></a>
-                                  <div class="collapsible-body">
-                                    <ul>
-                                      <li><a href="buscar_productos.php">Teclados</a></li>
-                                      <li><a href="buscar_productos.php">Mouse</a></li>
-                                      <li><a href="buscar_productos.php">Camaras</a></li>
-                                      <li><a href="buscar_productos.php">Microfonos</a></li>
-                                      <li><a href="buscar_productos.php">Audifonos</a></li>
-                                    </ul>
-                                  </div>
-                                </li>
-                              </ul>
-                            </li>
-                            <li class="no-padding">
-                    <ul class="collapsible collapsible-accordion">
-                      <li>
-                        <a class="collapsible-header">Repuestos<i class="material-icons">arrow_drop_down</i></a>
-                        <div class="collapsible-body">
-                          <ul>
-                            <li><a href="buscar_productos.php">Disco Duro</a></li>
-                            <li><a href="buscar_productos.php">Tarjeta Gráfica</a></li>
-                            <li><a href="buscar_productos.php">Memorias</a></li>
-                            <li><a href="buscar_productos.php">Baterías</a></li>
-                            <li><a href="buscar_productos.php">Pantallas</a></li>
-                            <li><a href="buscar_productos.php">Cargadores</a></li>
-                          </ul>
-                        </div>
-                      </li>
-                    </ul>
+                  <li><a href="buscar_productos.php"><i class="material-icons">keyboard</i>Productos</a></li>
+                  <li>
+                    <div class="divider"></div>
                   </li>
-                  <li class="no-padding">
-                    <ul class="collapsible collapsible-accordion">
-                      <li>
-                        <a class="collapsible-header">Componentes<i class="material-icons">arrow_drop_down</i></a>
-                        <div class="collapsible-body">
-                          <ul>
-                            <li><a href="buscar_productos.php">Tarjetas de video</a></li>
-                            <li><a href="buscar_productos.php">Fuentes de poder</a></li>
-                            <li><a href="buscar_productos.php">Cases</a></li>                            
-                          </ul>
-                        </div>
-                      </li>
-                    </ul>
+                  <li><a href="sobre_nosotros.php"><i class="material-icons">import_contacts</i>Sobre nosotros</a></li>
+                  <li>
+                    <div class="divider"></div>
                   </li>
-                  <li class="no-padding">
-                  <ul class="collapsible collapsible-accordion">
-                      <li>
-                          <a class="collapsible-header">Marcas<i class="material-icons">arrow_drop_down</i></a>
-                          <div class="collapsible-body">
-                              <ul>
-                                  <li><a href="buscar_productos.php">HP</a></li>
-                                  <li><a href="buscar_productos.php">Dell</a></li>
-                                  <li><a href="buscar_productos.php">Logitech</a></li>
-                                  <li><a href="buscar_productos.php">Lenovo</a></li>
-                                  <li><a href="buscar_productos.php">Acer</a></li>                                                    
-                              </ul>
-                          </div>
-                      </li>
-                  </ul>
-              </li>
-           </ul>
-          </div>
-        </li>
-       </ul>
-     </li>      
-    </ul>
-           
-            
+                </ul>
               </header>
             '
                   

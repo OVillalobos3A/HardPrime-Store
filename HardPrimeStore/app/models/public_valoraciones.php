@@ -2,7 +2,7 @@
 /*
 *	Clase para manejar la tabla productos de la base de datos. Es clase hija de Validator.
 */
-class Valoraciones extends Validator
+class Public_valoraciones extends Validator
 {
     // Declaración de atributos (propiedades).
     private $id = null;
@@ -167,19 +167,37 @@ class Valoraciones extends Validator
 
     public function viewComentarios()
     {        
-        $sql = "SELECT comentario, calificaciones.fecha as fecha, calificaciones.estado as estado, calificacion, productos.nombre as nombre
+        $sql = 'SELECT calificaciones.id_calificacion as id_calificacion, comentario, calificaciones.fecha as fecha, calificaciones.estado as estado, calificacion, productos.nombre as nombre
         FROM productos INNER JOIN calificaciones USING(id_producto)
-        INNER JOIN clientes USING (id_cliente)
-        INNER JOIN detalle_pedido USING (id_producto)
-        INNER JOIN pedido USING (id_pedido)				
-        WHERE id_pedido = ? and calificaciones.id_cliente = ?";
-        $params = array($this->idetalle, $this->idcliente);
+        INNER JOIN clientes USING (id_cliente)              		
+        WHERE calificaciones.id_cliente = ?
+        ORDER BY calificaciones.fecha';
+        $params = array($this->idcliente);
         return Database::getRows($sql, $params);
+    }
+
+    public function readOne()
+    {        
+        $sql = 'SELECT id_calificacion, calificacion, comentario, fecha, estado 
+                FROM calificaciones
+                WHERE id_calificacion = ?';
+        $params = array($this->id);
+        return Database::getRow($sql, $params);
+    }
+   
+    public function updateComentario()
+    {
+        $this->estado = 'Deshabilitado';
+        $sql = 'UPDATE calificaciones
+                SET comentario = ?, calificacion = ?, estado = ?, fecha = ?
+                WHERE id_calificacion = ?';
+        $params = array($this->comentario, $this->calificacion, $this->estado, $this->fecha, $this->id);
+        return Database::executeRow($sql, $params);
     }
 
     public function validarComentario()
     {        
-        $this->estado = 'Finalizado';
+        $this->estado = 'Entregado';
         $sql = "SELECT pedido.id_cliente as id_cliente
                 FROM productos	INNER JOIN detalle_pedido USING(id_producto)
                 INNER JOIN pedido USING(id_pedido)

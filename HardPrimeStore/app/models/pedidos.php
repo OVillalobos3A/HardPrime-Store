@@ -44,19 +44,31 @@ class Pedidos extends Validator
     */
     public function searchRows($value)
     {
-        $sql = "SELECT id_pedido, pedido.estado as estado, fecha_pedido, (clientes.nombre || ' ' || clientes.apellido) as cliente, clientes.direccion as direccion
-                FROM pedido INNER JOIN clientes ON pedido.id_cliente = clientes.id_cliente
+        $sql = "SELECT DISTINCT id_pedido, pedido.estado as estado, fecha_pedido, (clientes.nombre || ' ' || clientes.apellido) as cliente, clientes.direccion as direccion, usuario,
+                ('$' || ' ' || sum(detalle_pedido.precio_producto*detalle_pedido.cantidad)) as total
+                FROM pedido INNER JOIN detalle_pedido USING(id_pedido) INNER JOIN clientes USING(id_cliente)
                 WHERE clientes.nombre ILIKE ? OR pedido.estado ILIKE ? OR clientes.direccion ILIKE ?
-                ORDER BY clientes";
+                GROUP BY pedido.id_pedido, clientes.nombre, clientes.apellido, clientes.direccion, clientes.usuario";
         $params = array("%$value%", "%$value%", "%$value%");
         return Database::getRows($sql, $params);
     }
 
+    public function searchPedido($value)
+    {
+        $int = (int)$value;
+        $sql = "SELECT id_pedido, pedido.estado as estado, fecha_pedido, clientes.direccion as direccion, ('$' || ' ' || sum(detalle_pedido.precio_producto*detalle_pedido.cantidad)) as total
+                FROM pedido INNER JOIN detalle_pedido USING(id_pedido) INNER JOIN clientes USING(id_cliente)
+                WHERE pedido.id_cliente = ? and pedido.estado ILIKE ? or pedido.id_pedido = ?
+                GROUP BY pedido.id_pedido, clientes.direccion";
+        $params = array($_SESSION['id_cliente'], "%$value%", $int);
+        return Database::getRows($sql, $params);
+    }
     public function readAll()
     {
-        $sql = "SELECT id_pedido, pedido.estado as estado, fecha_pedido, (clientes.nombre || ' ' || clientes.apellido) as cliente, clientes.direccion as direccion
-                FROM pedido INNER JOIN clientes ON pedido.id_cliente = clientes.id_cliente
-                ORDER BY cliente";
+        $sql = "SELECT DISTINCT id_pedido, pedido.estado as estado, fecha_pedido, (clientes.nombre || ' ' || clientes.apellido) as cliente, clientes.direccion as direccion, usuario,
+                ('$' || ' ' || sum(detalle_pedido.precio_producto*detalle_pedido.cantidad)) as total
+                FROM pedido INNER JOIN detalle_pedido USING(id_pedido) INNER JOIN clientes USING(id_cliente)
+                GROUP BY pedido.id_pedido, clientes.nombre, clientes.apellido, clientes.direccion, clientes.usuario";
         $params = null;
         return Database::getRows($sql, $params);
     }
@@ -102,11 +114,14 @@ class Pedidos extends Validator
 
     public function updateRow()
     {
+         // Se establece la zona horaria local para obtener la fecha del servidor.
+        date_default_timezone_set('America/El_Salvador');
+        $date = date('Y-m-d');
         $this->estado = "Finalizado";
         $sql = 'UPDATE pedido
-                SET estado = ?
+                SET estado = ?, fecha_pedido = ?
                 WHERE id_pedido = ?';
-        $params = array($this->estado, $this->id);
+        $params = array($this->estado, $date, $this->id);
         return Database::executeRow($sql, $params);
     }
 
@@ -135,7 +150,7 @@ class Pedidos extends Validator
     {
         $sql = "SELECT id_pedido, pedido.estado as estado, fecha_pedido, clientes.direccion as direccion, ('$' || ' ' || sum(detalle_pedido.precio_producto*detalle_pedido.cantidad)) as total
                 FROM pedido INNER JOIN detalle_pedido USING(id_pedido) INNER JOIN clientes USING(id_cliente)
-                WHERE pedido.id_cliente = ? and pedido.estado <> 'En preparacion' and pedido.estado <> 'Cancelado'
+                WHERE pedido.id_cliente = ? and pedido.estado <> 'En preparacion'
                 GROUP BY pedido.id_pedido, clientes.direccion";
         $params = array($_SESSION['id_cliente']);
         return Database::getRows($sql, $params);

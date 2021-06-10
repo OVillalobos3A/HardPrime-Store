@@ -299,7 +299,7 @@ function mostrarComentarios(id) {
                     M.Tooltip.init(document.querySelectorAll('.tooltipped'));
                 } else {
                     // Se presenta un mensaje de error cuando no existen datos para mostrar.
-                    document.getElementById('seccion_comentarios').innerHTML = `<i class="material-icons small">cloud_off</i><span class="red-text">${response.exception}</span>`;
+                    document.getElementById('seccion_comentarios').innerHTML = `<i class="material-icons small">mode_comment</i><span class="red-text"> ${response.exception}</span>`;
                 }
             });
         } else {
@@ -328,10 +328,18 @@ function viewProm(id) {
                   // Se recorre el conjunto de registros devuelto por la API (dataset) fila por fila a través del objeto row.
                   response.dataset.map(function (row) {
                       
-                      // Se crean y concatenan las tarjetas con los datos de cada producto.
-                      content += `                  
+                      if(row.calificacion == null){
+                        content +=                         
+                        `                  
+                        <h5 class="center-align">Calificación promedio: 0.0 estrellas</h5>
+                        `;
+                      }
+                      else{
+                        content +=                         
+                      `                  
                       <h5 class="center-align">Calificación promedio: ${row.calificacion} estrellas</h5>
                       `;
+                      }                      
                   });
                     // Se agregan las tarjetas a la etiqueta div mediante su id para mostrar los productos.
                     document.getElementById('calificacion_prom').innerHTML = content;    
@@ -341,7 +349,7 @@ function viewProm(id) {
                     M.Tooltip.init(document.querySelectorAll('.tooltipped'));
                 } else {
                     // Se presenta un mensaje de error cuando no existen datos para mostrar.
-                    document.getElementById('calificacion_prom').innerHTML = `<i class="material-icons small">cloud_off</i><span class="red-text">${response.exception}</span>`;
+                    document.getElementById('calificacion_prom').innerHTML = `<h5 class="center-align">Calificación promedio: 0.0 estrellas</h5>`;
                 }
             });
         } else {

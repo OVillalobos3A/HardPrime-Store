@@ -25,7 +25,7 @@ Sitio_Publico::headerTemplate('HardPrimeStore - Mi cuenta');
                     <!--Se especifica la clase para hacer responsive la tabla, y el tipo de tabla-->
                     <!--Se especifica el detalle de cada fila y columna-->
                     <form method="post" id="form1" enctype="multipart/form-data">
-                        <input class="hide" type="number" id="id_pedido" name="id_pedido"/>
+                        <input class="hide" type="number" id="id_pedido" name="id_pedido" />
                         <div class="row">
                             <table class="responsive-table striped">
                                 <thead>
@@ -44,37 +44,6 @@ Sitio_Publico::headerTemplate('HardPrimeStore - Mi cuenta');
                 </div>
             </div>
 
-            <div class="card whithe" id="ocultable_2">
-                <div class="card-content Black-text">
-                    <!--Se especifica el titulo de la card-->
-                    <span class="card-title center-align">Comentarios del pedido</span>
-                    <br>
-                    <!--Se añade un boton para regresar a los pedidos-->                    
-                    <br>
-                    <br>
-                    <!--Se construye la tabla de datos correspondiente al detalle del pedido-->
-                    <!--Se especifica la clase para hacer responsive la tabla, y el tipo de tabla-->
-                    <!--Se especifica el detalle de cada fila y columna-->
-                    <form method="post" id="form2" enctype="multipart/form-data">
-                        <input class="hide" type="number" id="id_pedido" name="id_pedido"/>
-                        <div class="row">
-                            <table class="responsive-table striped">
-                                <thead>
-                                    <tr>                     
-                                        <th class="center align">Producto</th>                                                           
-                                        <th class="center align">Estado</th>
-                                        <th class="center align">Calificación</th>                                        
-                                        <th class="center align">Fecha</th>
-                                        <th class="center align">Comentario</th>
-                                    </tr>
-                                </thead>
-                                <tbody id="tbody-rows_2">
-                                </tbody>
-                            </table>
-                        </div>
-                    </form>
-                </div>
-            </div>
             <!--Contenedor para mostrar la card contenedora de la tabla de datos correspondiente a pedidos.-->
             <!--Se le asigna el id "ocultable1" lo que nos permite que cuando cargue esta sección desaparezca-->
             <!--la sección número 1-->
@@ -87,8 +56,8 @@ Sitio_Publico::headerTemplate('HardPrimeStore - Mi cuenta');
                         <div class="row">
                             <div class="input-field col s12 m6">
                                 <i class="material-icons prefix">search</i>
-                                <input id="search" type="text" name="search"  maxlength="40" required/>
-                                <label for="autocomplete-input">Cliente, estado, o dirección</label>
+                                <input id="search" type="text" name="search" maxlength="40" required />
+                                <label for="autocomplete-input">Código o estado del pedido</label>
                             </div>
                             <div class="input-field s12 m6">
                                 <button class="btn red" type="submit" name="action">Buscar
@@ -122,8 +91,71 @@ Sitio_Publico::headerTemplate('HardPrimeStore - Mi cuenta');
                     </form>
                 </div>
             </div>
+
+            <div class="card whithe" id="ocultable_2">
+                <div class="card-content Black-text">
+                    <!--Se especifica el titulo de la card-->
+                    <span class="card-title center-align"><b>Historial de comentarios realizados</b></span>
+                    <br>
+                    <!--Se construye la tabla de datos correspondiente a los comentarios del cliente-->
+                    <!--Se especifica la clase para hacer responsive la tabla, y el tipo de tabla-->
+                    <!--Se especifica el detalle de cada fila y columna-->
+                    <form method="post" id="form2" enctype="multipart/form-data">
+                        <input class="hide" type="number" id="id_pedido" name="id_pedido" />
+                        <div class="row">
+                            <table class="responsive-table striped">
+                                <thead>
+                                    <tr>
+                                        <th class="center align">Producto</th>
+                                        <th class="center align">Estado</th>
+                                        <th class="center align">Calificación</th>
+                                        <th class="center align">Fecha</th>
+                                        <th class="center align">Comentario</th>
+                                        <th class="center align">Editar</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="tbody-rows_2">
+                                </tbody>
+                            </table>
+                        </div>
+                    </form>
+                </div>
+            </div>
+            <div id="comment-modal" class="modal">
+        <div class="modal-content">
+            <!-- Título para la caja de dialogo -->
+            <h4 class="center-align">Editar valoración</h4>
+            <!-- Formulario para cambiar la cantidad de producto -->
+            <form method="post" id="comment-form" enctype="multipart/form-data">
+                <!-- Campo oculto para asignar el id del registro al momento de modificar -->
+                <input class="hide" type="date" id="fecha" name="fecha"/>
+                <input type="text" id="id_calificacion_act" name="id_calificacion_act" class="hide"/>
+                <div class="row">                          
+                    <div class="input-field col s12 m10">                  
+                    <i class="material-icons prefix">stars</i>
+                        <select id="calificacion" name="calificacion" required>
+                            <option value="" disabled selected>Elige una calificación</option>
+                            <option value="1">1 estrellas</option>
+                            <option value="2">2 estrellas</option>
+                            <option value="3">3 estrellas</option>
+                            <option value="4">4 estrellas</option>
+                            <option value="5">5 estrellas</option>
+                        </select>                                                
+                    </div>
+                    <div class="input-field col s12 m12">
+                        <h6>Escribe tu comentario:</h6>
+                        <textarea id="comentario" name="comentario" class="materialize-textarea black-text" required></textarea>
+                    </div>
+                </div>
+                <div class="row center-align">
+                    <a href="#" class="btn waves-effect grey tooltipped modal-close" data-tooltip="Cancelar"><i class="material-icons">cancel</i></a>
+                    <button type="submit" class="btn waves-effect blue tooltipped" data-tooltip="Guardar"><i class="material-icons">save</i></button>                    
+                </div>
+            </form>
         </div>
     </div>
+        </div>
+    </div>    
 </main>
 
 <?php
