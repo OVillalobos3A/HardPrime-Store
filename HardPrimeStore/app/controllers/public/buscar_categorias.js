@@ -2,42 +2,6 @@
 const API_INDEX =  '../../app/api/public/index.php?action=';
 
 document.addEventListener('DOMContentLoaded', function() {
-    var elems = document.querySelectorAll('.sidenav');
-    var instances = M.Sidenav.init(elems);
-
-    var elems = document.querySelectorAll('.slider');
-    var instances = M.Slider.init(elems);
-    
-    var elems = document.querySelectorAll('.carousel');
-    var instances = M.Carousel.init(elems, {
-      fullWidth: true,
-      indicators: true});  
-    var elems = document.querySelectorAll('.autocomplete');
-    var instances = M.Autocomplete.init(elems);
-
-    var elems = document.querySelectorAll('.collapsible');
-    var instances = M.Collapsible.init(elems);
-
-    var elems = document.querySelectorAll('.materialboxed');
-    var instances = M.Materialbox.init(elems);    
-
-    var elems = document.querySelectorAll('.modal');
-    var instances = M.Modal.init(elems);
-    
-    var elems = document.querySelectorAll('.tooltipped');
-    var instances = M.Tooltip.init(elems);
-
-    var elems = document.querySelectorAll('select');
-    var instances = M.FormSelect.init(elems);
-
-    var elems = document.querySelectorAll('.datepicker');
-    var instances = M.Datepicker.init(elems);
-
-    //Se inicializa el componente nav dropdwn (navegación despegable)
-    let dropdowns = document.querySelectorAll('.dropdown-trigger');
-    let instancia_dropwdown = M.Dropdown.init(dropdowns, {
-    hover:false});
-
     // Se busca en la URL las variables (parámetros) disponibles.
     let params = new URLSearchParams(location.search);
     // Se obtienen los datos localizados por medio de las variables.
@@ -73,8 +37,7 @@ function openProductC(id) {
                             <div class="col s12 m3">
                                 <div class="card">
                                     <div class="card-image">
-                                        <img src="../../resources/img/productos/${row.imagen}" width="100" height="200">
-                                        <a href="#" onclick="openCreateDialog()" class="btn-floating halfway-fab waves-effect waves-light red"><i class="material-icons">add_shopping_cart</i></a>
+                                        <img src="../../resources/img/productos/${row.imagen}" width="100" height="200">                                        
                                     </div>
                                     <div class="card-content">
                                         <br>
@@ -99,7 +62,7 @@ function openProductC(id) {
                   M.Tooltip.init(document.querySelectorAll('.tooltipped'));
               } else {
                   // Se presenta un mensaje de error cuando no existen datos para mostrar.
-                  document.getElementById('title').innerHTML = `<i class="material-icons small">cloud_off</i><span class="red-text">${response.exception}</span>`;
+                  document.getElementById('contenido').innerHTML = `<i class="material-icons small"></i><h5>No hay productos disponibles :(</h5>`;
               }
           });
       } else {

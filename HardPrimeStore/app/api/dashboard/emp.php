@@ -23,6 +23,7 @@ if (isset($_GET['action'])) {
                     $result['exception'] = 'Ocurrió un problema al cerrar la sesión';
                 }
                 break;
+            //Método para consultar la existencia de empleados
             case 'readAll':
                 if ($result['dataset'] = $usuario->readAll()) {
                     $result['status'] = 1;
@@ -34,6 +35,7 @@ if (isset($_GET['action'])) {
                     }
                 }
                 break;
+            //Método para consultar la existencia de empleados sin tener en cuenta la existencia del usuario root
             case 'readAll2':
                 if ($result['dataset'] = $usuario->readAll2()) {
                     $result['status'] = 1;
@@ -45,6 +47,7 @@ if (isset($_GET['action'])) {
                     }
                 }
                 break;
+            //Método para buscar un empleado
             case 'search':
                 $_POST = $usuario->validateForm($_POST);
                 if ($_POST['search'] != '') {
@@ -67,6 +70,7 @@ if (isset($_GET['action'])) {
                     $result['exception'] = 'Ingrese un valor para buscar';
                 }
                 break;
+            //Método para crear un empleado
             case 'create':
                 $_POST = $usuario->validateForm($_POST);
                 if ($usuario->setNombre($_POST['nombre'])) {
@@ -116,6 +120,7 @@ if (isset($_GET['action'])) {
                     $result['exception'] = 'Nombres incorrectos';
                 }
                 break;
+            //Método para consultar la existencia de un empleado
             case 'readOne':
                 if ($usuario->setId($_POST['id_empleado'])) {
                     if ($result['dataset'] = $usuario->readOne()) {
@@ -131,6 +136,8 @@ if (isset($_GET['action'])) {
                     $result['exception'] = 'Empleado incorrecto';
                 }
                 break;
+            //Método para consultar si el empleado nunca ha utilizado el sistema
+            //Validación de primer uso
             case 'readPrimerUso':
                 if ($usuario->setId($_SESSION['id_usuario'])) {
                     $usuario->primerUso();
@@ -142,8 +149,9 @@ if (isset($_GET['action'])) {
                 } else {
                     $result['exception'] = 'Usuario Inexistente';
                 }
-
                 break;
+            //Método para consultar la información del empleado que ha iniciado sesión
+            //y mostrarla en la página de bienvenida
             case 'openName':
                 if ($result['dataset'] = $usuario->readOne1()) {
                     $result['status'] = 1;
@@ -155,6 +163,7 @@ if (isset($_GET['action'])) {
                     }
                 }
                 break;
+            //Método para consultar la información del empleado para mandarla al modal
             case 'readEmfileds':
                 if ($result['dataset'] = $usuario->readEmfileds()) {
                     $result['status'] = 1;
@@ -166,6 +175,7 @@ if (isset($_GET['action'])) {
                     }
                 }
                 break;
+            //Método para cambiar la contraseña por defecto
             case 'updatePass':
                 $_POST = $usuario->validateForm($_POST);
                 if ($usuario->setId($_SESSION['id_usuario'])) {
@@ -185,6 +195,7 @@ if (isset($_GET['action'])) {
                     $result['exception'] = 'Usuario incorrecto';
                 }
                 break;
+            //Método para actualizar un empleado
             case 'update':
                 $_POST = $usuario->validateForm($_POST);
                 if ($usuario->setId($_POST['id_empleado'])) {
@@ -247,6 +258,7 @@ if (isset($_GET['action'])) {
                     $result['exception'] = 'Empleado incorrecto';
                 }
                 break;
+            //Método para actualizar la información del empleado que se encuentra iniciado sesión
             case 'updateProfile':
                 $_POST = $usuario->validateForm($_POST);
                 if ($usuario->setId($_POST['id_empleado'])) {
@@ -297,6 +309,8 @@ if (isset($_GET['action'])) {
                     $result['exception'] = 'Empleado incorrecto';
                 }
                 break;
+            //Método para actualizar las credenciales del empleado 
+            //que ha iniciado sesión
             case 'updateUserCredentials':
                 $_POST = $usuario->validateForm($_POST);
                 if ($usuario->setId($_POST['id_usuario'])) {
@@ -351,6 +365,7 @@ if (isset($_GET['action'])) {
                     $result['exception'] = 'Usuario incorrecto';
                 }
                 break;
+            //Método para eliminar un empleado
             case 'delete':
                 // if ($_POST['id_empleado'] != $_SESSION['id_empleado']) {
                 if ($usuario->setId($_POST['id_empleado'])) {
@@ -381,6 +396,7 @@ if (isset($_GET['action'])) {
     } else {
         // Se compara la acción a realizar cuando el administrador no ha iniciado sesión.
         switch ($_GET['action']) {
+            //Método para consultar la existencia de la cantidad de empleados
             case 'readAll':
                 if ($usuario->readAll()) {
                     $result['status'] = 1;
@@ -394,6 +410,7 @@ if (isset($_GET['action'])) {
                     }
                 }
                 break;
+            //Método para crear el primer usuario.
             case 'peme':
                 $_POST = $usuario->validateForm($_POST);
                 if ($usuario->setNombre($_POST['nombre'])) {
@@ -456,6 +473,7 @@ if (isset($_GET['action'])) {
                     $result['exception'] = 'Nombres incorrectos';
                 }
                 break;
+            //Método para el proceso de login para los empleados(dashboard)
             case 'logIn':
                 $_POST = $usuario->validateForm($_POST);
                 if ($usuario->checkUser($_POST['alias'])) {

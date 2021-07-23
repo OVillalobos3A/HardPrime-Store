@@ -254,6 +254,7 @@ class Clientes extends Validator
         return Database::getRows($sql, $params);
     }
 
+    //Método para seleccionar todos los clientes registrados
     public function readAll()
     {
         $sql = 'SELECT id_cliente, nombre, apellido, correo, direccion, celular, estado, usuario
@@ -263,6 +264,7 @@ class Clientes extends Validator
         return Database::getRows($sql, $params);
     }
 
+    //Método para seleccionar un pedido de un cliente en especifico
     public function viewOrder()
     {
         $sql = "SELECT id_pedido, pedido.estado as estado, fecha_pedido, clientes.direccion as direccion, ('$' || ' ' || sum(detalle_pedido.precio_producto*detalle_pedido.cantidad)) as total
@@ -273,6 +275,7 @@ class Clientes extends Validator
         return Database::getRows($sql, $params);
     }
 
+    //Método para seleccionar un cliente
     public function readOne()
     {
         $sql = 'SELECT id_cliente, nombre, apellido, correo, direccion, celular, estado
@@ -282,9 +285,10 @@ class Clientes extends Validator
         return Database::getRow($sql, $params);
     }
 
+    //Método para seleccionar a un cliente en especifico, cuando el estado es inactivo
     public function readOne1()
     {
-        $this->estado1 = "Inactivo";
+        $this->estado1 = "inactivo";
         $sql = 'SELECT id_cliente, nombre, estado
                 FROM clientes 
                 WHERE id_cliente = ? and estado = ?';
@@ -292,9 +296,10 @@ class Clientes extends Validator
         return Database::getRow($sql, $params);
     }
 
+    //Método para actualizar el estado de un cliente a Activo
     public function updateRow()
     {
-        $this->estado = "Activo";
+        $this->estado = "activo";
         $sql = 'UPDATE clientes
                 SET estado = ?
                 WHERE id_cliente = ?';
@@ -302,9 +307,10 @@ class Clientes extends Validator
         return Database::executeRow($sql, $params);
     }
 
+    //Método para actualizar el estado de un cliente a Inactivo
     public function updateRow1()
     {
-        $this->estado = "Inactivo";
+        $this->estado = "inactivo";
         $sql = 'UPDATE clientes
                 SET estado = ?
                 WHERE id_cliente = ?';
@@ -312,6 +318,7 @@ class Clientes extends Validator
         return Database::executeRow($sql, $params);
     }
 
+    //Método para eliminar un cliente
     public function deleteRow()
     {
         $sql = 'DELETE FROM clientes
@@ -320,6 +327,7 @@ class Clientes extends Validator
         return Database::executeRow($sql, $params);
     }
 
+    //Método para seleccionar la información del cliente
     public function checkUser($usuario)
     {
         $this->estado = "activo";
@@ -337,6 +345,7 @@ class Clientes extends Validator
         }
     }
 
+    //Método para seleccionar la contraseña de un cliente en especifico
     public function checkPassword($password)
     {
         $sql = 'SELECT contraseña FROM clientes WHERE id_cliente = ?';
@@ -349,6 +358,7 @@ class Clientes extends Validator
         }
     }
 
+    //Método para registrar un cliente
     public function createClient()
     {
         $hash = password_hash($this->contraseña, PASSWORD_DEFAULT);
@@ -363,6 +373,7 @@ class Clientes extends Validator
         }
     }
 
+    //Método para seleccionar la cantidad de productos que tiene un clinete en especifico
     public function readCantprods()
     {
         $sql = "SELECT count(id_detalle) as cantidad

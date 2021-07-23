@@ -15,6 +15,7 @@ if (isset($_GET['action'])) {
     if (isset($_SESSION['id_cliente'])) {
         // Se compara la acción a realizar cuando un cliente ha iniciado sesión.
         switch ($_GET['action']) {
+            //Método que valida si el cliente ha iniciado sesión
             case 'sesion':
                 if (isset($_SESSION['id_cliente'])) {
                     $result['status'] = 1;                    
@@ -36,6 +37,7 @@ if (isset($_GET['action'])) {
     } else {
         // Se compara la acción a realizar cuando el cliente no ha iniciado sesión.
         switch ($_GET['action']) {
+            //Método para regsitrar un cliente
             case 'register':
                 $_POST = $cliente->validateForm($_POST);
                 // Se sanea el valor del token para evitar datos maliciosos.
@@ -96,6 +98,7 @@ if (isset($_GET['action'])) {
                 }
 
                 break;
+            //Método para llevar a cabo el proceso de inicio de sesión del sitio público
             case 'logIn':
                 $_POST = $cliente->validateForm($_POST);
                 if ($cliente->checkUser($_POST['usuario'])) {
@@ -131,7 +134,7 @@ if (isset($_GET['action'])) {
                     if (Database::getException()) {
                         $result['exception'] = Database::getException();
                     } else {
-                        $result['exception'] = 'Alias incorrecto';
+                        $result['exception'] = 'Alias incorrecto o cuenta desactivada';
                     }
                 }
                 break;

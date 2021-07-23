@@ -127,7 +127,6 @@ Dashboard_Page::headerTemplate('Página Principal');
         <!--Estableciendo el tamaño de cada div correspondiente-->
         <form method="post" id="primer-form" enctype="multipart/form-data">
             <!-- Campo oculto para asignar el id del registro al momento de modificar -->
-            
             <div class="row">                
                 <div class="input-field col s12 m6">
                     <i class="material-icons prefix">add_moderator</i>

@@ -1,33 +1,7 @@
 // Constante para establecer la ruta y parámetros de comunicación con la API.
 const API_CLIENTES = '../../app/api/public/clientes.php?action=';
 
-document.addEventListener('DOMContentLoaded', function() {
-    var elems = document.querySelectorAll('.sidenav');
-    var instances = M.Sidenav.init(elems);
-
-    var elems = document.querySelectorAll('.autocomplete');
-    var instances = M.Autocomplete.init(elems);
-
-    var elems = document.querySelectorAll('.collapsible');
-    var instances = M.Collapsible.init(elems);
-
-    var elems = document.querySelectorAll('.materialboxed');
-    var instances = M.Materialbox.init(elems);    
-
-    var elems = document.querySelectorAll('.modal');
-    var instances = M.Modal.init(elems);
-    
-    var elems = document.querySelectorAll('.tooltipped');
-    var instances = M.Tooltip.init(elems);
-
-    var elems = document.querySelectorAll('select');
-    var instances = M.FormSelect.init(elems);
-
-    //Se inicializa el componente nav dropdwn (navegación despegable)
-    let dropdowns = document.querySelectorAll('.dropdown-trigger');
-    let instancia_dropwdown = M.Dropdown.init(dropdowns, {
-    hover:false});
-
+document.addEventListener('DOMContentLoaded', function() {   
     let today = new Date();
     // Se declara e inicializa una variable para guardar el día en formato de 2 dígitos.
     let day = ('0' + today.getDate()).slice(-2);

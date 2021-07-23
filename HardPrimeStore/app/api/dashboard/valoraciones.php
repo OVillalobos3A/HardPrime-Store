@@ -15,6 +15,7 @@ if (isset($_GET['action'])) {
     if (isset($_SESSION['id_usuario'])) {
         // Se compara la acción a realizar cuando un administrador ha iniciado sesión.
         switch ($_GET['action']) {
+            //Método para consultar la existencia de todas las valoraciones registradas
             case 'readAll':
                 if ($result['dataset'] = $val->readAll()) {
                     $result['status'] = 1;
@@ -26,6 +27,7 @@ if (isset($_GET['action'])) {
                     }
                 }
                 break;
+            //Método buscar una valoración
             case 'search':
                 $_POST = $val->validateForm($_POST);
                 if ($_POST['search'] != '') {
@@ -48,6 +50,7 @@ if (isset($_GET['action'])) {
                     $result['exception'] = 'Ingrese un valor para buscar';
                 }
                 break;
+            //Método para consultar la información de una valoración
             case 'readOne':
                 if ($val->setId($_POST['id_calificacion'])) {
                     if ($result['dataset'] = $val->readOne()) {
@@ -63,6 +66,7 @@ if (isset($_GET['action'])) {
                     $result['exception'] = 'Valoración incorrecta';
                 }
                 break;
+            //Método para consultar la información de una valoración de un cliente
             case 'readOne1':
                 if ($val->setId($_POST['id_calificacion'])) {
                     if ($result['dataset'] = $val->readOne1()) {
@@ -78,6 +82,7 @@ if (isset($_GET['action'])) {
                     $result['exception'] = 'Valoración incorrecta';
                 }
                 break;
+            //Método para actualizar la información de una valoración
             case 'update':
                 $_POST = $val->validateForm($_POST);
                 if ($val->setId($_POST['id_calificacion'])) {
@@ -102,6 +107,7 @@ if (isset($_GET['action'])) {
                     $result['exception'] = 'Valoración incorrecta';
                 }
                 break;
+            //Método para eliminar una valoración
             case 'delete':
                 if ($val->setId($_POST['id_calificacion'])) {
                     if ($data = $val->readOne()) {

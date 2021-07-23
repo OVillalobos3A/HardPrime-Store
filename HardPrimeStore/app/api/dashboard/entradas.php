@@ -15,6 +15,7 @@ if (isset($_GET['action'])) {
     if (isset($_SESSION['id_usuario'])) {
         // Se compara la acción a realizar cuando un administrador ha iniciado sesión.
         switch ($_GET['action']) {
+            //Método para consultar la existencia de entradas
             case 'readAll':
                 if ($result['dataset'] = $entrada->readAll()) {
                     $result['status'] = 1;
@@ -26,6 +27,8 @@ if (isset($_GET['action'])) {
                     }
                 }
                 break;
+            //Método para consultar la información de todos los productos registrados
+            //para luego pasarlos al combobox(select)
             case 'readAllProduct':
                 if ($result['dataset'] = $entrada->readAllProduct()) {
                     $result['status'] = 1;
@@ -36,6 +39,7 @@ if (isset($_GET['action'])) {
                     }
                 }
                 break;
+            //Método para consultar el empleado que ha iniciado sesión
             case 'readEmp':
                 if ($result['dataset'] = $entrada->readEmp()) {
                     $result['status'] = 1;
@@ -48,6 +52,7 @@ if (isset($_GET['action'])) {
                     }
                 }
                 break;
+            //Método para consultar una entrada en especifico
             case 'search':
                 $_POST = $entrada->validateForm($_POST);
                 if ($_POST['search'] != '') {
@@ -70,6 +75,7 @@ if (isset($_GET['action'])) {
                     $result['exception'] = 'Ingrese un valor para buscar';
                 }
                 break;
+            //Método para crear una entrada
             case 'create':
                 $_POST = $entrada->validateForm($_POST);
                 if ($entrada->setCant($_POST['cantidad'])) {
@@ -99,6 +105,7 @@ if (isset($_GET['action'])) {
                     $result['exception'] = 'Cantidad incorrecta';
                 }
                 break;
+            //Método para eliminar una entrada
             case 'delete':
                 if ($entrada->setId($_POST['id_entrada'])) {
                     if ($data = $entrada->readOne()) {

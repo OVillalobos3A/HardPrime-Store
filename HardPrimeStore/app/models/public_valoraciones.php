@@ -142,6 +142,7 @@ class Public_valoraciones extends Validator
         return $this->estado;
     }
 
+    //Método para insertar una calificación en la base de datos
     public function createRow()
     {
         $sql = 'INSERT INTO calificaciones(comentario, fecha, calificacion, id_producto, id_cliente)
@@ -154,6 +155,7 @@ class Public_valoraciones extends Validator
         }
     }
 
+    //Método para seleccionar los comentarios de un producto en especifico, siempre y cuando esten habilitados
     public function readComments()
     {
         $this->estado = 'Habilitado';
@@ -165,6 +167,7 @@ class Public_valoraciones extends Validator
         return Database::getRows($sql, $params);
     }
 
+    //Método para seleccionar las calificaciones que ha realizado un cliente en especifico
     public function viewComentarios()
     {        
         $sql = 'SELECT calificaciones.id_calificacion as id_calificacion, comentario, calificaciones.fecha as fecha, calificaciones.estado as estado, calificacion, productos.nombre as nombre
@@ -176,6 +179,7 @@ class Public_valoraciones extends Validator
         return Database::getRows($sql, $params);
     }
 
+    //Método para seleccionar una calificación en especifico mediante su ID
     public function readOne()
     {        
         $sql = 'SELECT id_calificacion, calificacion, comentario, fecha, estado 
@@ -185,6 +189,7 @@ class Public_valoraciones extends Validator
         return Database::getRow($sql, $params);
     }
    
+    //Método para actualizar una calificación en la base de datos
     public function updateComentario()
     {
         $this->estado = 'Deshabilitado';
@@ -195,6 +200,7 @@ class Public_valoraciones extends Validator
         return Database::executeRow($sql, $params);
     }
 
+    //Método para validar que un cliente no pueda ingresar una calificación a un producto si este no lo ha comprado
     public function validarComentario()
     {        
         $this->estado = 'Entregado';
@@ -210,6 +216,7 @@ class Public_valoraciones extends Validator
         }  
     }
 
+    //Método para validar que un cliente no pueda realizar dos comentarios en el mismo producto
     public function unComentario()
     {        
         $sql = "SELECT id_calificacion 
@@ -224,6 +231,7 @@ class Public_valoraciones extends Validator
         }  
     }
 
+    //Metodo para seleccionar el promedio de calificaciones de un producto
     public function readProm()
     {
         $sql = "SELECT ROUND(avg(calificacion),1) as calificacion

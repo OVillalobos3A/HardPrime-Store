@@ -13,6 +13,7 @@ if (isset($_GET['action'])) {
     $result = array('status' => 0, 'error' => 0, 'message' => null, 'exception' => null);
     // Se compara la acción a realizar según la petición del controlador.
     switch ($_GET['action']) {
+        //Método para insertar guardar todos los campos y guardarlos en la base
         case 'createValoracion':
             if (isset($_SESSION['id_cliente'])) {
                 $_POST = $valorar->validateForm($_POST);
@@ -54,6 +55,7 @@ if (isset($_GET['action'])) {
                 $result['exception'] = 'No se ha iniciado sesión';
             }
             break;
+            //Método para mostrar los comentarios de un producto en especifico mediante su ID
         case 'readComments':
             if ($valorar->setIdproducto($_POST['id_producto'])) {
                 if ($result['dataset'] = $valorar->readComments()) {
@@ -69,6 +71,7 @@ if (isset($_GET['action'])) {
                 $result['exception'] = 'Producto incorrecto';
             }
             break;
+            //Método para seleccionar una calificacion en especifico
             case 'readActualizar':
                 if ($valorar->setId($_POST['id_calificacion'])) {
                     if ($result['dataset'] = $valorar->readOne()) {
@@ -84,10 +87,10 @@ if (isset($_GET['action'])) {
                     $result['exception'] = 'Calificación incorrecto';
                 }
                 break;
+                //Método para actualizar un comentario, capturando los datos del formulario
         case 'updateComentario':
             $_POST = $valorar->validateForm($_POST);
-            if ($valorar->setId($_POST['id_calificacion_act'])) {
-                
+            if ($valorar->setId($_POST['id_calificacion_act'])) {                
                     if ($valorar->setComentario($_POST['comentario'])) {
                         if ($valorar->setCalificacion($_POST['calificacion'])) {
                             if ($valorar->setFecha($_POST['fecha'])) {
@@ -111,6 +114,7 @@ if (isset($_GET['action'])) {
                 $result['exception'] = 'No se pudo obtener el comentario';
             }
             break;
+            //Método para mostrar comentarios que ha realizado un cliente en especifico
         case 'readAll':
             if ($valorar->setIdcliente($_SESSION['id_cliente'])) {
                 if ($result['dataset'] = $valorar->viewComentarios()) {
@@ -126,6 +130,7 @@ if (isset($_GET['action'])) {
                 $result['exception'] = 'No se ha iniciado sesión';
             }
             break;
+            //Método para validar que un cliente no pueda dar una calificación a un producto si no lo ha comprado            
         case 'validarComentario':
             if ($valorar->setIdproducto($_POST['id_producto'])) {
                 if ($valorar->setIdcliente($_POST['id_cliente'])) {
@@ -145,6 +150,7 @@ if (isset($_GET['action'])) {
                 $result['exception'] = 'Cliente incorrecto';
             }
             break;
+            //Método para mostrar la calificación promedio de un producto.
         case 'readProm':
             if ($valorar->setIdproducto($_POST['id_producto'])) {
                 if ($result['dataset'] = $valorar->readProm()) {

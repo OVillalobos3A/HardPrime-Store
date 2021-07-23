@@ -15,6 +15,7 @@ if (isset($_GET['action'])) {
     if (isset($_SESSION['id_usuario'])) {
         // Se compara la acción a realizar cuando un administrador ha iniciado sesión.
         switch ($_GET['action']) {
+            //Método para consultar la existencia de todos los productos registrados
             case 'readAll':
                 if ($result['dataset'] = $producto->readAll()) {
                     $result['status'] = 1;
@@ -26,6 +27,7 @@ if (isset($_GET['action'])) {
                     }
                 }
                 break;
+            //Método para buscar un producto en especifico
             case 'search':
                 $_POST = $producto->validateForm($_POST);
                 if ($_POST['search'] != '') {
@@ -48,6 +50,7 @@ if (isset($_GET['action'])) {
                     $result['exception'] = 'Ingrese un valor para buscar';
                 }
                 break;
+            //Método para crear un producto
             case 'create':
                 $_POST = $producto->validateForm($_POST);
                 if ($producto->setNombre($_POST['nombre'])) {
@@ -125,6 +128,7 @@ if (isset($_GET['action'])) {
                     $result['exception'] = 'Nombre incorrecto';
                 }
                 break;
+            //Método para consultar la información de un producto
             case 'readOne':
                 if ($producto->setId($_POST['id_producto'])) {
                     if ($result['dataset'] = $producto->readOne()) {
@@ -140,6 +144,7 @@ if (isset($_GET['action'])) {
                     $result['exception'] = 'Producto incorrecto';
                 }
                 break;
+            //Método para actualizar un producto
             case 'update':
                 $_POST = $producto->validateForm($_POST);
                 if ($producto->setId($_POST['id_producto'])) {
@@ -260,6 +265,7 @@ if (isset($_GET['action'])) {
                     $result['exception'] = 'Producto incorrecto';
                 }
                 break;
+            //Método para eliminar un productos
             case 'delete':
                 if ($producto->setId($_POST['id_producto'])) {
                     if ($data = $producto->readOne()) {

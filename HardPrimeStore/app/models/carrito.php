@@ -205,6 +205,7 @@ class Pedidos extends Validator
         return Database::executeRow($sql, $params);
     }
 
+    // Método para verificar la cantidad un producto que se encuentra en el carrito de compras.
     public function verifyCantidad()
     {
         $sql = "SELECT nombre, stock 
@@ -214,6 +215,7 @@ class Pedidos extends Validator
         return Database::getRows($sql, $params);
     }
 
+    // Método para verificar la cantidad un producto que se encuentra en el carrito de compras.
     public function verifyQuantity()
     {
         $sql = "SELECT nombre, stock 
@@ -223,6 +225,7 @@ class Pedidos extends Validator
         return Database::getRows($sql, $params);
     }
 
+    //Método para verificar el producto a la hora de actualizar la cantidad
     public function verifyProduct()
     {
         $sql = "SELECT id_producto
@@ -235,7 +238,7 @@ class Pedidos extends Validator
         }
     } 
     
-    //Función para obtener el número de productos que se encuentran en el carrito
+    //Método para obtener el número de productos que se encuentran en el carrito
     public function readCantprods()
     {
         $sql = "SELECT count(id_detalle) as cantidad
@@ -251,7 +254,7 @@ class Pedidos extends Validator
         
     }
 
-    //Verificando que el producto elegido no se haya elgido previamente
+    //Método para verificar que el producto elegido no se haya elgido previamente en el carrito 
     public function verifyDuplicidad()
     {
         $sql = "SELECT id_producto

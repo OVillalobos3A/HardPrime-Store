@@ -89,7 +89,7 @@ class Dashboard_Page {
                         <li><a href="../../views/dashboard/valoraciones.php" class="center-align">Valoraciones</a></li>
                         <li class="divider"></li>
                         <br>
-                        <li class="blue-grey"><a href="#" class="center-align white-text" onclick="logOut()"><i class="material-icons right">exit_to_app</i>Cerrar Sesión</a></li>
+                        <li class="blue-grey"><a href="#" class="center-align white-text" onclick="logOut()"><i class="material-icons right">exit_to_app</i>Cerrar Sdddesión</a></li>
                     </ul>
                 </header>
                 <br>

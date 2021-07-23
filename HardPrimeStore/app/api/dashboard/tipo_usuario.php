@@ -13,7 +13,8 @@ if (isset($_GET['action'])) {
     // Se verifica si existe una sesión iniciada como administrador, de lo contrario se finaliza el script con un mensaje de error.
     if (isset($_SESSION['id_usuario'])) {
         switch ($_GET['action']) {
-        case 'readAll':
+            //Método para consultar la existencia de todos los usuarios registrados
+            case 'readAll':
             if ($result['dataset'] = $tipo->readAll()) {
                 $result['status'] = 1;
             } else {

@@ -16,6 +16,7 @@ if (isset($_GET['action'])) {
     if (isset($_SESSION['id_usuario'])) {
         // Se compara la acción a realizar cuando un administrador ha iniciado sesión.
         switch ($_GET['action']) {
+            //Método para consultar la información de todas las marcas registradas
             case 'readAll':
                 if ($result['dataset'] = $marca->readAll()) {
                     $result['status'] = 1;
@@ -27,6 +28,7 @@ if (isset($_GET['action'])) {
                     }
                 }
                 break;
+            //Método para consultar la información de una marca en especifico
             case 'search':
                 $_POST = $marca->validateForm($_POST);
                 if ($_POST['search'] != '') {
@@ -49,6 +51,7 @@ if (isset($_GET['action'])) {
                     $result['exception'] = 'Ingrese un valor para buscar';
                 }
                 break;
+            //Método para crear una marca
             case 'create':
                 $_POST = $marca->validateForm($_POST);
                 if ($marca->setNombre($_POST['nombre_marca'])) {
@@ -86,6 +89,7 @@ if (isset($_GET['action'])) {
                     $result['exception'] = 'Nombre incorrecto o campo vacío';
                 }
                 break;
+            //Método para consultar la información de una marca
             case 'readOne':
                 if ($marca->setId($_POST['id_marca'])) {
                     if ($result['dataset'] = $marca->readOne()) {
@@ -101,6 +105,7 @@ if (isset($_GET['action'])) {
                     $result['exception'] = 'Marca incorrecta';
                 }
                 break;
+            //Método para actualizar una marca
             case 'update':
                 $_POST = $marca->validateForm($_POST);
                 if ($marca->setId($_POST['id_marca'])) {
@@ -178,6 +183,7 @@ if (isset($_GET['action'])) {
                     $result['exception'] = 'Marca incorrecta';
                 }
                 break;
+            //Método para eliminar una marca
             case 'delete':
                 if ($marca->setId($_POST['id_marca'])) {
                     if ($data = $marca->readOne()) {

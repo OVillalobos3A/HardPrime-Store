@@ -12,6 +12,7 @@ if (isset($_GET['action'])) {
     $result = array('status' => 0, 'message' => null, 'exception' => null);
     // Se compara la acción a realizar según la petición del controlador.
     switch ($_GET['action']) {
+        //Método para mostrar los productos por marca
         case 'openMac':
             if ($result['dataset'] = $index->readMarcas()) {
                 $result['status'] = 1;
@@ -23,6 +24,7 @@ if (isset($_GET['action'])) {
                 }
             }
             break;
+            //Método para mostrar el titulo con el nombre de la marca seleccionada
         case 'readTittle':
             if ($index->setId($_POST['id_marca'])) {
                 if ($result['dataset'] = $index->readTittle()) {
@@ -38,6 +40,7 @@ if (isset($_GET['action'])) {
                 $result['exception'] = 'Marca incorrecta';
             }
             break;
+            //Método para mostrar el titulo con el nombre de la categoría seleccionada
             case 'tittleCateg':
                 if ($index->setId($_POST['id_categoria'])) {
                     if ($result['dataset'] = $index->tittleCateg()) {
@@ -53,6 +56,7 @@ if (isset($_GET['action'])) {
                     $result['exception'] = 'Categoría incorrecta';
                 }
                 break;
+                //Método para seleccionar las categorías registradas
         case 'openCat':
             if ($result['dataset'] = $index->readCategorias()) {
                 $result['status'] = 1;
@@ -64,6 +68,7 @@ if (isset($_GET['action'])) {
                 }
             }
             break;
+                //Método para mostrar los productos que son de la categoría seleccionada
             case 'openProductCategorias':
                 if ($index->setId($_POST['id_categoria'])) {
                     if ($result['dataset'] = $index->readPC()) {
@@ -72,13 +77,14 @@ if (isset($_GET['action'])) {
                         if (Database::getException()) {
                             $result['exception'] = Database::getException();
                         } else {
-                            $result['exception'] = 'No existen categorías para mostrar';
+                            $result['exception'] = 'No existen productos para mostrar';
                         }
                     }
                 } else {
                     $result['exception'] = 'Categorías incorrecta';
                 }
                 break;
+                //Método para mostrar los productos que son de la marca seleccionada
         case 'openProductmarcas':
             if ($index->setId($_POST['id_marca'])) {
                 if ($result['dataset'] = $index->readPM()) {
@@ -94,6 +100,7 @@ if (isset($_GET['action'])) {
                 $result['exception'] = 'Marca incorrecta';
             }
             break;
+            //Método para mostrar los productos que son de la categoría seleccionada
             case 'openProduct':
                 if ($index->setId($_POST['id_producto'])) {
                     if ($result['dataset'] = $index->readOne()) {
@@ -109,6 +116,7 @@ if (isset($_GET['action'])) {
                     $result['exception'] = 'Producto incorrecto';
                 }
                 break;
+                //Método para mostrar los productos registrados
                 case 'openProduct2':                    
                         if ($result['dataset'] = $index->readProduct2()) {
                             $result['status'] = 1;

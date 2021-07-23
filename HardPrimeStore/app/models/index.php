@@ -28,6 +28,7 @@ class Index extends Validator
     /*
     *   Métodos para realizar las operaciones SCRUD (search, create, read, update, delete).
     */
+    //Método para seleccionar las marcas registradas
     public function readMarcas()
     {
         $sql = 'SELECT id_marca, nombre_marca as marca, marca.imagen as imgmac
@@ -37,6 +38,7 @@ class Index extends Validator
         return Database::getRows($sql, $params);
     }
 
+    //Método para seleccionar las categorias registradas
     public function readCategorias()
     {
         $sql = 'SELECT id_categoria, nombre, imagen, descripcion
@@ -51,7 +53,7 @@ class Index extends Validator
     {
         $sql = "SELECT nombre, id_producto,  productos.imagen as imagen, descripcion, Concat('$' || ' ' || precio) as precio
                 FROM productos INNER JOIN marca USING(id_marca)
-                WHERE id_marca = ? 
+                WHERE id_marca = ? and estado = true and stock > 0
                 ORDER BY nombre";
         $params = array($this->id);
         return Database::getRows($sql, $params);
@@ -62,22 +64,24 @@ class Index extends Validator
     {
         $sql = "SELECT productos.nombre as nombre, id_producto,  productos.imagen as imagen, productos.descripcion as descripcion, Concat('$' || ' ' || precio) as precio
                 FROM productos INNER JOIN categoria USING(id_categoria)
-                WHERE id_categoria = ?
+                WHERE id_categoria = ? and estado = true and stock > 0
                 ORDER BY nombre";
         $params = array($this->id);
         return Database::getRows($sql, $params);
     }
 
+    //Método para seleccionar los productos en general
     public function readProduct()
     {
         $sql = "SELECT nombre, id_producto, imagen, imagen2, descripcion, Concat('$' || ' ' || precio) as precio
                 FROM productos
-                WHERE id_producto = ? 
+                WHERE id_producto = ?
                 ORDER BY nombre";
         $params = array($this->id);
         return Database::getRows($sql, $params);
     }
 
+    //Método para mostrar el nombre de la marca seleccionada
     public function readTittle()
     {
         $sql = "SELECT id_marca, nombre_marca
@@ -88,6 +92,7 @@ class Index extends Validator
         return Database::getRows($sql, $params);
     }    
 
+    //Método para mostrar el nombre de la categoría seleccionada
     public function tittleCateg()
     {
         $sql = "SELECT id_categoria, nombre
@@ -98,6 +103,7 @@ class Index extends Validator
         return Database::getRows($sql, $params);
     }
 
+    //Método para mostrar un producto en especifico
     public function readOne()
     {
         $sql = "SELECT id_producto, nombre, descripcion,  Concat('$' || ' ' || precio) as precio, imagen, imagen2 
@@ -107,10 +113,12 @@ class Index extends Validator
         return Database::getRow($sql, $params);
     }
 
+    //Método para mostrar los productos registrados
     public function readProduct2()
     {
         $sql = "SELECT nombre, id_producto, imagen, imagen2, descripcion, Concat('$' || ' ' || precio) as precio
-                FROM productos                
+                FROM productos 
+                WHERE estado = true and stock > 0              
                 ORDER BY nombre";
         $params = null;
         return Database::getRows($sql, $params);

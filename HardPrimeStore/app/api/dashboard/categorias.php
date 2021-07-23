@@ -26,6 +26,7 @@ if (isset($_GET['action'])) {
                     }
                 }
                 break;
+            //Método para buscar una categor+ia en especifico
             case 'search':
                 $_POST = $categoria->validateForm($_POST);
                 if ($_POST['search'] != '') {
@@ -48,6 +49,7 @@ if (isset($_GET['action'])) {
                     $result['exception'] = 'Ingrese un valor para buscar';
                 }
                 break;
+            //Método para crear una categoria
             case 'create':
                 $_POST = $categoria->validateForm($_POST);
                 if ($categoria->setNombre($_POST['nombre'])) {
@@ -77,6 +79,7 @@ if (isset($_GET['action'])) {
                     $result['exception'] = 'Nombre incorrecto';
                 }
                 break;
+            //Método para consultar una categoria
             case 'readOne':
                 if ($categoria->setId($_POST['id_categoria'])) {
                     if ($result['dataset'] = $categoria->readOne()) {
@@ -92,6 +95,7 @@ if (isset($_GET['action'])) {
                     $result['exception'] = 'Categoría incorrecta';
                 }
                 break;
+            //Método para actualizar una categoria
             case 'update':
                 $_POST = $categoria->validateForm($_POST);
                 if ($categoria->setId($_POST['id_categoria'])) {
@@ -134,6 +138,7 @@ if (isset($_GET['action'])) {
                     $result['exception'] = 'Categoría incorrecta';
                 }
                 break;
+            //Método para eliminar una categoría
             case 'delete':
                 if ($categoria->setId($_POST['id_categoria'])) {
                     if ($data = $categoria->readOne()) {

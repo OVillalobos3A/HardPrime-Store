@@ -16,6 +16,7 @@ if (isset($_GET['action'])) {
         $result['session'] = 1;
         // Se compara la acción a realizar cuando un cliente ha iniciado sesión.
         switch ($_GET['action']) {
+            //Método para verfificar la existencia de un pedido
             case 'createDetail':
                 if ($pedido->startOrder()) {
                     $_POST = $pedido->validateForm($_POST);
@@ -41,6 +42,7 @@ if (isset($_GET['action'])) {
                     $result['exception'] = 'Ocurrió un problema al obtener el pedido';
                 }
                 break;
+            //Método para mostrar todas las productos por categoria 
             case 'readOrderDetail':
                 if ($pedido->startOrder()) {
                     if ($result['dataset'] = $pedido->readOrderDetail()) {
@@ -57,6 +59,7 @@ if (isset($_GET['action'])) {
                     $result['exception'] = 'Debe agregar un producto al carrito';
                 }
                 break;
+            //Método para actualizar la cantidad de un producto en el carrito
             case 'updateDetail':
                 $_POST = $pedido->validateForm($_POST);
                 if ($pedido->setIdDetalle($_POST['id_detalle'])) {
@@ -82,6 +85,7 @@ if (isset($_GET['action'])) {
                     $result['exception'] = 'Detalle incorrecto';
                 }
                 break;
+            //Método para eliminar un producto del carrito
             case 'deleteDetail':
                 if ($pedido->setIdDetalle($_POST['id_detalle'])) {
                     if ($pedido->deleteDetail()) {
@@ -94,6 +98,7 @@ if (isset($_GET['action'])) {
                     $result['exception'] = 'Detalle incorrecto';
                 }
                 break;
+            //Método para actualizar el estado de un pedido
             case 'finishOrder':
                 if ($pedido->finishOrder()) {
                     $result['status'] = 1;

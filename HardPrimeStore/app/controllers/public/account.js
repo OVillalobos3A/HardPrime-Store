@@ -2,7 +2,6 @@
 const API_CLIENT= '../../app/api/public/clientes.php?action=';
 // Función para mostrar un mensaje de confirmación al momento de cerrar sesión.
 document.addEventListener('DOMContentLoaded', function () {
-    // Se llama a la función que obtiene los registros para llenar la tabla. Se encuentra en el archivo components.js    
         
 });
 

@@ -13,6 +13,7 @@ if (isset($_GET['action'])) {
     $result = array('status' => 0, 'message' => null, 'exception' => null);
     // Se compara la acción a realizar según la petición del controlador.
     switch ($_GET['action']) {
+        //Método para mostrar todas las categorías registradas en el sitio público
         case 'readAll':
             if ($result['dataset'] = $categoria->readAll()) {
                 $result['status'] = 1;
@@ -24,6 +25,7 @@ if (isset($_GET['action'])) {
                 }
             }
             break;
+        //Método para mostrar todas las productos por categoria 
         case 'readProductosCategoria':
             if ($categoria->setId($_POST['id_categoria'])) {
                 if ($result['dataset'] = $categoria->readProductosCategoria()) {
@@ -39,6 +41,7 @@ if (isset($_GET['action'])) {
                 $result['exception'] = 'Categoría incorrecta';
             }
             break;
+        //Método para consultar un producto
         case 'readOne':
             if ($producto->setId($_POST['id_producto'])) {
                 if ($result['dataset'] = $producto->readOne()) {

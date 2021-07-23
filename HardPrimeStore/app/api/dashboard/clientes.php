@@ -26,6 +26,7 @@ if (isset($_GET['action'])) {
                     }
                 }
                 break;
+            //Método para buscar un cliente en especifico en el apartado de la vista del cliente(dashboard)
             case 'search':
                 $_POST = $cli->validateForm($_POST);
                 if ($_POST['search'] != '') {
@@ -48,6 +49,7 @@ if (isset($_GET['action'])) {
                     $result['exception'] = 'Ingrese un valor para buscar';
                 }
                 break;
+            //Método para consultar un cliente en el apartado de la vista del cliente(dashboard)
             case 'readOne':
                 if ($val->setId($_POST['id_cliente'])) {
                     if ($result['dataset'] = $cli->readOne()) {
@@ -63,6 +65,7 @@ if (isset($_GET['action'])) {
                     $result['exception'] = 'Cliente incorrecto';
                 }
                 break;
+            //Método para seleccionar a un cliente en especifico, cuando el estado es inactivo
             case 'readOne1':
                 if ($cli->setId($_POST['id_cliente'])) {
                     if ($result['dataset'] = $cli->readOne1()) {
@@ -78,6 +81,8 @@ if (isset($_GET['action'])) {
                     $result['exception'] = 'Cliente incorrecto';
                 }
                 break;
+            //Método para consultar la información de los pedidos efectuados por un cliente
+            //en el apartado de la vista del cliente(dashboard)
             case 'viewOrder':
                 if ($cli->setId($_POST['id_cliente'])) {
                     if ($result['dataset'] = $cli->viewOrder()) {
@@ -99,6 +104,7 @@ if (isset($_GET['action'])) {
                     $result['exception'] = 'Pedido incorrecto';
                 }
                 break;
+            //Método para actualizar el estado de un cliente
             case 'update':
                 $_POST = $cli->validateForm($_POST);
                 if ($cli->setId($_POST['id_cliente'])) {
@@ -123,6 +129,7 @@ if (isset($_GET['action'])) {
                     $result['exception'] = 'Cliente incorrecto';
                 }
                 break;
+            //Método para eliminar un cliente(Actualmente no se utiliza)
             case 'delete':
                 if ($cli->setId($_POST['id_cliente'])) {
                     if ($data = $cli->readOne()) {

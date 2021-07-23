@@ -16,6 +16,8 @@ if (isset($_GET['action'])) {
         $result['session'] = 1;
         // Se compara la acción a realizar cuando un cliente ha iniciado sesión.
         switch ($_GET['action']) {
+        //Método para consultar si ya existe un pedido que se encuentre
+        //en estado de "En preparacion"
         case 'createDetail':
             if ($pedido->startOrder()) {
                 $_SESSION['id_pedido'] = $pedido->getIdPedido();
@@ -55,6 +57,8 @@ if (isset($_GET['action'])) {
                 $result['exception'] = 'Ocurrió un problema al obtener el pedido';
             }
             break;
+            //Método para consultar los productos del carrito del cliente
+            //que ha iniciado sesión
             case 'readOrderDetail':
                 if ($pedido->startOrder()) {
                     if ($result['dataset'] = $pedido->readOrderDetail()) {
@@ -71,6 +75,9 @@ if (isset($_GET['action'])) {
                     $result['exception'] = 'Debe agregar un producto al carrito';
                 }
                 break;
+            //Método para actualizar la cantidad de un producto en el carrito
+            //verificando la cantidad que se ingresa comparandola con 
+            //el stock, y la cantidad anteriormente ingresada
             case 'updateDetail1':
                 $_POST = $pedido->validateForm($_POST);
                 if ($pedido->setIdDetalle($_POST['id_detalle'])) {
@@ -100,6 +107,7 @@ if (isset($_GET['action'])) {
                     $result['exception'] = 'Detalle incorrecto';
                 }
                 break;
+            //Método para actualizar la cantidad de un producto en el carrito
             case 'updateDetail':
                 $_POST = $pedido->validateForm($_POST);
                 if ($pedido->setIdDetalle($_POST['id_detalle'])) {
@@ -121,6 +129,7 @@ if (isset($_GET['action'])) {
                     $result['exception'] = 'Detalle incorrecto';
                 }
                 break;
+            //Método para eliminar un producto del carrito
             case 'deleteDetail':
                 if ($pedido->setIdDetalle($_POST['id_detalle'])) {
                     if ($pedido->deleteDetail()) {
@@ -142,6 +151,8 @@ if (isset($_GET['action'])) {
                     $result['exception'] = 'Detalle incorrecto';
                 }
                 break;
+            //Método para actualizar el estado del carrito
+            //pasar de "En preparación" a "Finalizado"
             case 'finishOrder':
                 if ($pedido->finishOrder()) {
                     $result['status'] = 1;

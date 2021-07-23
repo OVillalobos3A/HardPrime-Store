@@ -17,6 +17,7 @@ if (isset($_GET['action'])) {
     //if (isset($_SESSION['id_usuario'])) {
     // Se compara la acción a realizar cuando un administrador ha iniciado sesión.
     switch ($_GET['action']) {
+        //Método para generar el código de recuperación de contraseña
         case 'generarCodigo':
             $_POST = $recu->validateForm($_POST);            
                 $recu->setUsuario($_POST['usuario']);
@@ -58,6 +59,7 @@ if (isset($_GET['action'])) {
                     $result['exception'] = 'El usuario no existe.';
                 }            
             break;
+        //Método para cambiar la contraseña en el apartado recu contra(dashboard)
         case 'recuContra':
             $_POST = $recu->validateForm($_POST);
             if ($recu->setCodigo($_POST['codigo'])) {

@@ -15,6 +15,7 @@ if (isset($_GET['action'])) {
     if (isset($_SESSION['id_usuario'])) {
         // Se compara la acción a realizar cuando un administrador ha iniciado sesión.
         switch ($_GET['action']) {
+            //Método para consultar la información de todos las marcas registrados
             case 'readAll':
                 if ($result['dataset'] = $categoria->readAll()) {
                     $result['status'] = 1;
@@ -26,6 +27,7 @@ if (isset($_GET['action'])) {
                     }
                 }
                 break;
+            //Método para buscar una marca en especifico
             case 'search':
                 $_POST = $categoria->validateForm($_POST);
                 if ($_POST['search'] != '') {
@@ -48,6 +50,7 @@ if (isset($_GET['action'])) {
                     $result['exception'] = 'Ingrese un valor para buscar';
                 }
                 break;
+            //Método para crear una marca
             case 'create':
                 $_POST = $categoria->validateForm($_POST);
                 if ($categoria->setNombre($_POST['nombre_categoria'])) {
@@ -77,6 +80,7 @@ if (isset($_GET['action'])) {
                     $result['exception'] = 'Nombre incorrecto';
                 }
                 break;
+            //Método para consultar la información de una marca
             case 'readOne':
                 if ($categoria->setId($_POST['id_categoria'])) {
                     if ($result['dataset'] = $categoria->readOne()) {
@@ -92,6 +96,7 @@ if (isset($_GET['action'])) {
                     $result['exception'] = 'Categoría incorrecta';
                 }
                 break;
+            //Método para consultar actualizar una marca
             case 'update':
                 $_POST = $categoria->validateForm($_POST);
                 if ($categoria->setId($_POST['id_categoria'])) {
@@ -134,6 +139,7 @@ if (isset($_GET['action'])) {
                     $result['exception'] = 'Categoría incorrecta';
                 }
                 break;
+            //Método para eliminar una marca
             case 'delete':
                 if ($categoria->setId($_POST['id_categoria'])) {
                     if ($data = $categoria->readOne()) {

@@ -55,7 +55,6 @@ Sitio_Publico::headerTemplate('HardPrimeStore - Productos');
                             <img src="../../resources/img/public/DiscoInterno.jpg" width="100" height="200">
                             <a class="btn-floating halfway-fab waves-effect waves-light red"><i class="material-icons">add_shopping_cart</i></a>
                         </div>
-
                         <div class="card-content">
                             <span class="card-title indigo-text text-darken-4"><b>Disco duro Seagate</b></span>
                             <h6 class="orange-text text-darken-4"><b>$200</b></h6>

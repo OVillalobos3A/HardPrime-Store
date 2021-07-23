@@ -74,7 +74,7 @@ Dashboard_Page::headerTemplate('Productos');
                     <!--Estableciendo el tamaño del que tomará el Input field-->
                     <div class="input-field col s12 m6">
                         <i class="material-icons prefix">inventory_2</i>
-                        <input id="nombre" type="text" name="nombre"  maxlength="20" class="validate" required>
+                        <input id="nombre" type="text" name="nombre"  maxlength="100" class="validate" required>
                         <label for="nombre">Nombre</label>
                     </div>
                     <!--Estableciendo el tamaño del que tomará el Input field-->
@@ -94,7 +94,7 @@ Dashboard_Page::headerTemplate('Productos');
                     <!--Estableciendo el tamaño del que tomará el Input field-->
                     <div class="input-field col s12 m6">
                     <i class="material-icons prefix">short_text</i>
-                        <input id="descp" type="text" name="descp"  maxlength="50" class="validate" required>
+                        <input id="descp" type="text" name="descp"  maxlength="250" class="validate" required>
                         <label for="descp">Descripción</label>
                     </div>
                 </div>

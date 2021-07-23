@@ -51,7 +51,7 @@ class Sitio_Publico
                       <li class="tab"><a class="active" href="mi_cuenta.php">Mi cuenta</a></li>
                       <!--Formulario para el buscador-->
                       <li class="tab">
-                        <form>
+                        <form class="hide">
                           <div class="input-field">
                             <input id="search" type="search" required>
                             <label class="label-icon" for="search"><i class="material-icons">search</i></label>
@@ -123,7 +123,7 @@ class Sitio_Publico
             
                       <!--Formulario para el buscador-->
                       <li class="tab">
-                        <form>
+                        <form class="hide">
                           <div class="input-field">
                             <input id="search" type="search" required>
                             <label class="label-icon" for="search"><i class="material-icons">search</i></label>
@@ -202,6 +202,7 @@ class Sitio_Publico
               <script type="text/javascript" src="../../app/helpers/dashboard/components.js"></script>
                          
               <script type="text/javascript" src="../../app/controllers/public/account.js"></script>
+              <script type="text/javascript" src="../../app/controllers/public/initialization.js"></script>
               <script type="text/javascript" src="../../app/controllers/public/' . $controller . '"></script>
             </body>            
             </html>');
