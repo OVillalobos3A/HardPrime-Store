@@ -30,6 +30,7 @@ Dashboard_Page::headerTemplate('Marcas');
                             <i class="material-icons right">search</i>
                         </button>
                         <a href="#" onclick="openTable()" class="btn waves-effect blue tooltipped" data-tooltip="Refrescar tabla"><i class="material-icons">refresh</i></a>
+                        <a href="../../app/reports/productos_marca.php" target="_blank" class="btn waves-effect amber tooltipped" data-tooltip="Reporte de productos por marcas"><i class="material-icons">assignment</i></a>
                     </div>
                 </div>
             </form>

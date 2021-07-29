@@ -169,4 +169,14 @@ class Marcas extends Validator
         return Database::executeRow($sql, $params);
     }
 
+    public function readProductosMarca()
+    {
+        $sql = 'SELECT productos.id_producto, productos.nombre, precio, productos.descripcion, descuento, stock,
+                marca.nombre_marca AS Marca FROM productos 
+                INNER JOIN marca ON productos.id_marca = marca.id_marca
+                WHERE marca.id_marca = ?';
+        $params = array($this->id);
+        return Database::getRows($sql, $params);
+    }
+
 }
