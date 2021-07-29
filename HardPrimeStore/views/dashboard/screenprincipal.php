@@ -6,7 +6,6 @@ Dashboard_Page::headerTemplate('Página Principal');
 ?>
 
 <!--Contenedor para mostrar la card contenedora correspondiente a la página de bienvenida-->
-<br>
 <div class="row container">
     <div class="col s12">
         <div class="card indigo light-blue darken-4">
@@ -19,16 +18,18 @@ Dashboard_Page::headerTemplate('Página Principal');
                 <!--Definiendo el panel número 1 para almacenar las gráficas-->
                 <!--En este caso solo son imagenes-->
                 <div class="col s12 m6">
-                    <div class="card-panel blue-grey">
-                        <img class="responsive-img" src="../../resources/img/Charts/chart1.PNG">
-                        <h4 class="center-align">Productos más vendidos</h4>
+                    <div class="card-panel withe">
+                        <!-- Se muestra una gráfica de barra con la cantidad de productos por categoría -->
+                        <canvas id="chart1"></canvas>
+                        <h4 class="center-align black-text">Productos mejor calificados</h4>
                     </div>
                 </div>
                 <!--Definiendo el panel número 1 para almacenar las gráficas-->
                 <div class="col s12 m6">
-                    <div class="card-panel blue-grey">
-                        <img class="responsive-img" src="../../resources/img/Charts/chart2.PNG">
-                        <h4 class="center-align">Clientes registrados</h4>
+                    <div class="card-panel withe">
+                        <!-- Se muestra una gráfica de pastel con el porcentaje de productos por categoría -->
+                        <canvas id="chart2"></canvas>
+                        <h4 class="center-align black-text">Productos por marca</h4>
                     </div>
                 </div>
             </div>
@@ -146,6 +147,30 @@ Dashboard_Page::headerTemplate('Página Principal');
         </form>
     </div>
 </div>
+<div id="graficos" class="modal">
+    <div class="modal-content">
+        <a href="#" class="btn waves-effect red accent-4 tooltipped modal-close" data-tooltip="Cerrar"><i class="material-icons">cancel</i></a>  
+        <h5 id="modal-title" class="center-align">Estadísticas del sistema</h5>
+        <br>
+        <!--Estableciendo el tamaño de cada div correspondiente-->
+        <form method="post" id="graphic" enctype="multipart/form-data">
+            <div class="col s12">
+                <!-- Se muestra una gráfica de barra con la cantidad de productos por categoría -->
+                <canvas id="chart3"></canvas>
+            </div>
+            <br>
+            <!--Definiendo el panel número 1 para almacenar las gráficas-->
+            <div class="col s12">
+                <canvas id="chart4"></canvas>
+            </div>
+            <div class="col s12">
+                <canvas id="chart5"></canvas>
+            </div>
+        </form>
+    </div>
+</div>
+<!-- Importación del archivo para generar gráficas en tiempo real. Para más información https://www.chartjs.org/ -->
+<script type="text/javascript" src="../../resources/js/chart.js"></script>
 <?php
 //Se imprime la plantilla del pie y se envía el nombre del controlador para la página web
 Dashboard_Page::footerTemplate('main.js');
