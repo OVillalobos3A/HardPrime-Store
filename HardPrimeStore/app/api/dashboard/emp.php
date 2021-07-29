@@ -390,6 +390,61 @@ if (isset($_GET['action'])) {
                 //   $result['exception'] = 'No se puede eliminar a sí mismo';
                 //}
                 break;
+            case 'cantidadProductosMarcas':
+                if ($result['dataset'] = $usuario->cantidadProductosMarcas()) {
+                    $result['status'] = 1;
+                } else {
+                    if (Database::getException()) {
+                        $result['exception'] = Database::getException();
+                    } else {
+                        $result['exception'] = 'No hay datos disponibles';
+                    }
+                }
+                break;
+            case 'cantidadProductosCategoria':
+                if ($result['dataset'] = $usuario->cantidadProductosCategoria()) {
+                    $result['status'] = 1;
+                } else {
+                    if (Database::getException()) {
+                        $result['exception'] = Database::getException();
+                    } else {
+                        $result['exception'] = 'No hay datos disponibles';
+                    }
+                }
+                break;
+            case 'calificacionProductos':
+                if ($result['dataset'] = $usuario->calificacionProductos()) {
+                    $result['status'] = 1;
+                } else {
+                    if (Database::getException()) {
+                        $result['exception'] = Database::getException();
+                    } else {
+                        $result['exception'] = 'No hay datos disponibles';
+                    }
+                }
+                break;
+            case 'fechaPedidos':
+                if ($result['dataset'] = $usuario->fechaPedidos()) {
+                    $result['status'] = 1;
+                } else {
+                    if (Database::getException()) {
+                        $result['exception'] = Database::getException();
+                    } else {
+                        $result['exception'] = 'No hay datos disponibles';
+                    }
+                }
+                break;
+            case 'ProductosVendidos':
+                if ($result['dataset'] = $usuario->productosVendidos()) {
+                    $result['status'] = 1;
+                } else {
+                    if (Database::getException()) {
+                        $result['exception'] = Database::getException();
+                    } else {
+                        $result['exception'] = 'No hay datos disponibles';
+                    }
+                }
+                break;
             default:
                 $result['exception'] = 'Acción no disponible dentro de la sesión';
         }
