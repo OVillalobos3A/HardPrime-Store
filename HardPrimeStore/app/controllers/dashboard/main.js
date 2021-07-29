@@ -9,7 +9,8 @@ document.addEventListener('DOMContentLoaded', function () {
             dismissible: false});    
     openName(API_PROFILE);     
     openPrimerUso(API_PROFILE);         
-    
+    graficaBarrasCategorias();
+    graficaPastelMarcas();
 });
 //function(document.getElementById('id_empleado').modal)
 
@@ -63,6 +64,7 @@ function openName() {
                             <div class="center-align">
                                 <a class="waves-effect waves-light btn"><i class="material-icons right tooltipped" data-tooltip="Modificar perfil" onclick="openUpdateProfile(${row.empleado})">account_circle</i>Perfil</a>
                                 <a class="waves-effect waves-light btn"><i class="material-icons right tooltipped" data-tooltip="Modificar Credenciales" onclick="openUpdateCredentials(${row.id_usuario})">pin</i>Credenciales</a>
+                                <a class="waves-effect waves-light btn"><i class="material-icons right tooltipped" data-tooltip="Visualizar gráficos" onclick="openCreateDialog()">bar_chart</i>Gráficos</a>
                             </div>
                         `;
                     });
@@ -201,7 +203,194 @@ document.getElementById('credential-form').addEventListener('submit', function (
     } else {
 
     }
-    
     saveRowUser(API_PROFILE, action, 'credential-form', 'credential-modal');
-
 });
+
+/*
+*   Apartado de gráficos
+*/
+
+// Función para preparar el formulario al momento de insertar un registro.
+function openCreateDialog() {
+    // Se restauran los elementos del formulario.
+    document.getElementById('graphic').reset();
+    // Se abre la caja de dialogo (modal) que contiene el formulario.
+    let instance = M.Modal.getInstance(document.getElementById('graficos'));
+    instance.open();
+    graficaDonutCategorias();
+    graficaLineaPedidos();
+    graficaPolarProductos();
+}
+
+// Función para mostrar la cantidad de productos por categoría en una gráfica de barras.
+function graficaBarrasCategorias() {
+    fetch(API_PROFILE + 'calificacionProductos', {
+        method: 'get'
+    }).then(function (request) {
+        // Se verifica si la petición es correcta, de lo contrario se muestra un mensaje indicando el problema.
+        if (request.ok) {
+            request.json().then(function (response) {
+                // Se comprueba si la respuesta es satisfactoria, de lo contrario se remueve la etiqueta canvas de la gráfica.
+                if (response.status) {
+                    // Se declaran los arreglos para guardar los datos por gráficar.
+                    let categorias = [];
+                    let cantidad = [];
+                    // Se recorre el conjunto de registros devuelto por la API (dataset) fila por fila a través del objeto row.
+                    response.dataset.map(function (row) {
+                        // Se asignan los datos a los arreglos.
+                        categorias.push(row.nombre);
+                        cantidad.push(row.calificacion);
+                    });
+                    // Se llama a la función que genera y muestra una gráfica de barras. Se encuentra en el archivo components.js
+                    barGraph('chart1', categorias, cantidad, 'Calificación', 'Calificaciones de los productos');
+                } else {
+                    document.getElementById('chart1').remove();
+                    console.log(response.exception);
+                }
+            });
+        } else {
+            console.log(request.status + ' ' + request.statusText);
+        }
+    }).catch(function (error) {
+        console.log(error);
+    });
+}
+
+// Función para mostrar el porcentaje de productos por categoría en una gráfica de pastel.
+function graficaPastelMarcas() {
+    fetch(API_PROFILE + 'cantidadProductosMarcas', {
+        method: 'get'
+    }).then(function (request) {
+        // Se verifica si la petición es correcta, de lo contrario se muestra un mensaje indicando el problema.
+        if (request.ok) {
+            request.json().then(function (response) {
+                // Se comprueba si la respuesta es satisfactoria, de lo contrario se remueve la etiqueta canvas de la gráfica.
+                if (response.status) {
+                    // Se declaran los arreglos para guardar los datos por gráficar.
+                    let categorias = [];
+                    let cantidad = [];
+                    // Se recorre el conjunto de registros devuelto por la API (dataset) fila por fila a través del objeto row.
+                    response.dataset.map(function (row) {
+                        // Se asignan los datos a los arreglos.
+                        categorias.push(row.nombre_marca);
+                        cantidad.push(row.cantidad);
+                    });
+                    // Se llama a la función que genera y muestra una gráfica de pastel en porcentajes. Se encuentra en el archivo components.js
+                    pieGraph('chart2', categorias, cantidad, 'Porcentaje de productos por marca');
+                } else {
+                    document.getElementById('chart2').remove();
+                    console.log(response.exception);
+                }
+            });
+        } else {
+            console.log(request.status + ' ' + request.statusText);
+        }
+    }).catch(function (error) {
+        console.log(error);
+    });
+}
+
+
+// Función para mostrar el porcentaje de productos por categoría en una gráfica de pastel.
+function graficaDonutCategorias() {
+    fetch(API_PROFILE + 'cantidadProductosCategoria', {
+        method: 'get'
+    }).then(function (request) {
+        // Se verifica si la petición es correcta, de lo contrario se muestra un mensaje indicando el problema.
+        if (request.ok) {
+            request.json().then(function (response) {
+                // Se comprueba si la respuesta es satisfactoria, de lo contrario se remueve la etiqueta canvas de la gráfica.
+                if (response.status) {
+                    // Se declaran los arreglos para guardar los datos por gráficar.
+                    let categorias = [];
+                    let cantidad = [];
+                    // Se recorre el conjunto de registros devuelto por la API (dataset) fila por fila a través del objeto row.
+                    response.dataset.map(function (row) {
+                        // Se asignan los datos a los arreglos.
+                        categorias.push(row.nombre);
+                        cantidad.push(row.cantidad);
+                    });
+                    // Se llama a la función que genera y muestra una gráfica tipo donut. Se encuentra en el archivo components.js
+                    doughnutGraph('chart3', categorias, cantidad, 'Cantidad de productos por categoría');
+                } else {
+                    document.getElementById('chart3').remove();
+                    console.log(response.exception);
+                }
+            });
+        } else {
+            console.log(request.status + ' ' + request.statusText);
+        }
+    }).catch(function (error) {
+        console.log(error);
+    });
+}
+
+// Función para mostrar la cantidad de productos por categoría en una gráfica de barras.
+function graficaLineaPedidos() {
+    fetch(API_PROFILE + 'fechaPedidos', {
+        method: 'get'
+    }).then(function (request) {
+        // Se verifica si la petición es correcta, de lo contrario se muestra un mensaje indicando el problema.
+        if (request.ok) {
+            request.json().then(function (response) {
+                // Se comprueba si la respuesta es satisfactoria, de lo contrario se remueve la etiqueta canvas de la gráfica.
+                if (response.status) {
+                    // Se declaran los arreglos para guardar los datos por gráficar.
+                    let fecha = [];
+                    let cantidad = [];
+                    // Se recorre el conjunto de registros devuelto por la API (dataset) fila por fila a través del objeto row.
+                    response.dataset.map(function (row) {
+                        // Se asignan los datos a los arreglos.
+                        fecha.push(row.fecha_pedido);
+                        cantidad.push(row.cantidad);
+                    });
+                    // Se llama a la función que genera y muestra una gráfica de barras. Se encuentra en el archivo components.js
+                    lineGraph('chart4', fecha, cantidad, 'Cantidad', 'Fechas en las que más se han realizado pedidos');
+                } else {
+                    document.getElementById('chart4').remove();
+                    console.log(response.exception);
+                }
+            });
+        } else {
+            console.log(request.status + ' ' + request.statusText);
+        }
+    }).catch(function (error) {
+        console.log(error);
+    });
+}
+
+// Función para mostrar el porcentaje de productos por categoría en una gráfica de pastel.
+function graficaPolarProductos() {
+    fetch(API_PROFILE + 'ProductosVendidos', {
+        method: 'get'
+    }).then(function (request) {
+        // Se verifica si la petición es correcta, de lo contrario se muestra un mensaje indicando el problema.
+        if (request.ok) {
+            request.json().then(function (response) {
+                // Se comprueba si la respuesta es satisfactoria, de lo contrario se remueve la etiqueta canvas de la gráfica.
+                if (response.status) {
+                    // Se declaran los arreglos para guardar los datos por gráficar.
+                    let categorias = [];
+                    let cantidad = [];
+                    // Se recorre el conjunto de registros devuelto por la API (dataset) fila por fila a través del objeto row.
+                    response.dataset.map(function (row) {
+                        // Se asignan los datos a los arreglos.
+                        categorias.push(row.nombre);
+                        cantidad.push(row.cantidad);
+                    });
+                    // Se llama a la función que genera y muestra una gráfica de pastel en porcentajes. Se encuentra en el archivo components.js
+                    polarGraph('chart5', categorias, cantidad, 'Porcentaje de productos más vendidos');
+                } else {
+                    document.getElementById('chart5').remove();
+                    console.log(response.exception);
+                }
+            });
+        } else {
+            console.log(request.status + ' ' + request.statusText);
+        }
+    }).catch(function (error) {
+        console.log(error);
+    });
+}
+
+
