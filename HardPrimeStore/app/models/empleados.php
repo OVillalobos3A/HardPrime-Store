@@ -482,4 +482,67 @@ class Empleados extends Validator
         return Database::executeRow($sql, $params);
     }
 
+    /*
+    *   Métodos para generar gráficas.
+    */
+
+    //Método para obtener productos por marcas
+    public function cantidadProductosMarcas()
+    {
+        $sql = 'SELECT nombre_marca, COUNT(id_producto) cantidad
+                FROM productos INNER JOIN marca USING(id_marca)
+                GROUP BY nombre_marca ORDER BY cantidad DESC';
+        $params = null;
+        return Database::getRows($sql, $params);
+    }
+
+    //Método para obtener productos por categorias
+    public function cantidadProductosCategoria()
+    {
+        $sql = 'SELECT categoria.nombre, COUNT(id_producto) cantidad
+                FROM productos INNER JOIN categoria USING(id_categoria)
+                GROUP BY categoria.nombre ORDER BY cantidad DESC
+        ';
+        $params = null;
+        return Database::getRows($sql, $params);
+    }
+
+    //Método para generar un gráfico que permita 
+    //visualizar los productos ya valorados por los clientes.
+    public function calificacionProductos()
+    {
+        $sql = 'SELECT nombre, calificacion
+                FROM productos INNER JOIN calificaciones USING(id_producto)
+                GROUP BY nombre, calificacion ORDER BY calificacion DESC
+                FETCH FIRST 5 ROWS ONLY';
+        $params = null;
+        return Database::getRows($sql, $params);
+    }
+
+    //Método para generar un gráfico que permita 
+    //visualizar las fechas en la cuales han existo más pedidos
+    public function fechaPedidos()
+    {
+        $sql = 'SELECT fecha_pedido, COUNT(id_pedido) cantidad
+                FROM pedido WHERE fecha_pedido IS NOT null
+                GROUP BY fecha_pedido ORDER BY cantidad DESC
+                FETCH FIRST 5 ROWS ONLY';
+        $params = null;
+        return Database::getRows($sql, $params);
+    }
+
+    //Método para generar un gráfico que permita 
+    //visualizar los productos más vendidos a nivel general
+    //en porcentaje
+    
+    public function productosVendidos()
+    {
+        $sql = 'SELECT nombre, COUNT(id_producto) cantidad
+                FROM detalle_pedido INNER JOIN productos USING(id_producto)
+                GROUP BY nombre ORDER BY cantidad DESC
+                FETCH FIRST 5 ROWS ONLY';
+        $params = null;
+        return Database::getRows($sql, $params);
+    }
+
 }
