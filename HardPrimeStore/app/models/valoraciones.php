@@ -132,6 +132,7 @@ class Valoraciones extends Validator
         return Database::executeRow($sql, $params);
     }
 
+    //Método para obtener los datos para el reporte de valoraciones por producto
     public function readProductosValoracion()
     {
         $sql = 'SELECT id_calificacion, fecha, nombre, comentario

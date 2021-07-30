@@ -146,6 +146,7 @@ class Categorias extends Validator
         return Database::executeRow($sql, $params);
     }
 
+    //Método para obtener los datos para el reporte de productos por categoría
     public function readProductosCategoria()
     {
         $sql = 'SELECT productos.id_producto, productos.nombre, precio, productos.descripcion, descuento, stock,

@@ -29,8 +29,8 @@ Dashboard_Page::headerTemplate('Categorías');
                             <i class="material-icons right">search</i>
                         </button>
                         <a href="#" onclick="openTable()" class="btn waves-effect blue tooltipped" data-tooltip="Refrescar tabla"><i class="material-icons">refresh</i></a>
-
-                        <a href="../../app/reports/productos_categoria.php" target="_blank" class="btn waves-effect amber tooltipped" data-tooltip="Reporte de productos por categoría"><i class="material-icons">assignment</i></a>
+                        <!--Se añade un boton para genera reporte-->
+                        <a href="../../app/reports/productos_categoria.php" target="_blank" class="btn waves-effect light-blue darken-4 tooltipped" data-tooltip="Reporte de productos por categoría"><i class="material-icons">assignment</i></a>
                     </div>
                 </div>
             </form>

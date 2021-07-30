@@ -169,6 +169,8 @@ class Marcas extends Validator
         return Database::executeRow($sql, $params);
     }
 
+
+    //Método para obtener los datos para el reporte de productos por marca
     public function readProductosMarca()
     {
         $sql = 'SELECT productos.id_producto, productos.nombre, precio, productos.descripcion, descuento, stock,

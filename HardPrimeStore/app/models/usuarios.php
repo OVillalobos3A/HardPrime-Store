@@ -287,6 +287,7 @@ class Usuarios extends Validator
         return Database::executeRow($sql, $params);
     }
 
+    //Método para obtener los datos para el reporte de usuarios por su tipo de usuario
     public function readUsuariosTipo()
     {
         $sql = "SELECT usuario, tipo_usuario, (empleados.nombre || ' ' || empleados.apellido) as Empleado, correo, telefono 
@@ -297,6 +298,7 @@ class Usuarios extends Validator
         return Database::getRows($sql, $params);
     }
 
+    //Método para obtener el tipo de usuario.
     public function readTipo()
     {
         $sql = 'SELECT id_tipo_usuario, tipo_usuario
