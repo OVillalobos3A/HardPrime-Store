@@ -42,6 +42,7 @@ function readPedido() {
                                     <td>${row.total}</td>
                                     <td>
                                         <a href="#" onclick="openAct2(${row.id_pedido})" class="btn blue-grey tooltipped" data-tooltip="Ver detalle"><i class="material-icons">shopping_cart</i></a>
+                                        <a href="../../app/reports/comprobante.php?id=${row.id_pedido}" target="_blank" class="btn waves-effect amber tooltipped" data-tooltip="Reporte de valoraciones por producto"><i class="material-icons">assignment</i></a>
                                     </td>
                                  </tr>
                             `;
@@ -56,6 +57,7 @@ function readPedido() {
                                     <td>${row.total}</td>
                                     <td>
                                         <a href="#" onclick="openAct2(${row.id_pedido})" class="btn blue-grey tooltipped" data-tooltip="Ver detalle"><i class="material-icons">shopping_cart</i></a>
+                                        <a href="../../app/reports/comprobante.php?id=${row.id_pedido}" target="_blank" class="btn waves-effect light-blue darken-4 tooltipped" data-tooltip="Comprobante de compra"><i class="material-icons">assignment</i></a>
                                     </td>
                                 </tr>
                             `;
@@ -377,7 +379,7 @@ function openComments() {
                                     <td class="center align">${row.fecha}</td>
                                     <td class="center align">${row.comentario}</td>
                                     <td class="center align">
-                                    <a onclick="openActComment(${row.id_calificacion})" class="btn-floating btn-small btn tooltipped waves-effect waves-light orange darken-4" data-position="right" data-tooltip="editar valoración"><i class="material-icons">edit</i></a>
+                                    <a onclick="openActComment(${row.id_calificacion})" class="btn-floating btn-small btn tooltipped waves-effect waves-light orange darken-4" data-position="right" data-tooltip="editar valoración"><i class="material-icons">edit</i></a>                                    
                                     </td>
                                  </tr>
                             `;

@@ -196,6 +196,26 @@ class Pedidos extends Validator
         return Database::getRow($sql, $params);
     }
 
+    public function readComprobante()
+    {
+        $sql = 'SELECT detalle_pedido.id_pedido as id_pedido, productos.nombre as nombre, cantidad, productos.precio as precio, (productos.precio*cantidad) as subtotal
+                FROM detalle_pedido INNER JOIN pedido ON detalle_pedido.id_pedido = pedido.id_pedido
+                INNER JOIN productos ON detalle_pedido.id_producto = productos.id_producto
+                WHERE detalle_pedido.id_pedido = ?';
+        $params = array($this->id);
+        return Database::getRows($sql, $params);
+    }
+
+    public function readTotal()
+    {
+        $sql = 'SELECT id_pedido, sum(detalle_pedido.precio_producto*detalle_pedido.cantidad) as total
+                FROM pedido INNER JOIN detalle_pedido USING(id_pedido)
+                WHERE id_pedido = ?
+                GROUP BY pedido.id_pedido';
+        $params = array($this->id);
+        return Database::getRow($sql, $params);
+    }
+
     
 
 }

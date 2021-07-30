@@ -75,6 +75,15 @@ class Valoraciones extends Validator
         return Database::getRows($sql, $params);
     }
 
+    public function readAll2()
+    {
+        $sql = 'SELECT id_producto, nombre
+                FROM productos';
+        $params = null;
+        return Database::getRows($sql, $params);
+    }
+
+
     public function readOne()
     {
         $sql = 'SELECT id_calificacion, comentario, fecha, calificacion, calificaciones.estado as estado, productos.nombre as producto, clientes.nombre as cliente
@@ -121,5 +130,14 @@ class Valoraciones extends Validator
                 WHERE id_calificacion = ?';
         $params = array($this->id);
         return Database::executeRow($sql, $params);
+    }
+
+    public function readProductosValoracion()
+    {
+        $sql = 'SELECT id_calificacion, fecha, nombre, comentario
+                FROM calificaciones INNER JOIN productos USING(id_producto)
+                WHERE id_producto = ?';
+        $params = array($this->id);
+        return Database::getRows($sql, $params);
     }
 }

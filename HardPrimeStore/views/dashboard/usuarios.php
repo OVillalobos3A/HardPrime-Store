@@ -30,6 +30,7 @@ Dashboard_Page::headerTemplate('Administrar usuarios');
                             <i class="material-icons right">search</i>
                         </button>
                         <a href="#" onclick="openTable()" class="btn waves-effect blue tooltipped" data-tooltip="Refrescar tabla"><i class="material-icons">refresh</i></a>
+                        <a href="../../app/reports/usuarios_tipo.php" target="_blank" class="btn waves-effect light-blue darken-4 tooltipped" data-tooltip="Reporte de usuarios por tipo de usuario"><i class="material-icons">assignment</i></a>
                     </div>
                 </div>
             </form>

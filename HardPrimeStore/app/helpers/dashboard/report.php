@@ -41,6 +41,25 @@ class Report extends FPDF
         }
     }
 
+    public function startReport2($title)
+    {
+        // Se establece la zona horaria a utilizar durante la ejecución del reporte.
+        ini_set('date.timezone', 'America/El_Salvador');
+        // Se crea una sesión o se reanuda la actual para poder utilizar variables de sesión en los reportes.
+        session_start();
+        // Se verifica si un administrador ha iniciado sesión para generar el documento, de lo contrario se direcciona a main.php        
+            // Se asigna el título del documento a la propiedad de la clase.
+            $this->title = $title;
+            // Se establece el título del documento (true = utf-8).
+            $this->SetTitle('Dashboard - Reporte', true);
+            // Se establecen los margenes del documento (izquierdo, superior y derecho).
+            $this->setMargins(15, 15, 15);
+            // Se añade una nueva página al documento (orientación vertical y formato carta) y se llama al método Header()
+            $this->AddPage('p', 'letter');
+            // Se define un alias para el número total de páginas que se muestra en el pie del documento.
+            $this->AliasNbPages();        
+    }
+
     /*
     *   Se sobrescribe el método de la librería para establecer la plantilla del encabezado de los reportes.
     *   Se llama automáticamente en el método AddPage()

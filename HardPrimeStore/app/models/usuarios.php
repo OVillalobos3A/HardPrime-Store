@@ -286,4 +286,23 @@ class Usuarios extends Validator
         $params = array($this->id);
         return Database::executeRow($sql, $params);
     }
+
+    public function readUsuariosTipo()
+    {
+        $sql = "SELECT usuario, tipo_usuario, (empleados.nombre || ' ' || empleados.apellido) as Empleado, correo, telefono 
+                from usuarios INNER JOIN empleados ON usuarios.id_empleado = empleados.id_empleado
+                INNER JOIN tipo_usuario ON usuarios.id_tipo_usuario = tipo_usuario.id_tipo_usuario
+                where tipo_usuario.id_tipo_usuario = ? and usuarios.estado = 'activo' and tipo_usuario.id_tipo_usuario > 1";
+        $params = array($this->id);
+        return Database::getRows($sql, $params);
+    }
+
+    public function readTipo()
+    {
+        $sql = 'SELECT id_tipo_usuario, tipo_usuario
+        FROM tipo_usuario
+        WHERE id_tipo_usuario != 1';
+        $params = null;
+        return Database::getRows($sql, $params);
+    }
 }
