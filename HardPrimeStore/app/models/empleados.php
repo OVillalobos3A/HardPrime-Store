@@ -155,7 +155,7 @@ class Empleados extends Validator
 
     public function setClave($value)
     {
-        if ($this->validatePassword($value)) {
+        if ($this->validatePass($value)) {
             $this->clave = $value;
             return true;
         } else {
