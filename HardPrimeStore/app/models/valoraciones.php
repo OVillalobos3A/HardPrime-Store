@@ -135,10 +135,11 @@ class Valoraciones extends Validator
     //Método para obtener los datos para el reporte de valoraciones por producto
     public function readProductosValoracion()
     {
-        $sql = 'SELECT id_calificacion, fecha, nombre, comentario
+        $sql = 'SELECT id_calificacion, fecha, nombre, comentario, ROUND(calificacion) as calificacion
                 FROM calificaciones INNER JOIN productos USING(id_producto)
                 WHERE id_producto = ?';
         $params = array($this->id);
         return Database::getRows($sql, $params);
     }
+
 }

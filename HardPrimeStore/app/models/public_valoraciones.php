@@ -5,6 +5,8 @@
 class Public_valoraciones extends Validator
 {
     // Declaración de atributos (propiedades).
+    private $alias = null;
+    private $clave = null;
     private $id = null;
     private $idproducto = null;
     private $idcliente = null;
@@ -23,6 +25,26 @@ class Public_valoraciones extends Validator
     {
         if ($this->validateNaturalNumber($value)) {
             $this->id = $value;
+            return true;
+        } else {
+            return false;
+        }
+    }
+
+    public function setAlias($value)
+    {
+        if ($this->validateAlphanumeric($value, 1, 50)) {
+            $this->alias = $value;
+            return true;
+        } else {
+            return false;
+        }
+    }
+
+    public function setClave($value)
+    {
+        if ($this->validatePass($value)) {
+            $this->clave = $value;
             return true;
         } else {
             return false;
@@ -142,6 +164,16 @@ class Public_valoraciones extends Validator
         return $this->estado;
     }
 
+    public function getAlias()
+    {
+        return $this->alias;
+    }
+
+    public function getClave()
+    {
+        return $this->clave;
+    }
+
     //Método para insertar una calificación en la base de datos
     public function createRow()
     {
@@ -240,5 +272,54 @@ class Public_valoraciones extends Validator
         $params = array($this->idproducto);
         return Database::getRows($sql, $params);
     }    
-   
+
+    public function openName()
+    {
+        $sql = "SELECT id_cliente as emp, imagen, CONCAT('¡BIENVENID@!', ' ', usuario) as usuario
+                FROM clientes 
+                WHERE id_cliente = ?";
+        $params = array($_SESSION['id_cliente']);
+        return Database::getRows($sql, $params);
+    }
+
+    public function readEmfileds()
+    {
+        $sql = 'SELECT id_cliente as emp, usuario, id_cliente
+                FROM clientes
+                WHERE id_cliente = ?';
+        $params = array($_SESSION['id_cliente']);
+        return Database::getRow($sql, $params);
+    }
+
+    public function checkPassword($password)
+    {
+        $sql = 'SELECT contraseña FROM clientes WHERE id_cliente = ?';
+        $params = array($this->id);
+        $data = Database::getRow($sql, $params);
+        if (password_verify($password, $data['contraseña'])) {
+            return true;
+        } else {
+            return false;
+        }
+    }
+
+    public function updateUserCredentials()
+    {
+        // Se encripta la clave por medio del algoritmo bcrypt que genera un string de 60 caracteres.
+        $hash = password_hash($this->clave, PASSWORD_DEFAULT);
+        $sql = 'UPDATE clientes 
+                SET usuario = ?, contraseña = ?
+                WHERE id_cliente = ?';
+        $params = array($this->alias, $hash, $this->id);
+        return Database::executeRow($sql, $params);
+    }
+
+    public function updateUserCredentials2()
+    {
+        $sql = 'UPDATE clientes 
+                SET usuario = ?
+                WHERE id_cliente = ?';
+        $params = array($this->alias, $this->id);
+        return Database::executeRow($sql, $params);
+    }
 }

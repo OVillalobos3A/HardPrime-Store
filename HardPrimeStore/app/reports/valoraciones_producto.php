@@ -28,17 +28,19 @@ if ($dataValoraciones = $valoracion->readAll2()) {
                 // Se establece la fuente para los encabezados.
                 $pdf->SetFont('Times', 'B', 11);
                 // Se imprimen las celdas con los encabezados.
-                $pdf->Cell(26, 10, utf8_decode('Fecha'), 1, 0, 'C', 1);
-                $pdf->Cell(50, 10, utf8_decode('Producto'), 1, 0, 'C', 1);
-                $pdf->Cell(110, 10, utf8_decode('Comentario'), 1, 1, 'C', 1);
+                $pdf->Cell(21, 10, utf8_decode('Fecha'), 1, 0, 'C', 1);
+                $pdf->Cell(45, 10, utf8_decode('Producto'), 1, 0, 'C', 1);
+                $pdf->Cell(90, 10, utf8_decode('Comentario'), 1, 0, 'C', 1);
+                $pdf->Cell(30, 10, utf8_decode('Calificación'), 1, 1, 'C', 1);
                 // Se establece la fuente para los datos de los productos.
                 $pdf->SetFont('Times', '', 11);
                 // Se recorren los registros ($dataProductos) fila por fila ($rowProducto).
                 foreach ($dataProductos as $rowProducto) {
                     // Se imprimen las celdas con los datos de los productos.
-                    $pdf->Cell(26, 10, utf8_decode($rowProducto['fecha']), 1, 0);
-                    $pdf->Cell(50, 10, utf8_decode($rowProducto['nombre']), 1, 0);
-                    $pdf->Cell(110, 10, $rowProducto['comentario'], 1, 1);
+                    $pdf->Cell(21, 10, utf8_decode($rowProducto['fecha']), 1, 0);
+                    $pdf->Cell(45, 10, utf8_decode($rowProducto['nombre']), 1, 0);
+                    $pdf->Cell(90, 10, $rowProducto['comentario'], 1, 0);
+                    $pdf->Cell(30, 10, $rowProducto['calificacion'].' Estrellas', 1, 1);
                 }
             } else {
                 $pdf->Cell(0, 10, utf8_decode('No hay Valoraciones para este producto'), 1, 1);
