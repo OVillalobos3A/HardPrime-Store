@@ -252,6 +252,17 @@ class Validator
         }
     }
 
+    public function validatePass($value)
+    {
+        // Se verifica que la contraseña sea diferente al usuario.
+        if (preg_match('/^(?=.*[A-Za-z])(?=.*\d)(?=.*[@$!%*#?&])[A-Za-z\d@$!%*#?&]{8,}$/', $value)) {
+            return true;
+        } else {
+            $this->passwordError = 'Por favor ingrese una contaseña con un mínimo ocho caracteres, al menos una letra, un número y un carácter especial.';
+            return false;
+        }
+    }
+
     /*
     *   Método para validar un número telefónico.
     *
