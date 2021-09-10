@@ -318,23 +318,31 @@ if (isset($_GET['action'])) {
                         if ($usuario->setAlias($_POST['alias'])) {
                             if ($_POST['ncontra'] != '' && $_POST['ncontra1'] != '') {
                                 if ($_POST['ncontra'] == $_POST['ncontra1']) {
-                                    if ($usuario->checkPassword($_POST['contra'])) {
-                                        if ($usuario->setClave($_POST['ncontra'])) {
-                                            if ($usuario->updateUserCredentials()) {
-                                                $result['status'] = 1;
-                                                $result['message'] = 'Credenciales actualizadas correctamente';
+                                    if ($_POST['contra'] != $_POST['ncontra']) {
+                                        if ($_POST['alias'] != $_POST['ncontra']) {
+                                            if ($usuario->checkPassword($_POST['contra'])) {
+                                                if ($usuario->setClave($_POST['ncontra'])) {
+                                                    if ($usuario->updateUserCredentials()) {
+                                                        $result['status'] = 1;
+                                                        $result['message'] = 'Credenciales actualizadas correctamente';
+                                                    } else {
+                                                        $result['exception'] = Database::getException();
+                                                    }
+                                                } else {
+                                                    $result['exception'] = $usuario->getPasswordError();
+                                                }
                                             } else {
-                                                $result['exception'] = Database::getException();
+                                                if (Database::getException()) {
+                                                    $result['exception'] = Database::getException();
+                                                } else {
+                                                    $result['exception'] = 'Clave incorrecta';
+                                                }
                                             }
                                         } else {
-                                            $result['exception'] = $usuario->getPasswordError();
+                                            $result['exception'] = 'Ingrese una contraseña diferente a su nombre de usuario';
                                         }
                                     } else {
-                                        if (Database::getException()) {
-                                            $result['exception'] = Database::getException();
-                                        } else {
-                                            $result['exception'] = 'Clave incorrecta';
-                                        }
+                                        $result['exception'] = 'Ingrese una contraseña diferente a la actual';
                                     }
                                 } else {
                                     $result['exception'] = 'Contraseñas diferentes';
@@ -390,6 +398,7 @@ if (isset($_GET['action'])) {
                 //   $result['exception'] = 'No se puede eliminar a sí mismo';
                 //}
                 break;
+                //Metodo para la grafica tipo donut cantidad de productos por marcas
             case 'cantidadProductosMarcas':
                 if ($result['dataset'] = $usuario->cantidadProductosMarcas()) {
                     $result['status'] = 1;
@@ -401,6 +410,7 @@ if (isset($_GET['action'])) {
                     }
                 }
                 break;
+                //Metodo para la grafica de pastel cantidad de productos por marcas
             case 'cantidadProductosCategoria':
                 if ($result['dataset'] = $usuario->cantidadProductosCategoria()) {
                     $result['status'] = 1;
@@ -412,6 +422,7 @@ if (isset($_GET['action'])) {
                     }
                 }
                 break;
+                //Metodo para la grafica de barras para la calificacion de los productos
             case 'calificacionProductos':
                 if ($result['dataset'] = $usuario->calificacionProductos()) {
                     $result['status'] = 1;
@@ -423,6 +434,7 @@ if (isset($_GET['action'])) {
                     }
                 }
                 break;
+                //Metodo para la grafica lineal para visulizar el progreso de los que se han entregado
             case 'fechaPedidos':
                 if ($result['dataset'] = $usuario->fechaPedidos()) {
                     $result['status'] = 1;
@@ -434,6 +446,7 @@ if (isset($_GET['action'])) {
                     }
                 }
                 break;
+                //Metodo para la grafica polar para visulizar los productos más vendidos
             case 'ProductosVendidos':
                 if ($result['dataset'] = $usuario->productosVendidos()) {
                     $result['status'] = 1;

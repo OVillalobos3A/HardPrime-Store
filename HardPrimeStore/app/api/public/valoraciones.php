@@ -72,22 +72,107 @@ if (isset($_GET['action'])) {
             }
             break;
             //Método para seleccionar una calificacion en especifico
-            case 'readActualizar':
-                if ($valorar->setId($_POST['id_calificacion'])) {
-                    if ($result['dataset'] = $valorar->readOne()) {
-                        $result['status'] = 1;
+        case 'readActualizar':
+            if ($valorar->setId($_POST['id_calificacion'])) {
+                if ($result['dataset'] = $valorar->readOne()) {
+                    $result['status'] = 1;
+                } else {
+                    if (Database::getException()) {
+                        $result['exception'] = Database::getException();
                     } else {
-                        if (Database::getException()) {
-                            $result['exception'] = Database::getException();
+                        $result['exception'] = 'Calificacion inexistente';
+                    }
+                }
+            } else {
+                $result['exception'] = 'Calificación incorrecto';
+            }
+            break;
+        case 'openName':
+            if ($result['dataset'] = $valorar->openName()) {
+                $result['status'] = 1;
+            } else {
+                if (Database::getException()) {
+                    $result['exception'] = Database::getException();
+                } else {
+                    $result['exception'] = 'Cliente inexistente';
+                }
+            }
+            break;
+        //Método para consultar la información del empleado para mandarla al modal
+        case 'readEmfileds':
+            if ($result['dataset'] = $valorar->readEmfileds()) {
+                $result['status'] = 1;
+            } else {
+                if (Database::getException()) {
+                    $result['exception'] = Database::getException();
+                } else {
+                    $result['exception'] = 'Empleado inexistente';
+                }
+            }
+            break;
+        case 'updateUserCredentials':
+            $_POST = $valorar->validateForm($_POST);
+            if ($valorar->setId($_POST['id_cliente'])) {
+                if ($data = $valorar->readEmfileds()) {
+                    if ($valorar->setAlias($_POST['alias'])) {
+                        if ($_POST['ncontra'] != '' && $_POST['ncontra1'] != '') {
+                            if ($_POST['ncontra'] == $_POST['ncontra1']) {
+                                if ($_POST['contra'] != $_POST['ncontra']) {
+                                    if ($_POST['alias'] != $_POST['ncontra']) {
+                                        if ($valorar->checkPassword($_POST['contra'])) {
+                                            if ($valorar->setClave($_POST['ncontra'])) {
+                                                if ($valorar->updateUserCredentials()) {
+                                                    $result['status'] = 1;
+                                                    $result['message'] = 'Credenciales actualizadas correctamente';
+                                                } else {
+                                                    $result['exception'] = Database::getException();
+                                                }
+                                            } else {
+                                                $result['exception'] = $valorar->getPasswordError();
+                                            }
+                                        } else {
+                                            if (Database::getException()) {
+                                                $result['exception'] = Database::getException();
+                                            } else {
+                                                $result['exception'] = 'Clave incorrecta';
+                                            }
+                                        }
+                                    } else {
+                                        $result['exception'] = 'Ingrese una contraseña diferente a su nombre de usuario';
+                                    }
+                                } else {
+                                    $result['exception'] = 'Ingrese una contraseña diferente a la actual';
+                                }
+                            } else {
+                                $result['exception'] = 'Contraseñas diferentes';
+                            }
                         } else {
-                            $result['exception'] = 'Calificacion inexistente';
+                            if ($valorar->checkPassword($_POST['contra'])) {
+                                if ($valorar->updateUserCredentials2()) {
+                                    $result['status'] = 1;
+                                    $result['message'] = 'Credenciales actualizadas correctamente';
+                                } else {
+                                    $result['exception'] = Database::getException();
+                                }
+                            } else {
+                                if (Database::getException()) {
+                                    $result['exception'] = Database::getException();
+                                } else {
+                                    $result['exception'] = 'Clave incorrecta';
+                                }
+                            }
                         }
+                    } else {
+                        $result['exception'] = 'Alias incorrecto';
                     }
                 } else {
-                    $result['exception'] = 'Calificación incorrecto';
+                    $result['exception'] = 'Usuario inexistente';
                 }
-                break;
-                //Método para actualizar un comentario, capturando los datos del formulario
+            } else {
+                $result['exception'] = 'Usuario incorrecto';
+            }
+            break;
+        //Método para actualizar un comentario, capturando los datos del formulario
         case 'updateComentario':
             $_POST = $valorar->validateForm($_POST);
             if ($valorar->setId($_POST['id_calificacion_act'])) {                
