@@ -1,13 +1,10 @@
-document.addEventListener('DOMContentLoaded', function() {
-       
-  });
-// Constante para establecer la ruta y parámetros de comunicación con la API.
 const API_LOGIN = '../../app/api/public/clientes.php?action='; 
 
 document.addEventListener('DOMContentLoaded', function () {
     // Se llama a la función que obtiene los registros para llenar la tabla. Se encuentra en el archivo components.js    
     verSesion();
 });
+
 
 // Método manejador de eventos que se ejecuta cuando se envía el formulario de iniciar sesión.
 document.getElementById('session-form').addEventListener('submit', function (event) {
@@ -64,4 +61,6 @@ function verSesion() {
         console.log(error);
     });
 }
+
+
   

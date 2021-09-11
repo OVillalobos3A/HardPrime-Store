@@ -15,6 +15,9 @@ if (isset($_GET['action'])) {
     // Se verifica si existe una sesión iniciada como administrador, de lo contrario se finaliza el script con un mensaje de error.
     if (isset($_SESSION['id_usuario'])) {
         // Se compara la acción a realizar cuando un administrador ha iniciado sesión.
+        $fechaGuardada = $_SESSION["ultimoAcceso"];
+        $ahora = date("Y-n-j H:i:s");
+        $tiempo_transcurrido = (strtotime($ahora) - strtotime($fechaGuardada));
         switch ($_GET['action']) {
             case 'logOut':
                 if (session_destroy()) {
@@ -36,6 +39,18 @@ if (isset($_GET['action'])) {
                     }
                 }
                 break;
+                //Método para cerrar sesión en caso de inactividad
+                case 'timeOut':               
+                    //comparamos el tiempo transcurrido
+                    if ($tiempo_transcurrido >= 500) {
+                        $result['status'] = 1;
+                        //si pasaron 10 minutos o más
+                        session_destroy(); // destruyo la sesión                    
+                        //sino, actualizo la fecha de la sesión
+                    } else {
+                        $_SESSION["ultimoAcceso"] = $ahora;
+                    }
+                    break;
             //Método para consultar la existencia de empleados sin tener en cuenta la existencia del usuario root
             case 'readAll2':
                 if ($result['dataset'] = $usuario->readAll2()) {
@@ -553,6 +568,8 @@ if (isset($_GET['action'])) {
                         $result['message'] = 'Autenticación correcta';
                         $_SESSION['id_usuario'] = $usuario->getId();
                         $_SESSION['usuaio'] = $usuario->getAlias();
+                        //sesion que captura la fecha y hora del inicio de sesión
+                        $_SESSION["ultimoAcceso"]= date("Y-n-j H:i:s");
                     } else {
                         if (Database::getException()) {
                             $result['exception'] = Database::getException();

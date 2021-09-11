@@ -8,7 +8,7 @@ const API_CARRITO = '../../app/api/public/carrito.php?action=';
 // Método manejador de eventos que se ejecuta cuando el documento ha cargado.
 document.addEventListener('DOMContentLoaded', function () {
     // Se llama a la función que obtiene los productos del carrito de compras para llenar la tabla en la vista.
-    readOrderDetail();
+    readOrderDetail();    
 });
 
 // Función para obtener el detalle del pedido (carrito de compras).

@@ -1,15 +1,15 @@
 // Constante para establecer la ruta y parámetros de comunicación con la API.
-const API_INDEX =  '../../app/api/public/index.php?action=';
+const API_INDEX = '../../app/api/public/index.php?action=';
 
-document.addEventListener('DOMContentLoaded', function() {   
-    
-    openProduct2();
-  });
+document.addEventListener('DOMContentLoaded', function () {
+
+    openProduct2();    
+});
 
 
-  function openProduct2() {
-      fetch(API_INDEX + 'openProduct2', {
-        method: 'post'        
+function openProduct2() {
+    fetch(API_INDEX + 'openProduct2', {
+        method: 'post'
     }).then(function (request) {
         // Se verifica si la petición es correcta, de lo contrario se muestra un mensaje indicando el problema.
         if (request.ok) {
@@ -44,7 +44,7 @@ document.addEventListener('DOMContentLoaded', function() {
                         `;
                     });
                     // Se agregan las tarjetas a la etiqueta div mediante su id para mostrar los productos.
-                    document.getElementById('contenido').innerHTML = content;                  
+                    document.getElementById('contenido').innerHTML = content;
                     // Se inicializa el componente Material Box asignado a las imagenes para que funcione el efecto Lightbox.
                     M.Materialbox.init(document.querySelectorAll('.materialboxed'));
                     // Se inicializa el componente Tooltip asignado a los enlaces para que funcionen las sugerencias textuales.
@@ -60,13 +60,13 @@ document.addEventListener('DOMContentLoaded', function() {
     }).catch(function (error) {
         console.log(error);
     });
-  }
-  
-  function viewTittle(id) {
+}
+
+function viewTittle(id) {
     // Se define un objeto con los datos del registro seleccionado.
     const data = new FormData();
     data.append('id_marca', id);
-  
+
     fetch(API_INDEX + 'readTittle', {
         method: 'post',
         body: data
@@ -76,17 +76,17 @@ document.addEventListener('DOMContentLoaded', function() {
             request.json().then(function (response) {
                 // Se comprueba si la respuesta es satisfactoria, de lo contrario se muestra un mensaje con la excepción.
                 if (response.status) {
-                  let content = '';                
-                  // Se recorre el conjunto de registros devuelto por la API (dataset) fila por fila a través del objeto row.
-                  response.dataset.map(function (row) {
-                      
-                      // Se crean y concatenan las tarjetas con los datos de cada producto.
-                      content += `                  
+                    let content = '';
+                    // Se recorre el conjunto de registros devuelto por la API (dataset) fila por fila a través del objeto row.
+                    response.dataset.map(function (row) {
+
+                        // Se crean y concatenan las tarjetas con los datos de cada producto.
+                        content += `                  
                       <h5>&nbsp;&nbsp;&nbsp;Marca ${row.nombre_marca}</h5>
                       `;
-                  });
+                    });
                     // Se agregan las tarjetas a la etiqueta div mediante su id para mostrar los productos.
-                    document.getElementById('titulo_pag').innerHTML = content;    
+                    document.getElementById('titulo_pag').innerHTML = content;
                     // Se inicializa el componente Material Box asignado a las imagenes para que funcione el efecto Lightbox.
                     M.Materialbox.init(document.querySelectorAll('.materialboxed'));
                     // Se inicializa el componente Tooltip asignado a los enlaces para que funcionen las sugerencias textuales.
@@ -103,17 +103,16 @@ document.addEventListener('DOMContentLoaded', function() {
     }).catch(function (error) {
         console.log(error);
     });
-  }
-  
-  // Función para preparar el formulario al momento de insertar un registro.
-  function openCreateDialog() {
+}
+
+// Función para preparar el formulario al momento de insertar un registro.
+function openCreateDialog() {
     // Se restauran los elementos del formulario.
     document.getElementById('item-form').reset();
     // Se abre la caja de dialogo (modal) que contiene el formulario.
     let instance = M.Modal.getInstance(document.getElementById('item-modal'));
     instance.open();
-  }
-  
+}
 
 
-  
+

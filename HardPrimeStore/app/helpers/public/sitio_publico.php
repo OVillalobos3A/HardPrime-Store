@@ -18,16 +18,16 @@ class Sitio_Publico
               <meta name="viewport" content="width=device-width, initial-scale=1.0" />
               <link type="text/css" rel="stylesheet" href="../../resources/css/styles.css" />
               <!--Título del documento-->
-              <title>'.$title.'</title>
+              <title>' . $title . '</title>
             </head>            
             <body>
             ');
-            // Se obtiene el nombre del archivo de la página web actual.
-        //$filename = basename($_SERVER['PHP_SELF']);
-        // Se comprueba si existe una sesión de cliente para mostrar el menú de opciones, de lo contrario se muestra otro menú.
-        if (isset($_SESSION['id_cliente'])) {
-            // Se verifica si la página web actual es diferente a login.php y register.php, de lo contrario se direcciona a index.php            
-                print('
+    // Se obtiene el nombre del archivo de la página web actual.
+    //$filename = basename($_SERVER['PHP_SELF']);
+    // Se comprueba si existe una sesión de cliente para mostrar el menú de opciones, de lo contrario se muestra otro menú.
+    if (isset($_SESSION['id_cliente'])) {
+      // Se verifica si la página web actual es diferente a login.php y register.php, de lo contrario se direcciona a index.php            
+      print('
               <header>
                 <div class="navbar-fixed">
                 <nav class="nav-extended light-blue darken-4">            
@@ -101,9 +101,9 @@ class Sitio_Publico
                   <li><a class="waves-effect waves-light btn blue-grey" onclick="logOut()"> Cerrar Sesión</a></li>
                 </ul>
               </header>
-            ');            
-          }else{            
-              print('
+            ');
+    } else {
+      print('
               <header>
                 <div class="navbar-fixed">
                 <nav class="nav-extended light-blue darken-4">            
@@ -167,45 +167,78 @@ class Sitio_Publico
                   </li>
                 </ul>
               </header>
-            '
-                  
-              );
-         
-              
-          }
+            ');
+    }
   }
 
   public static function footerTemplate($controller)
   {
-    print('<footer class="page-footer light-blue darken-4">
-                <div>
-                  <div class="container">        
-                    <div class="row">
-                      <div class="col s12 m6">
-                      <h6>HardPrime Store - 2021 todos los derechos reservados</h6>                  
-                      </div>
-                      <div class="col s12 m2">
-                      <a class="grey-text text-lighten-4 right" href="#!"><h6></h6></a>  
-                       </div>
-                       <div class="col s12 m4">
-                       <a href=" right">&nbsp;&nbsp;<img class="responsive-img" src="../../resources/img/public/facebook.png" width="35"></a>
-                       <a href=" right">&nbsp;&nbsp;<img class="responsive-img" src="../../resources/img/public/instagram-logo.png" width="35"></a>
-                       <a href=" right">&nbsp;&nbsp;<img class="responsive-img" src="../../resources/img/public/twitter.png" width="35"></a>
-                       </div>
-                    </div>                
-                  </div>
-                </div>
-                
-              </footer>
-              <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
-              <script type="text/javascript" src="../../resources/js/materialize.min.js"></script>
-              <script type="text/javascript" src="../../resources/js/sweetalert.min.js"></script>
-              <script type="text/javascript" src="../../app/helpers/dashboard/components.js"></script>
-                         
-              <script type="text/javascript" src="../../app/controllers/public/account.js"></script>
-              <script type="text/javascript" src="../../app/controllers/public/initialization.js"></script>
-              <script type="text/javascript" src="../../app/controllers/public/' . $controller . '"></script>
-            </body>            
-            </html>');
+    // Se obtiene el nombre del archivo de la página web actual.
+    $filename = basename($_SERVER['PHP_SELF']);
+
+    if ($filename != 'login.php' && $filename != 'registro_clientes.php' && $filename != 'recuperar_contra.php') {
+      print('<footer class="page-footer light-blue darken-4">
+      <div>
+        <div class="container">        
+          <div class="row">
+            <div class="col s12 m6">
+            <h6>HardPrime Store - 2021 todos los derechos reservados</h6>                  
+            </div>
+            <div class="col s12 m2">
+            <a class="grey-text text-lighten-4 right" href="#!"><h6></h6></a>  
+             </div>
+             <div class="col s12 m4">
+             <a href=" right">&nbsp;&nbsp;<img class="responsive-img" src="../../resources/img/public/facebook.png" width="35"></a>
+             <a href=" right">&nbsp;&nbsp;<img class="responsive-img" src="../../resources/img/public/instagram-logo.png" width="35"></a>
+             <a href=" right">&nbsp;&nbsp;<img class="responsive-img" src="../../resources/img/public/twitter.png" width="35"></a>
+             </div>
+          </div>                
+        </div>
+      </div>
+      
+    </footer>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
+    <script type="text/javascript" src="../../resources/js/materialize.min.js"></script>
+    <script type="text/javascript" src="../../resources/js/sweetalert.min.js"></script>
+    <script type="text/javascript" src="../../app/helpers/dashboard/components.js"></script>
+    
+    
+    <script type="text/javascript" src="../../app/controllers/public/account.js"></script>
+    <script type="text/javascript" src="../../app/controllers/public/initialization.js"></script>
+    <script type="text/javascript" src="../../app/controllers/public/' . $controller . '"></script>
+  </body>            
+  </html>');
+    } else {
+      print('<footer class="page-footer light-blue darken-4">
+      <div>
+        <div class="container">        
+          <div class="row">
+            <div class="col s12 m6">
+            <h6>HardPrime Store - 2021 todos los derechos reservados</h6>                  
+            </div>
+            <div class="col s12 m2">
+            <a class="grey-text text-lighten-4 right" href="#!"><h6></h6></a>  
+             </div>
+             <div class="col s12 m4">
+             <a href=" right">&nbsp;&nbsp;<img class="responsive-img" src="../../resources/img/public/facebook.png" width="35"></a>
+             <a href=" right">&nbsp;&nbsp;<img class="responsive-img" src="../../resources/img/public/instagram-logo.png" width="35"></a>
+             <a href=" right">&nbsp;&nbsp;<img class="responsive-img" src="../../resources/img/public/twitter.png" width="35"></a>
+             </div>
+          </div>                
+        </div>
+      </div>
+      
+    </footer>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
+    <script type="text/javascript" src="../../resources/js/materialize.min.js"></script>
+    <script type="text/javascript" src="../../resources/js/sweetalert.min.js"></script>
+    <script type="text/javascript" src="../../app/helpers/dashboard/components.js"></script>
+    
+        
+    <script type="text/javascript" src="../../app/controllers/public/initialization.js"></script>
+    <script type="text/javascript" src="../../app/controllers/public/' . $controller . '"></script>
+  </body>            
+  </html>');
+    }
   }
 }

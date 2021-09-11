@@ -43,6 +43,18 @@ if (isset($_GET['action'])) {
                     $result['exception'] = 'Ocurrió un problema al obtener el pedido';
                 }
                 break;
+                //Método para cerrar sesión en caso de inactividad
+            case 'timeOut':               
+                //comparamos el tiempo transcurrido
+                if ($tiempo_transcurrido >= 20) {
+                    $result['status'] = 1;
+                    //si pasaron 10 minutos o más
+                    session_destroy(); // destruyo la sesión                    
+                    //sino, actualizo la fecha de la sesión
+                } else {
+                    $_SESSION["ultimoAcceso"] = $ahora;
+                }
+                break;
             //Método para mostrar todas las productos por categoria 
             case 'readOrderDetail':
                 if ($pedido->startOrder()) {

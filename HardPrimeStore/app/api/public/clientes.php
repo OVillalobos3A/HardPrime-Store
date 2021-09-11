@@ -7,13 +7,18 @@ require_once('../../models/clientes.php');
 if (isset($_GET['action'])) {
     // Se crea una sesión o se reanuda la actual para poder utilizar variables de sesión en el script.
     session_name("clientes");
-    session_start();
+    session_start();    
+   
+
     // Se instancia la clase correspondiente.
     $cliente = new Clientes;
     // Se declara e inicializa un arreglo para guardar el resultado que retorna la API.
     $result = array('status' => 0, 'recaptcha' => 0, 'message' => null, 'exception' => null);
     // Se verifica si existe una sesión iniciada como cliente para realizar las acciones correspondientes.
     if (isset($_SESSION['id_cliente'])) {
+        $fechaGuardada = $_SESSION["ultimoAcceso"];
+        $ahora = date("Y-n-j H:i:s");
+        $tiempo_transcurrido = (strtotime($ahora) - strtotime($fechaGuardada));
         // Se compara la acción a realizar cuando un cliente ha iniciado sesión.
         switch ($_GET['action']) {
             //Método que valida si el cliente ha iniciado sesión
@@ -30,6 +35,18 @@ if (isset($_GET['action'])) {
                     $result['message'] = 'Sesión eliminada correctamente';
                 } else {
                     $result['exception'] = 'Ocurrió un problema al cerrar la sesión';
+                }
+                break;
+                //Método para cerrar sesión en caso de inactividad
+            case 'timeOut':               
+                //comparamos el tiempo transcurrido
+                if ($tiempo_transcurrido >= 500) {
+                    $result['status'] = 1;
+                    //si pasaron 10 minutos o más
+                    session_destroy(); // destruyo la sesión                    
+                    //sino, actualizo la fecha de la sesión
+                } else {
+                    $_SESSION["ultimoAcceso"] = $ahora;
                 }
                 break;
             default:
@@ -110,6 +127,10 @@ if (isset($_GET['action'])) {
                         $_SESSION['imagen'] = $cliente->getImagen();
                         $_SESSION['correo'] = $cliente->getCorreo();
                         //$_SESSION['correo_cliente'] = $cliente->getCorreo();
+                        //defino la sesión que demuestra que el usuario está autorizado
+                        $_SESSION["autentificado"]= "SI";
+                        //sesion que captura la fecha y hora del inicio de sesión
+                        $_SESSION["ultimoAcceso"]= date("Y-n-j H:i:s");
                         $result['status'] = 1;
                         $result['message'] = 'Autenticación correcta';
                         if ($cliente->readCantprods()) {
