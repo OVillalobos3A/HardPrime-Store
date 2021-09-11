@@ -6,6 +6,7 @@ require_once('../../models/public_valoraciones.php');
 
 // Se comprueba si existe una acción a realizar, de lo contrario se finaliza el script con un mensaje de error.
 if (isset($_GET['action'])) {
+    session_name("clientes");
     session_start();
     // Se instancian las clases correspondientes.
     $valorar = new Public_valoraciones;

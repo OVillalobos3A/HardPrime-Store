@@ -3,7 +3,7 @@ document.addEventListener('DOMContentLoaded', function () {
 });
 
 // Constante para establecer la ruta y parámetros de comunicación con la API.
-const API_PEDIDOS = '../../app/api/dashboard/pedidos.php?action=';
+const API_PEDIDOS = '../../app/api/public/mi_cuenta.php?action=';
 const API_COMENTARIOS = '../../app/api/public/valoraciones.php?action=';
 
 // Método manejador de eventos que se ejecuta cuando el documento ha cargado.
