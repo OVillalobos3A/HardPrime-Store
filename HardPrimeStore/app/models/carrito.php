@@ -2,7 +2,7 @@
 /*
 *	Clase para manejar las tablas pedidos y detalle_pedido de la base de datos. Es clase hija de Validator.
 */
-class Pedidos extends Validator
+class Carrito extends Validator
 {
     // Declaración de atributos (propiedades).
     private $id_pedido = null;

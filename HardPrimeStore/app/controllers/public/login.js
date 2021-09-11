@@ -6,7 +6,7 @@ const API_LOGIN = '../../app/api/public/clientes.php?action=';
 
 document.addEventListener('DOMContentLoaded', function () {
     // Se llama a la función que obtiene los registros para llenar la tabla. Se encuentra en el archivo components.js    
-    verificarSesion();
+    verSesion();
 });
 
 // Método manejador de eventos que se ejecuta cuando se envía el formulario de iniciar sesión.
@@ -40,7 +40,7 @@ document.getElementById('session-form').addEventListener('submit', function (eve
   });
 });
 
-function verificarSesion() {
+function verSesion() {
     fetch(API_LOGIN + 'sesion', {
         method: 'get'
     }).then(function (request) {

@@ -146,13 +146,13 @@ class Pedidos extends Validator
     }
 
     //Funciones para la gestión de los pedidos de cliente.
-    public function readPedido()
+    public function readPedido($id_cliente)
     {
         $sql = "SELECT id_pedido, pedido.estado as estado, fecha_pedido, clientes.direccion as direccion, ('$' || ' ' || sum(detalle_pedido.precio_producto*detalle_pedido.cantidad)) as total
                 FROM pedido INNER JOIN detalle_pedido USING(id_pedido) INNER JOIN clientes USING(id_cliente)
                 WHERE pedido.id_cliente = ? and pedido.estado <> 'En preparacion'
                 GROUP BY pedido.id_pedido, clientes.direccion";
-        $params = array($_SESSION['id_cliente']);
+        $params = array($id_cliente);
         return Database::getRows($sql, $params);
     }
 

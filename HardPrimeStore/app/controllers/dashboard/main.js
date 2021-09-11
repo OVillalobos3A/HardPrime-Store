@@ -345,7 +345,7 @@ function graficaLineaPedidos() {
                         cantidad.push(row.cantidad);
                     });
                     // Se llama a la función que genera y muestra una gráfica de barras. Se encuentra en el archivo components.js
-                    lineGraph('chart4', fecha, cantidad, 'Cantidad', 'Fechas en las que más se han dado por entregado pedidos');
+                    lineGraph('chart4', fecha, cantidad, 'Cantidad', 'Fechas en las que más se han realizado pedidos');
                 } else {
                     document.getElementById('chart4').remove();
                     console.log(response.exception);

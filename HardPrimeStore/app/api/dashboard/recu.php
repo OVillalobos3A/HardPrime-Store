@@ -8,6 +8,7 @@ require '../../../libraries/PHPMailer/PHPMailerAutoload.php';
 
 if (isset($_GET['action'])) {
     // Se crea una sesión o se reanuda la actual para poder utilizar variables de sesión en el script.
+    session_name("dashboard");
     session_start();
     // Se instancia la clase correspondiente.
     $recu = new Usuarios;

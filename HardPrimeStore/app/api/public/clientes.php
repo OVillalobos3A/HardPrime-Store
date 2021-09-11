@@ -6,6 +6,7 @@ require_once('../../models/clientes.php');
 // Se comprueba si existe una acción a realizar, de lo contrario se finaliza el script con un mensaje de error.
 if (isset($_GET['action'])) {
     // Se crea una sesión o se reanuda la actual para poder utilizar variables de sesión en el script.
+    session_name("clientes");
     session_start();
     // Se instancia la clase correspondiente.
     $cliente = new Clientes;
@@ -105,7 +106,7 @@ if (isset($_GET['action'])) {
                     //if ($cliente->getEstado()) {
                     if ($cliente->checkPassword($_POST['clave'])) {
                         $_SESSION['id_cliente'] = $cliente->getId();
-                        $_SESSION['usuario'] = $cliente->getUsuario();
+                        $_SESSION['user'] = $cliente->getUsuario();
                         $_SESSION['imagen'] = $cliente->getImagen();
                         $_SESSION['correo'] = $cliente->getCorreo();
                         //$_SESSION['correo_cliente'] = $cliente->getCorreo();

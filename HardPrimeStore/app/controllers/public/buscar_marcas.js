@@ -11,6 +11,8 @@ document.addEventListener('DOMContentLoaded', function() {
     viewTittle(idmac)
   });
 
+  
+
 
   // Función para obtener y mostrar los productos de acuerdo a la categoría seleccionada.
 function openProductM(id) {

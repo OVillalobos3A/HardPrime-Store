@@ -3,6 +3,7 @@ class Sitio_Publico
 {
   public static function headerTemplate($title)
   {
+    session_name("clientes");
     session_start();
     print('
             <!DOCTYPE html>
@@ -35,8 +36,8 @@ class Sitio_Publico
                   <a href="index.php" class="brand-logo hide-on-large-only"> &nbsp;&nbsp;<img class="responsive-img" src="../../resources/img/public/Logo2.png" width="200"></a>
                   <a href="#" data-target="slide-out" class="sidenav-trigger"><i class="material-icons">menu</i></a>                  
                   <ul class="right hide-on-med-and-down">                  
-                  <li><a href="mi_cuenta.php" data-target="dropdown"><i class="material-icons left">account_circle</i>Usuario: <b>' . $_SESSION['usuario'] . '</b></a></li>
-                  <a class="waves-effect waves-light btn blue-grey" onclick="logOut()"><i class="material-icons right">exit_to_app</i> Cerrar Sesión</a>
+                  <li><a href="mi_cuenta.php" data-target="dropdown"><i class="material-icons left">account_circle</i>Usuario: <b>' . $_SESSION['user'] . '</b></a></li>
+                  <a class="waves-effect waves-light btn blue-grey" onclick="cerrarSesion()"><i class="material-icons right">exit_to_app</i> Cerrar Sesión</a>
               </ul>
                   <ul id="dropdown" class="dropdown-content">                                        
                       
@@ -73,7 +74,7 @@ class Sitio_Publico
                       <div class="background light-blue darken-4">
                       </div>
                       <img class="circle" src="../../resources/img/productos/' . $_SESSION['imagen'] . '">
-                      <span class="white-text name">' . $_SESSION['usuario'] . '</span>
+                      <span class="white-text name">' . $_SESSION['user'] . '</span>
                       <span class="white-text email">' . $_SESSION['correo'] . '</span>
                     </div>
                   </li>

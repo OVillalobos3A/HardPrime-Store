@@ -5,7 +5,7 @@ document.addEventListener('DOMContentLoaded', function () {
         
 });
 
-function logOut() {
+function cerrarSesion() {
     swal({
         title: 'Advertencia',
         text: '¿Quiere cerrar la sesión?',
