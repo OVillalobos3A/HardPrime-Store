@@ -9,7 +9,7 @@ class Empleados extends Validator
     private $nombre = null;
     private $apellido = null;
     private $correo = null;
-    private $tel= null;
+    private $tel = null;
     private $fecha = null;
     private $gen = null;
     private $alias = null;
@@ -328,7 +328,7 @@ class Empleados extends Validator
     }
 
     public function firstUser()
-    {   
+    {
         $this->primer_uso = 0;
         // Se encripta la clave por medio del algoritmo bcrypt que genera un string de 60 caracteres.
         $hash = password_hash($this->clave, PASSWORD_DEFAULT);
@@ -349,7 +349,7 @@ class Empleados extends Validator
             return true;
         } else {
             return false;
-        }                
+        }
     }
 
     public function createRow()
@@ -534,7 +534,7 @@ class Empleados extends Validator
     //Método para generar un gráfico que permita 
     //visualizar los productos más vendidos a nivel general
     //en porcentaje
-    
+
     public function productosVendidos()
     {
         $sql = 'SELECT nombre, COUNT(id_producto) cantidad
@@ -544,5 +544,50 @@ class Empleados extends Validator
         $params = null;
         return Database::getRows($sql, $params);
     }
+    //Se ingresan a la base de datos la informacion del inicio de sesión
+    public function registrarSesion($fecha, $plataforma, $id)
+    {
+        $sql = 'INSERT INTO historial_usuarios(fecha_hora, plataforma, id_usuario)
+                VALUES(?, ?, ?)';
+        $params = array($fecha, $plataforma, $id);
+        return Database::executeRow($sql, $params);
+    }
 
+    //Funcion para obtener el registro de inicios de sesion de un usuario.
+    public function readSesiones()
+    {
+        $sql = 'SELECT plataforma, fecha_hora, usuarios.usuario
+                FROM historial_usuarios INNER JOIN usuarios USING(id_usuario)
+                WHERE id_usuario = ?
+                ORDER BY fecha_hora desc;';
+        $params = array($_SESSION['id_usuario']);
+        return Database::getRows($sql, $params);
+    }
+
+    //Se obtiene el sistema operativo que se esta usando para el inicio de sesión
+    public function getPlatform($user_agent)
+    {
+        $plataformas = array(
+            'Windows 10' => 'Windows NT 10.0+',
+            'Windows 8.1' => 'Windows NT 6.3+',
+            'Windows 8' => 'Windows NT 6.2+',
+            'Windows 7' => 'Windows NT 6.1+',
+            'Windows Vista' => 'Windows NT 6.0+',
+            'Windows XP' => 'Windows NT 5.1+',
+            'Windows 2003' => 'Windows NT 5.2+',
+            'Windows' => 'Windows otros',
+            'iPhone' => 'iPhone',
+            'iPad' => 'iPad',
+            'Mac OS X' => '(Mac OS X+)|(CFNetwork+)',
+            'Mac otros' => 'Macintosh',
+            'Android' => 'Android',
+            'BlackBerry' => 'BlackBerry',
+            'Linux' => 'Linux',
+        );
+        foreach ($plataformas as $plataforma => $pattern) {
+            if (preg_match('/(?i)' . $pattern . '/', $user_agent))
+                return $plataforma;
+        }
+        return 'Otras';
+    }
 }

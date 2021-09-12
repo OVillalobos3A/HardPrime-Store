@@ -196,6 +196,7 @@ class Pedidos extends Validator
         return Database::getRow($sql, $params);
     }
 
+    //Función para obtener la informacion para el comprobante de un pedido.
     public function readComprobante()
     {
         $sql = 'SELECT detalle_pedido.id_pedido as id_pedido, productos.nombre as nombre, cantidad, productos.precio as precio, (productos.precio*cantidad) as subtotal
@@ -206,6 +207,7 @@ class Pedidos extends Validator
         return Database::getRows($sql, $params);
     }
 
+    //Función para obtener le total de un pedido en especifico.
     public function readTotal()
     {
         $sql = 'SELECT id_pedido, sum(detalle_pedido.precio_producto*detalle_pedido.cantidad) as total
@@ -216,6 +218,15 @@ class Pedidos extends Validator
         return Database::getRow($sql, $params);
     }
 
-    
+    //Funcion para obtener el registro de inicios de sesion de un cliente.
+    public function readSesiones()
+    {
+        $sql = 'SELECT plataforma, fecha_hora, clientes.usuario
+                FROM historial_sesion INNER JOIN clientes USING(id_cliente)
+                WHERE id_cliente = ?
+                ORDER BY fecha_hora desc';
+        $params = array($_SESSION['id_cliente']);
+        return Database::getRows($sql, $params);
+    }    
 
 }

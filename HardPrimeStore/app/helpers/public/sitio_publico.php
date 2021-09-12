@@ -12,6 +12,11 @@ class Sitio_Publico
             <head>
               <!--Import Google Icon Font-->
               <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+              <!--Importar jquery-->   
+              <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/3.0.0/jquery.min.js"></script>
+              <!--Importar DataTable-->   
+              <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.10.25/css/jquery.dataTables.css">  
+              <script type="text/javascript" charset="utf8" src="https://cdn.datatables.net/1.10.25/js/jquery.dataTables.js"></script>
               <!--Import materialize.css-->
               <link type="text/css" rel="stylesheet" href="../../resources/css/materialize.min.css" />
               <!--Let browser know website is optimized for mobile-->

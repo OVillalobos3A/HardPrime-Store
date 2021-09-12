@@ -146,6 +146,22 @@ if (isset($_GET['action'])) {
                     $result['exception'] = 'Pedido incorrecto';
                 }
                 break;
+                //Método para consultar la informacion del historial de sesiones del cliente.
+                case 'readSesiones':
+                    if ($pedidos->setId($_SESSION['id_cliente'])) {
+                        if ($result['dataset'] = $pedidos->readSesiones()) {
+                            $result['status'] = 1;
+                        } else {
+                            if (Database::getException()) {
+                                $result['exception'] = Database::getException();
+                            } else {
+                                $result['exception'] = 'Cliente inexistente';
+                            }
+                        }
+                    } else {
+                        $result['exception'] = 'Usuario incorrecto';
+                    }
+                    break;
                 //Método para actualizar el estado de un pedido
                 //darlo por finalizado
             case 'update':

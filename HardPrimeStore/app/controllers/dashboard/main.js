@@ -65,6 +65,7 @@ function openName() {
                                 <a class="waves-effect waves-light btn"><i class="material-icons right tooltipped" data-tooltip="Modificar perfil" onclick="openUpdateProfile(${row.empleado})">account_circle</i>Perfil</a>
                                 <a class="waves-effect waves-light btn"><i class="material-icons right tooltipped" data-tooltip="Modificar Credenciales" onclick="openUpdateCredentials(${row.id_usuario})">pin</i>Credenciales</a>
                                 <a class="waves-effect waves-light btn"><i class="material-icons right tooltipped" data-tooltip="Visualizar gráficos" onclick="openCreateDialog()">bar_chart</i>Gráficos</a>
+                                <a class="waves-effect waves-light btn"><i class="material-icons right tooltipped" data-tooltip="Historial de sesiones" onclick="openSesiones()">access_time</i>Historial de sesiones</a>
                             </div>
                         `;
                     });
@@ -83,6 +84,65 @@ function openName() {
         console.log(error);
     });
 }
+
+// Función para obtener los registros de inicio de sesión y colocarlos en la tabla
+function openSesiones() {
+    // Se restauran los elementos del formulario.    
+    // Se abre la caja de dialogo (modal) que contiene el formulario.
+    let instance = M.Modal.getInstance(document.getElementById('sesiones-modal'));
+    instance.open();
+
+    fetch(API_PROFILE + 'readSesiones', {
+        method: 'get'
+    }).then(function (request) {
+        // Se verifica si la petición es correcta, de lo contrario se muestra un mensaje indicando el problema.
+        if (request.ok) {
+            request.json().then(function (response) {
+                // Se comprueba si la respuesta es satisfactoria, de lo contrario se muestra un mensaje con la excepción.
+                if (response.status) {
+                    // Se declara e inicializa una variable para concatenar las filas de la tabla en la vista.
+                    let content = '';
+                    response.dataset.map(function (row) {
+    
+                        content += `
+                        <tr>
+                        <td>${row.fecha_hora}</td>
+                        <td>${row.plataforma}</td>
+                        <td>${row.usuario}</td>                                
+                        </tr>
+                            `;
+    
+                    });
+                   // Se agregan las filas al cuerpo de la tabla mediante su id para mostrar los registros.
+                   document.getElementById('tbody-sesiones').innerHTML = content;
+                    // Se inicializa el componente Tooltip asignado a los enlaces para que funcionen las sugerencias textuales.
+                    M.Tooltip.init(document.querySelectorAll('.tooltipped'));
+                    if ($.fn.dataTable.isDataTable('#myTable')) {
+                        table = $('#myTable').DataTable();              
+                    }
+                    else {
+                        table = $('#myTable').DataTable({
+                            searching: false,
+                            ordering: false,
+                            "lengthChange": false,
+                            "pageLength": 20,
+                            "language": {
+                                "url": "//cdn.datatables.net/plug-ins/1.10.15/i18n/Spanish.json"
+                              }            
+                        });           
+                    }
+                } else {
+                    sweetAlert(2, response.exception, null);
+                }
+            });
+        } else {
+            console.log(request.status + ' ' + request.statusText);
+        }
+    }).catch(function (error) {
+        console.log(error);
+    });
+}
+
 
 // Función para preparar el formulario al momento de modificar un registro.
 function openUpdateProfile(id) {

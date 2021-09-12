@@ -44,7 +44,7 @@ if (isset($_GET['action'])) {
                     //comparamos el tiempo transcurrido
                     if ($tiempo_transcurrido >= 500) {
                         $result['status'] = 1;
-                        //si pasaron 10 minutos o más
+                        //si pasaron 5 minutos o más
                         session_destroy(); // destruyo la sesión                    
                         //sino, actualizo la fecha de la sesión
                     } else {
@@ -63,6 +63,22 @@ if (isset($_GET['action'])) {
                     }
                 }
                 break;
+                 //Método para consultar la informacion del historial de sesiones del usuario.
+                 case 'readSesiones':
+                    if ($usuario->setId($_SESSION['id_usuario'])) {
+                        if ($result['dataset'] = $usuario->readSesiones()) {
+                            $result['status'] = 1;
+                        } else {
+                            if (Database::getException()) {
+                                $result['exception'] = Database::getException();
+                            } else {
+                                $result['exception'] = 'Usuario inexistente';
+                            }
+                        }
+                    } else {
+                        $result['exception'] = 'Usuario incorrecto';
+                    }
+                    break;
             //Método para buscar un empleado
             case 'search':
                 $_POST = $usuario->validateForm($_POST);
@@ -568,8 +584,17 @@ if (isset($_GET['action'])) {
                         $result['message'] = 'Autenticación correcta';
                         $_SESSION['id_usuario'] = $usuario->getId();
                         $_SESSION['usuaio'] = $usuario->getAlias();
+
                         //sesion que captura la fecha y hora del inicio de sesión
                         $_SESSION["ultimoAcceso"]= date("Y-n-j H:i:s");
+                        $user_agent = $_SERVER['HTTP_USER_AGENT'];
+                        //Se establece la zona horaria y se obtiene la fecha y hora actual
+                        date_default_timezone_set('America/El_Salvador');
+                        $DateAndTime = date('m-d-Y h:i:s a', time());
+                        $plataforma = $usuario->getPlatform($user_agent);
+
+                        //Se registra ingresan los datos en la base de datos
+                        $usuario->registrarSesion($DateAndTime, $plataforma, $_SESSION['id_usuario']);
                     } else {
                         if (Database::getException()) {
                             $result['exception'] = Database::getException();

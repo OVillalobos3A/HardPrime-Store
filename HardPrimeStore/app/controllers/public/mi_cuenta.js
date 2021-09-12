@@ -1,5 +1,5 @@
-document.addEventListener('DOMContentLoaded', function () {   
-    
+document.addEventListener('DOMContentLoaded', function () {
+
 });
 
 // Constante para establecer la ruta y parámetros de comunicación con la API.
@@ -102,11 +102,11 @@ function searchPedido(api, form) {
                 if (response.status) {
                     sweetAlert(1, response.message, null);
                     // Se envían los datos a la función del controlador para que llene la tabla en la vista.
-                     let content = '';
-                     response.dataset.map(function (row) {
-                         estado = row.estado;
-                         if (estado == "Entregado" || estado == "Cancelado") {
-                             content += `
+                    let content = '';
+                    response.dataset.map(function (row) {
+                        estado = row.estado;
+                        if (estado == "Entregado" || estado == "Cancelado") {
+                            content += `
                                  <tr>
                                      <td>${row.id_pedido}</td>
                                      <td>${row.estado}</td>
@@ -118,9 +118,9 @@ function searchPedido(api, form) {
                                      </td>
                                   </tr>
                              `;
- 
-                         } else {
-                             content += `
+
+                        } else {
+                            content += `
                                  <tr>
                                      <td>${row.id_pedido}</td>
                                      <td>${row.estado}</td>
@@ -132,13 +132,13 @@ function searchPedido(api, form) {
                                      </td>
                                  </tr>
                              `;
- 
-                         }
-                     });
-                     // Se agregan las filas al cuerpo de la tabla mediante su id para mostrar los registros.
-                     document.getElementById('tbody-rows').innerHTML = content;
-                     // Se inicializa el componente Tooltip asignado a los enlaces para que funcionen las sugerencias textuales.
-                     M.Tooltip.init(document.querySelectorAll('.tooltipped'));
+
+                        }
+                    });
+                    // Se agregan las filas al cuerpo de la tabla mediante su id para mostrar los registros.
+                    document.getElementById('tbody-rows').innerHTML = content;
+                    // Se inicializa el componente Tooltip asignado a los enlaces para que funcionen las sugerencias textuales.
+                    M.Tooltip.init(document.querySelectorAll('.tooltipped'));
                 } else {
                     sweetAlert(2, response.exception, null);
                 }
@@ -424,23 +424,23 @@ function openActComment(id) {
                 if (response.status) {
                     // Se inicializan los campos del formulario con los datos del registro seleccionado.
                     obtenerFecha();
-                    document.getElementById('id_calificacion_act').value = response.dataset.id_calificacion;                    
+                    document.getElementById('id_calificacion_act').value = response.dataset.id_calificacion;
                     document.getElementById('comentario').value = response.dataset.comentario;
-                    if(response.dataset.calificacion == 1.00){
+                    if (response.dataset.calificacion == 1.00) {
                         document.getElementById('calificacion').value = 1;
                     }
-                    else if(response.dataset.calificacion == 2.00){
+                    else if (response.dataset.calificacion == 2.00) {
                         document.getElementById('calificacion').value = 2;
                     }
-                    else if(response.dataset.calificacion == 3.00){
+                    else if (response.dataset.calificacion == 3.00) {
                         document.getElementById('calificacion').value = 3;
                     }
-                    else if(response.dataset.calificacion == 4.00){
+                    else if (response.dataset.calificacion == 4.00) {
                         document.getElementById('calificacion').value = 4;
                     }
-                    else{
+                    else {
                         document.getElementById('calificacion').value = 5;
-                    }                    
+                    }
                     // Se actualizan los campos para que las etiquetas (labels) no queden sobre los datos.
                     M.updateTextFields();
                 } else {
@@ -528,6 +528,7 @@ function openName() {
                             </div>
                             <div class="center-align">
                                 <a class="waves-effect waves-light btn"><i class="material-icons right tooltipped" data-tooltip="Modificar Credenciales" onclick="openUpdateCredentials(${row.id_cliente})">pin</i>Credenciales</a>
+                                <a class="waves-effect waves-light btn"><i class="material-icons right tooltipped" data-tooltip="Historial de sesiones" onclick="openSesiones()">access_time</i>Historial de sesiones</a>
                             </div>
                         `;
                     });
@@ -546,6 +547,66 @@ function openName() {
         console.log(error);
     });
 }
+
+// Función para obtener los registros de inicio de sesión y colocarlos en la tabla
+function openSesiones() {
+    // Se restauran los elementos del formulario.    
+    // Se abre la caja de dialogo (modal) que contiene el formulario.
+    let instance = M.Modal.getInstance(document.getElementById('sesiones-modal'));
+    instance.open();
+
+    fetch(API_PEDIDOS + 'readSesiones', {
+        method: 'get'
+    }).then(function (request) {
+        // Se verifica si la petición es correcta, de lo contrario se muestra un mensaje indicando el problema.
+        if (request.ok) {
+            request.json().then(function (response) {
+                // Se comprueba si la respuesta es satisfactoria, de lo contrario se muestra un mensaje con la excepción.
+                if (response.status) {
+                    // Se declara e inicializa una variable para concatenar las filas de la tabla en la vista.
+                    let content = '';
+                    response.dataset.map(function (row) {
+
+                        content += `
+                        <tr>
+                        <td>${row.fecha_hora}</td>
+                        <td>${row.plataforma}</td>
+                        <td>${row.usuario}</td>                                
+                        </tr>
+                            `;
+
+                    });
+                    // Se agregan las filas al cuerpo de la tabla mediante su id para mostrar los registros.
+                    document.getElementById('tbody-sesiones').innerHTML = content;
+                    // Se inicializa el componente Tooltip asignado a los enlaces para que funcionen las sugerencias textuales.
+                    M.Tooltip.init(document.querySelectorAll('.tooltipped'));
+                    if ($.fn.dataTable.isDataTable('#myTable')) {
+                        table = $('#myTable').DataTable();              
+                    }
+                    else {
+                        table = $('#myTable').DataTable({
+                            searching: false,
+                            ordering: false,
+                            "lengthChange": false,
+                            "pageLength": 20,
+                            "language": {
+                                "url": "//cdn.datatables.net/plug-ins/1.10.15/i18n/Spanish.json"
+                              }            
+                        });           
+                    }
+                } else {
+                    sweetAlert(2, response.exception, null);
+                }
+            });
+        } else {
+            console.log(request.status + ' ' + request.statusText);
+        }
+    }).catch(function (error) {
+        console.log(error);
+    });
+}
+
+
 
 function openUpdateCredentials(id) {
     // Se restauran los elementos del formulario.

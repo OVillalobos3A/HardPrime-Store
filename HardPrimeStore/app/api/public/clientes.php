@@ -7,8 +7,8 @@ require_once('../../models/clientes.php');
 if (isset($_GET['action'])) {
     // Se crea una sesión o se reanuda la actual para poder utilizar variables de sesión en el script.
     session_name("clientes");
-    session_start();    
-   
+    session_start();
+
 
     // Se instancia la clase correspondiente.
     $cliente = new Clientes;
@@ -21,10 +21,10 @@ if (isset($_GET['action'])) {
         $tiempo_transcurrido = (strtotime($ahora) - strtotime($fechaGuardada));
         // Se compara la acción a realizar cuando un cliente ha iniciado sesión.
         switch ($_GET['action']) {
-            //Método que valida si el cliente ha iniciado sesión
+                //Método que valida si el cliente ha iniciado sesión
             case 'sesion':
                 if (isset($_SESSION['id_cliente'])) {
-                    $result['status'] = 1;                    
+                    $result['status'] = 1;
                 } else {
                     //$result['exception'] = 'Ocurrió un problema al cerrar la sesión';
                 }
@@ -38,7 +38,7 @@ if (isset($_GET['action'])) {
                 }
                 break;
                 //Método para cerrar sesión en caso de inactividad
-            case 'timeOut':               
+            case 'timeOut':
                 //comparamos el tiempo transcurrido
                 if ($tiempo_transcurrido >= 500) {
                     $result['status'] = 1;
@@ -55,7 +55,7 @@ if (isset($_GET['action'])) {
     } else {
         // Se compara la acción a realizar cuando el cliente no ha iniciado sesión.
         switch ($_GET['action']) {
-            //Método para regsitrar un cliente
+                //Método para regsitrar un cliente
             case 'register':
                 $_POST = $cliente->validateForm($_POST);
                 // Se sanea el valor del token para evitar datos maliciosos.
@@ -116,7 +116,7 @@ if (isset($_GET['action'])) {
                 }
 
                 break;
-            //Método para llevar a cabo el proceso de inicio de sesión del sitio público
+                //Método para llevar a cabo el proceso de inicio de sesión del sitio público
             case 'logIn':
                 $_POST = $cliente->validateForm($_POST);
                 if ($cliente->checkUser($_POST['usuario'])) {
@@ -128,11 +128,20 @@ if (isset($_GET['action'])) {
                         $_SESSION['correo'] = $cliente->getCorreo();
                         //$_SESSION['correo_cliente'] = $cliente->getCorreo();
                         //defino la sesión que demuestra que el usuario está autorizado
-                        $_SESSION["autentificado"]= "SI";
+                        $_SESSION["autentificado"] = "SI";
                         //sesion que captura la fecha y hora del inicio de sesión
-                        $_SESSION["ultimoAcceso"]= date("Y-n-j H:i:s");
+                        $_SESSION["ultimoAcceso"] = date("Y-n-j H:i:s");
                         $result['status'] = 1;
                         $result['message'] = 'Autenticación correcta';
+
+                        $user_agent = $_SERVER['HTTP_USER_AGENT'];
+                        date_default_timezone_set('America/El_Salvador');
+                        $DateAndTime = date('m-d-Y h:i:s a', time());
+
+
+                        $plataforma = $cliente->getPlatform($user_agent);
+                        $cliente->registrarSesion($DateAndTime, $plataforma, $_SESSION['id_cliente']);
+
                         if ($cliente->readCantprods()) {
                             $_SESSION['numcarrito'] = $cliente->getNumproducts();
                         } else {

@@ -388,4 +388,39 @@ class Clientes extends Validator
         }
         
     }
+
+    //Se ingresan a la base de datos la informacion del inicio de sesión
+    public function registrarSesion($fecha, $plataforma, $id)
+    {
+        $sql = 'INSERT INTO historial_sesion(fecha_hora, plataforma, id_cliente)
+                VALUES(?, ?, ?)';
+        $params = array($fecha, $plataforma, $id);
+        return Database::executeRow($sql, $params);
+    }
+
+    //Se obtiene el sistema operativo que se esta usando para el inicio de sesión
+    public function getPlatform($user_agent) {
+        $plataformas = array(
+           'Windows 10' => 'Windows NT 10.0+',
+           'Windows 8.1' => 'Windows NT 6.3+',
+           'Windows 8' => 'Windows NT 6.2+',
+           'Windows 7' => 'Windows NT 6.1+',
+           'Windows Vista' => 'Windows NT 6.0+',
+           'Windows XP' => 'Windows NT 5.1+',
+           'Windows 2003' => 'Windows NT 5.2+',
+           'Windows' => 'Windows otros',
+           'iPhone' => 'iPhone',
+           'iPad' => 'iPad',
+           'Mac OS X' => '(Mac OS X+)|(CFNetwork+)',
+           'Mac otros' => 'Macintosh',
+           'Android' => 'Android',
+           'BlackBerry' => 'BlackBerry',
+           'Linux' => 'Linux',
+        );
+        foreach($plataformas as $plataforma=>$pattern){
+           if (preg_match('/(?i)'.$pattern.'/', $user_agent))
+              return $plataforma;
+        }
+        return 'Otras';
+     }
 }
