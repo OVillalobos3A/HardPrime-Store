@@ -12,9 +12,6 @@ if (isset($_GET['action'])) {
     $fechaGuardada = $_SESSION["ultimoAcceso"];
     $ahora = date("Y-n-j H:i:s");
     $tiempo_transcurrido = (strtotime($ahora) - strtotime($fechaGuardada));
-
-
-
     // Se instancia la clase correspondiente.
     $pedidos = new Pedidos;
     // Se declara e inicializa un arreglo para guardar el resultado que retorna la API.
