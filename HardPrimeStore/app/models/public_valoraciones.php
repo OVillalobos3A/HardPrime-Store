@@ -322,4 +322,21 @@ class Public_valoraciones extends Validator
         $params = array($this->alias, $this->id);
         return Database::executeRow($sql, $params);
     }
+
+    public function changePassw()
+    {
+        $hash = password_hash($this->clave, PASSWORD_DEFAULT);
+        $sql = 'UPDATE clientes SET contraseña = ? WHERE id_cliente = ?';
+        $params = array($hash, $this->id);
+        return Database::executeRow($sql, $params);
+    }
+
+    public function changeDate()
+    {
+        date_default_timezone_set('America/El_Salvador');
+        $date = date('Y-m-d');
+        $sql = 'UPDATE clientes SET last_date = ? WHERE id_cliente = ?';
+        $params = array($date, $this->id);
+        return Database::executeRow($sql, $params);
+    }
 }

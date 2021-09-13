@@ -13,6 +13,7 @@ Sitio_Publico::headerTemplate('Crear cuenta');
                     <form method="post" id="save-form" enctype="multipart/form-data">
                         <!-- Campo oculto para asignar el id del registro al momento de modificar -->
                         <!--<input class="hide" type="number" id="id_empleado" name="id_empleado" />-->
+                        <input type="hidden" id="g-recaptcha-response" name="g-recaptcha-response"/>
                         <div class="row">
                             <div class="input-field col s12 m6">
                                 <i class="material-icons prefix">person</i>
@@ -144,6 +145,9 @@ Sitio_Publico::headerTemplate('Crear cuenta');
         </div>
     </div>
 </main>
+
+<!-- Importación del archivo para que funcione el reCAPTCHA. Para más información https://developers.google.com/recaptcha/docs/v3 -->
+<script type="text/javascript" src="https://www.google.com/recaptcha/api.js?render=6Ld9Z2IcAAAAAHAu0IJJH8nKc3IlcX3CfCO_Ltqt"></script>
 
 <?php
 Sitio_Publico::footerTemplate('registro_clientes.js');

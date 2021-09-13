@@ -6,6 +6,7 @@ class Empleados extends Validator
 {
     // Declaración de atributos (propiedades).
     private $id = null;
+    private $cant = null;
     private $nombre = null;
     private $apellido = null;
     private $correo = null;
@@ -27,6 +28,16 @@ class Empleados extends Validator
     {
         if ($this->validateNaturalNumber($value)) {
             $this->id = $value;
+            return true;
+        } else {
+            return false;
+        }
+    }
+
+    public function setCant($value)
+    {
+        if ($this->validateNaturalNumber($value)) {
+            $this->cant = $value;
             return true;
         } else {
             return false;
@@ -171,6 +182,11 @@ class Empleados extends Validator
         return $this->id;
     }
 
+    public function getCant()
+    {
+        return $this->cant;
+    }
+
     public function getIde()
     {
         return $this->ide;
@@ -246,15 +262,25 @@ class Empleados extends Validator
     */
     public function checkUser($alias)
     {
-        $this->estado = "activo";
-        $sql = 'SELECT id_usuario FROM usuarios WHERE usuario = ? and estado = ? ';
-        $params = array($alias, $this->estado);
-        if ($data = Database::getRow($sql, $params)) {
-            $this->id = $data['id_usuario'];
-            $this->alias = $alias;
-            return true;
-        } else {
-            return false;
+        public function checkUser($alias)
+        {
+            $this->estado = "activo";
+            $sql = 'SELECT id_usuario, last_date FROM usuarios WHERE usuario = ? and estado = ? ';
+            $params = array($alias, $this->estado);
+            if ($data = Database::getRow($sql, $params)) {
+                $this->id = $data['id_usuario'];
+                $this->alias = $alias;
+                $this->fecha = $data['last_date'];
+                date_default_timezone_set('America/El_Salvador');
+                $date = date('Y-m-d');
+                $fecha1 = new DateTime($this->fecha);
+                $fecha2 = new DateTime($date);
+                $rela = $fecha1->diff($fecha2);
+                $this->cant = $rela->days;
+                return true;
+            } else {
+                return false;
+            }
         }
     }
 
@@ -590,4 +616,23 @@ class Empleados extends Validator
         }
         return 'Otras';
     }
+
+    public function changePassw()
+    {
+        $hash = password_hash($this->clave, PASSWORD_DEFAULT);
+        $sql = 'UPDATE usuarios SET contraseña = ? WHERE id_usuario = ?';
+        $params = array($hash, $this->id);
+        return Database::executeRow($sql, $params);
+    }
+
+    public function changeDate()
+    {
+        date_default_timezone_set('America/El_Salvador');
+        $date = date('Y-m-d');
+        $sql = 'UPDATE usuarios SET last_date = ? WHERE id_usuario = ?';
+        $params = array($date, $this->id);
+        return Database::executeRow($sql, $params);
+    }
+
+
 }
