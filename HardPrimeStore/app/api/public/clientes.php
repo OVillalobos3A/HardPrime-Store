@@ -17,6 +17,7 @@ if (isset($_GET['action'])) {
     // Se verifica si existe una sesión iniciada como cliente para realizar las acciones correspondientes.
     if (isset($_SESSION['id_cliente'])) {
         $fechaGuardada = $_SESSION["ultimoAcceso"];
+        date_default_timezone_set('America/El_Salvador');
         $ahora = date("Y-n-j H:i:s");
         $tiempo_transcurrido = (strtotime($ahora) - strtotime($fechaGuardada));
         // Se compara la acción a realizar cuando un cliente ha iniciado sesión.
@@ -157,6 +158,8 @@ if (isset($_GET['action'])) {
                 if ($cliente->checkUser($_POST['usuario'])) {
                     //if ($cliente->getEstado()) {
                     if ($cliente->checkPassword($_POST['clave'])) {
+                        $_SESSION['id_cliente'] = $cliente->getId();
+                        $_SESSION['user'] = $cliente->getUsuario();
                         $_SESSION['pass'] = $_POST['clave'];
                         $_SESSION['usuario'] = $cliente->getUsuario();
                         $_SESSION['imagen'] = $cliente->getImagen();

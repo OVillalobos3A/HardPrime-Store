@@ -55,19 +55,7 @@ if (isset($_GET['action'])) {
             } else {
                 $result['exception'] = 'No se ha iniciado sesión';
             }
-            break;
-            //Método para cerrar sesión en caso de inactividad
-            case 'timeOut':               
-                //comparamos el tiempo transcurrido
-                if ($tiempo_transcurrido >= 500) {
-                    $result['status'] = 1;
-                    //si pasaron 10 minutos o más
-                    session_destroy(); // destruyo la sesión                    
-                    //sino, actualizo la fecha de la sesión
-                } else {
-                    $_SESSION["ultimoAcceso"] = $ahora;
-                }
-                break;
+            break;           
             //Método para mostrar los comentarios de un producto en especifico mediante su ID
         case 'readComments':
             if ($valorar->setIdproducto($_POST['id_producto'])) {

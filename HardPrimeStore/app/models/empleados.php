@@ -260,9 +260,7 @@ class Empleados extends Validator
     /*
     *   Métodos para gestionar la cuenta del usuario.
     */
-    public function checkUser($alias)
-    {
-        public function checkUser($alias)
+     public function checkUser($alias)
         {
             $this->estado = "activo";
             $sql = 'SELECT id_usuario, last_date FROM usuarios WHERE usuario = ? and estado = ? ';
@@ -281,8 +279,7 @@ class Empleados extends Validator
             } else {
                 return false;
             }
-        }
-    }
+        }    
 
     public function checkPassword($password)
     {

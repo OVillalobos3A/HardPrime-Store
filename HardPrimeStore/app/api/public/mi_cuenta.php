@@ -31,18 +31,7 @@ if (isset($_GET['action'])) {
                         $result['exception'] = 'No hay pedidos registrados';
                     }
                 }
-                break;
-            case 'timeOut':               
-                //comparamos el tiempo transcurrido
-                if ($tiempo_transcurrido >= 20) {
-                    $result['status'] = 1;
-                    //si pasaron 10 minutos o más
-                    session_destroy(); // destruyo la sesión                    
-                    //sino, actualizo la fecha de la sesión
-                } else {
-                    $_SESSION["ultimoAcceso"] = $ahora;
-                }
-                break;
+                break;           
                 //Método para consultar la información del detalle de un pedido en especifico
             case 'viewShop':
                 if ($pedidos->setId($_POST['id_pedido'])) {

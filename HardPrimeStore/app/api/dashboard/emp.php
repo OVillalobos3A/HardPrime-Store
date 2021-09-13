@@ -16,6 +16,7 @@ if (isset($_GET['action'])) {
     if (isset($_SESSION['id_usuario'])) {
         // Se compara la acción a realizar cuando un administrador ha iniciado sesión.
         $fechaGuardada = $_SESSION["ultimoAcceso"];
+        date_default_timezone_set('America/El_Salvador');
         $ahora = date("Y-n-j H:i:s");
         $tiempo_transcurrido = (strtotime($ahora) - strtotime($fechaGuardada));
         switch ($_GET['action']) {
@@ -43,7 +44,7 @@ if (isset($_GET['action'])) {
                 case 'timeOut':               
                     //comparamos el tiempo transcurrido
                     if ($tiempo_transcurrido >= 500) {
-                        $result['status'] = 1;
+                        $result['status'] = 1;                        
                         //si pasaron 5 minutos o más
                         session_destroy(); // destruyo la sesión                    
                         //sino, actualizo la fecha de la sesión
@@ -57,7 +58,7 @@ if (isset($_GET['action'])) {
                     $result['status'] = 1;
                 } else {
                     if (Database::getException()) {
-                        $result['exception'] = Database::getException();
+                        $result['message'] = Database::getException();
                     } else {
                         $result['exception'] = 'No hay empleados registrados';
                     }
@@ -627,10 +628,10 @@ if (isset($_GET['action'])) {
                             $_SESSION['id_user'] = $usuario->getId();
                         } else {
                             $_SESSION['id_usuario'] = $usuario->getId();
+                            $_SESSION["ultimoAcceso"]= date("Y-n-j H:i:s");
                             $result['message'] = 'Autenticación correcta';
                             $result['status'] = 1;
                             //sesion que captura la fecha y hora del inicio de sesión
-                            $_SESSION["ultimoAcceso"]= date("Y-n-j H:i:s");
                             $user_agent = $_SERVER['HTTP_USER_AGENT'];
                             //Se establece la zona horaria y se obtiene la fecha y hora actual
                             date_default_timezone_set('America/El_Salvador');
