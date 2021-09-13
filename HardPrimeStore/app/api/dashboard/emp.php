@@ -355,8 +355,12 @@ if (isset($_GET['action'])) {
                                             if ($usuario->checkPassword($_POST['contra'])) {
                                                 if ($usuario->setClave($_POST['ncontra'])) {
                                                     if ($usuario->updateUserCredentials()) {
-                                                        $result['status'] = 1;
-                                                        $result['message'] = 'Credenciales actualizadas correctamente';
+                                                        if ($usuario->changeDate()) {
+                                                            $result['status'] = 1;
+                                                            $result['message'] = 'Credenciales actualizadas correctamente';
+                                                        } else {
+                                                            $result['exception'] = Database::getException();
+                                                        }    
                                                     } else {
                                                         $result['exception'] = Database::getException();
                                                     }
@@ -573,6 +577,39 @@ if (isset($_GET['action'])) {
                     $result['exception'] = 'Nombres incorrectos';
                 }
                 break;
+            case 'changePass':
+                $_POST = $usuario->validateForm($_POST);
+                if ($usuario->setId($_SESSION['id_user'])) {
+                    if ($_POST['clave'] == $_POST['confirmar']) {
+                        if ($_POST['clave'] != $_SESSION['usuaio']) {
+                            if ($_POST['clave'] != $_SESSION['pass']) {
+                                if ($usuario->setClave($_POST['clave'])) {
+                                    if ($usuario->changePassw()) {
+                                        if ($usuario->changeDate()) {
+                                            $result['status'] = 1;
+                                            $result['message'] = 'La contraseña se guardó correctamente';
+                                        } else {
+                                            $result['exception'] = Database::getException();
+                                        }
+                                    } else {
+                                        $result['exception'] = Database::getException();
+                                    }
+                                } else {
+                                    $result['exception'] = $usuario->getPasswordError();
+                                }
+                            } else {
+                                $result['exception'] = 'La contraseña no tiene que ser la misma que la anterior.';
+                            }      
+                        } else {
+                            $result['exception'] = 'Las contraseña no debe de ser igual al nombre de usuario.';
+                        }    
+                    } else {
+                        $result['exception'] = 'Las contraseñas no coinciden';
+                    }
+                } else {
+                    $result['exception'] = 'Usuario incorrecto';
+                }
+                break;
             //Método para el proceso de login para los empleados(dashboard)
             case 'logIn':
                 $_POST = $usuario->validateForm($_POST);
@@ -580,21 +617,28 @@ if (isset($_GET['action'])) {
                     //$usuario->primerUso();
                     //if ($usuario->getPrimer_uso() == '2') {
                     if ($usuario->checkPassword($_POST['clave'])) {
-                        $result['status'] = 1;
-                        $result['message'] = 'Autenticación correcta';
-                        $_SESSION['id_usuario'] = $usuario->getId();
+                        $_SESSION['pass'] = $_POST['clave'];
+                        $_SESSION['fecha'] = $usuario->getFecha();
                         $_SESSION['usuaio'] = $usuario->getAlias();
-
-                        //sesion que captura la fecha y hora del inicio de sesión
-                        $_SESSION["ultimoAcceso"]= date("Y-n-j H:i:s");
-                        $user_agent = $_SERVER['HTTP_USER_AGENT'];
-                        //Se establece la zona horaria y se obtiene la fecha y hora actual
-                        date_default_timezone_set('America/El_Salvador');
-                        $DateAndTime = date('m-d-Y h:i:s a', time());
-                        $plataforma = $usuario->getPlatform($user_agent);
-
-                        //Se registra ingresan los datos en la base de datos
-                        $usuario->registrarSesion($DateAndTime, $plataforma, $_SESSION['id_usuario']);
+                        $_SESSION['cant'] = $usuario->getCant();
+                        if ($_SESSION['cant'] >= 90) {
+                            $result['message'] = 'Han pasado un período largo desde su último cambio de contraseña, es hora de renovar tus credenciales.';
+                            $result['status'] = 3;
+                            $_SESSION['id_user'] = $usuario->getId();
+                        } else {
+                            $_SESSION['id_usuario'] = $usuario->getId();
+                            $result['message'] = 'Autenticación correcta';
+                            $result['status'] = 1;
+                            //sesion que captura la fecha y hora del inicio de sesión
+                            $_SESSION["ultimoAcceso"]= date("Y-n-j H:i:s");
+                            $user_agent = $_SERVER['HTTP_USER_AGENT'];
+                            //Se establece la zona horaria y se obtiene la fecha y hora actual
+                            date_default_timezone_set('America/El_Salvador');
+                            $DateAndTime = date('m-d-Y h:i:s a', time());
+                            $plataforma = $usuario->getPlatform($user_agent);
+                            //Se registra ingresan los datos en la base de datos
+                            $usuario->registrarSesion($DateAndTime, $plataforma, $_SESSION['id_usuario']);
+                        }
                     } else {
                         if (Database::getException()) {
                             $result['exception'] = Database::getException();
