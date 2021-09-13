@@ -6,6 +6,7 @@ class Clientes extends Validator
 {
     // Declaración de atributos (propiedades).
     private $id = null;
+    private $cant = null;
     private $estado = null;
     private $numproducts = null;
     private $estado1 = null;
@@ -29,6 +30,16 @@ class Clientes extends Validator
     {
         if ($this->validateNaturalNumber($value)) {
             $this->id = $value;
+            return true;
+        } else {
+            return false;
+        }
+    }
+
+    public function setCant($value)
+    {
+        if ($this->validateNaturalNumber($value)) {
+            $this->cant = $value;
             return true;
         } else {
             return false;
@@ -169,6 +180,11 @@ class Clientes extends Validator
     public function getId()
     {
         return $this->id;
+    }
+
+    public function getCant()
+    {
+        return $this->cant;
     }
 
     public function getNumproducts()
@@ -331,7 +347,7 @@ class Clientes extends Validator
     public function checkUser($usuario)
     {
         $this->estado = "activo";
-        $sql = 'SELECT id_cliente, usuario, imagen, correo FROM clientes WHERE usuario = ? and estado = ? ';
+        $sql = 'SELECT id_cliente, usuario, imagen, correo, last_date FROM clientes WHERE usuario = ? and estado = ? ';
         $params = array($usuario, $this->estado);
         if ($data = Database::getRow($sql, $params)) {
             $this->id = $data['id_cliente'];
@@ -339,6 +355,13 @@ class Clientes extends Validator
             $this->correo = $data['correo'];
             $this->usuario = $data['usuario'];
             $this->alias = $usuario;
+            $this->fecha = $data['last_date'];
+            date_default_timezone_set('America/El_Salvador');
+            $date = date('Y-m-d');
+            $fecha1 = new DateTime($this->fecha);
+            $fecha2 = new DateTime($date);
+            $rela = $fecha1->diff($fecha2);
+            $this->cant = $rela->days;
             return true;
         } else {
             return false;
@@ -423,4 +446,22 @@ class Clientes extends Validator
         }
         return 'Otras';
      }
+
+    //Nuevas funciones implementadas
+    public function changePassw()
+    {
+        $hash = password_hash($this->contraseña, PASSWORD_DEFAULT);
+        $sql = 'UPDATE clientes SET contraseña = ? WHERE id_cliente = ?';
+        $params = array($hash, $this->id);
+        return Database::executeRow($sql, $params);
+    }
+
+    public function changeDate()
+    {
+        date_default_timezone_set('America/El_Salvador');
+        $date = date('Y-m-d');
+        $sql = 'UPDATE clientes SET last_date = ? WHERE id_cliente = ?';
+        $params = array($date, $this->id);
+        return Database::executeRow($sql, $params);
+    }
 }
