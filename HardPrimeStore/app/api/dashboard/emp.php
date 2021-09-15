@@ -3,6 +3,8 @@ require_once('../../helpers/dashboard/database.php');
 require_once('../../helpers/dashboard/validator.php');
 require_once('../../models/empleados.php');
 
+require '../../../libraries/PHPMailer/PHPMailerAutoload.php';
+
 // Se comprueba si existe una acción a realizar, de lo contrario se finaliza el script con un mensaje de error.
 if (isset($_GET['action'])) {
     // Se crea una sesión o se reanuda la actual para poder utilizar variables de sesión en el script.
@@ -28,7 +30,7 @@ if (isset($_GET['action'])) {
                     $result['exception'] = 'Ocurrió un problema al cerrar la sesión';
                 }
                 break;
-            //Método para consultar la existencia de empleados
+                //Método para consultar la existencia de empleados
             case 'readAll':
                 if ($result['dataset'] = $usuario->readAll()) {
                     $result['status'] = 1;
@@ -41,18 +43,18 @@ if (isset($_GET['action'])) {
                 }
                 break;
                 //Método para cerrar sesión en caso de inactividad
-                case 'timeOut':               
-                    //comparamos el tiempo transcurrido
-                    if ($tiempo_transcurrido >= 500) {
-                        $result['status'] = 1;                        
-                        //si pasaron 5 minutos o más
-                        session_destroy(); // destruyo la sesión                    
-                        //sino, actualizo la fecha de la sesión
-                    } else {
-                        $_SESSION["ultimoAcceso"] = $ahora;
-                    }
-                    break;
-            //Método para consultar la existencia de empleados sin tener en cuenta la existencia del usuario root
+            case 'timeOut':
+                //comparamos el tiempo transcurrido
+                if ($tiempo_transcurrido >= 500) {
+                    $result['status'] = 1;
+                    //si pasaron 5 minutos o más
+                    session_destroy(); // destruyo la sesión                    
+                    //sino, actualizo la fecha de la sesión
+                } else {
+                    $_SESSION["ultimoAcceso"] = $ahora;
+                }
+                break;
+                //Método para consultar la existencia de empleados sin tener en cuenta la existencia del usuario root
             case 'readAll2':
                 if ($result['dataset'] = $usuario->readAll2()) {
                     $result['status'] = 1;
@@ -64,23 +66,23 @@ if (isset($_GET['action'])) {
                     }
                 }
                 break;
-                 //Método para consultar la informacion del historial de sesiones del usuario.
-                 case 'readSesiones':
-                    if ($usuario->setId($_SESSION['id_usuario'])) {
-                        if ($result['dataset'] = $usuario->readSesiones()) {
-                            $result['status'] = 1;
-                        } else {
-                            if (Database::getException()) {
-                                $result['exception'] = Database::getException();
-                            } else {
-                                $result['exception'] = 'Usuario inexistente';
-                            }
-                        }
+                //Método para consultar la informacion del historial de sesiones del usuario.
+            case 'readSesiones':
+                if ($usuario->setId($_SESSION['id_usuario'])) {
+                    if ($result['dataset'] = $usuario->readSesiones()) {
+                        $result['status'] = 1;
                     } else {
-                        $result['exception'] = 'Usuario incorrecto';
+                        if (Database::getException()) {
+                            $result['exception'] = Database::getException();
+                        } else {
+                            $result['exception'] = 'Usuario inexistente';
+                        }
                     }
-                    break;
-            //Método para buscar un empleado
+                } else {
+                    $result['exception'] = 'Usuario incorrecto';
+                }
+                break;
+                //Método para buscar un empleado
             case 'search':
                 $_POST = $usuario->validateForm($_POST);
                 if ($_POST['search'] != '') {
@@ -103,7 +105,7 @@ if (isset($_GET['action'])) {
                     $result['exception'] = 'Ingrese un valor para buscar';
                 }
                 break;
-            //Método para crear un empleado
+                //Método para crear un empleado
             case 'create':
                 $_POST = $usuario->validateForm($_POST);
                 if ($usuario->setNombre($_POST['nombre'])) {
@@ -153,7 +155,7 @@ if (isset($_GET['action'])) {
                     $result['exception'] = 'Nombres incorrectos';
                 }
                 break;
-            //Método para consultar la existencia de un empleado
+                //Método para consultar la existencia de un empleado
             case 'readOne':
                 if ($usuario->setId($_POST['id_empleado'])) {
                     if ($result['dataset'] = $usuario->readOne()) {
@@ -169,8 +171,8 @@ if (isset($_GET['action'])) {
                     $result['exception'] = 'Empleado incorrecto';
                 }
                 break;
-            //Método para consultar si el empleado nunca ha utilizado el sistema
-            //Validación de primer uso
+                //Método para consultar si el empleado nunca ha utilizado el sistema
+                //Validación de primer uso
             case 'readPrimerUso':
                 if ($usuario->setId($_SESSION['id_usuario'])) {
                     $usuario->primerUso();
@@ -183,8 +185,8 @@ if (isset($_GET['action'])) {
                     $result['exception'] = 'Usuario Inexistente';
                 }
                 break;
-            //Método para consultar la información del empleado que ha iniciado sesión
-            //y mostrarla en la página de bienvenida
+                //Método para consultar la información del empleado que ha iniciado sesión
+                //y mostrarla en la página de bienvenida
             case 'openName':
                 if ($result['dataset'] = $usuario->readOne1()) {
                     $result['status'] = 1;
@@ -196,7 +198,7 @@ if (isset($_GET['action'])) {
                     }
                 }
                 break;
-            //Método para consultar la información del empleado para mandarla al modal
+                //Método para consultar la información del empleado para mandarla al modal
             case 'readEmfileds':
                 if ($result['dataset'] = $usuario->readEmfileds()) {
                     $result['status'] = 1;
@@ -208,7 +210,7 @@ if (isset($_GET['action'])) {
                     }
                 }
                 break;
-            //Método para cambiar la contraseña por defecto
+                //Método para cambiar la contraseña por defecto
             case 'updatePass':
                 $_POST = $usuario->validateForm($_POST);
                 if ($usuario->setId($_SESSION['id_usuario'])) {
@@ -228,7 +230,7 @@ if (isset($_GET['action'])) {
                     $result['exception'] = 'Usuario incorrecto';
                 }
                 break;
-            //Método para actualizar un empleado
+                //Método para actualizar un empleado
             case 'update':
                 $_POST = $usuario->validateForm($_POST);
                 if ($usuario->setId($_POST['id_empleado'])) {
@@ -291,7 +293,7 @@ if (isset($_GET['action'])) {
                     $result['exception'] = 'Empleado incorrecto';
                 }
                 break;
-            //Método para actualizar la información del empleado que se encuentra iniciado sesión
+                //Método para actualizar la información del empleado que se encuentra iniciado sesión
             case 'updateProfile':
                 $_POST = $usuario->validateForm($_POST);
                 if ($usuario->setId($_POST['id_empleado'])) {
@@ -342,8 +344,8 @@ if (isset($_GET['action'])) {
                     $result['exception'] = 'Empleado incorrecto';
                 }
                 break;
-            //Método para actualizar las credenciales del empleado 
-            //que ha iniciado sesión
+                //Método para actualizar las credenciales del empleado 
+                //que ha iniciado sesión
             case 'updateUserCredentials':
                 $_POST = $usuario->validateForm($_POST);
                 if ($usuario->setId($_POST['id_usuario'])) {
@@ -353,27 +355,31 @@ if (isset($_GET['action'])) {
                                 if ($_POST['ncontra'] == $_POST['ncontra1']) {
                                     if ($_POST['contra'] != $_POST['ncontra']) {
                                         if ($_POST['alias'] != $_POST['ncontra']) {
-                                            if ($usuario->checkPassword($_POST['contra'])) {
-                                                if ($usuario->setClave($_POST['ncontra'])) {
-                                                    if ($usuario->updateUserCredentials()) {
-                                                        if ($usuario->changeDate()) {
-                                                            $result['status'] = 1;
-                                                            $result['message'] = 'Credenciales actualizadas correctamente';
+                                            if ($usuario->setAutenticacion(isset($_POST['autent']) ? 1 : 0)) {
+                                                if ($usuario->checkPassword($_POST['contra'])) {
+                                                    if ($usuario->setClave($_POST['ncontra'])) {
+                                                        if ($usuario->updateUserCredentials()) {
+                                                            if ($usuario->changeDate()) {
+                                                                $result['status'] = 1;
+                                                                $result['message'] = 'Credenciales actualizadas correctamente';
+                                                            } else {
+                                                                $result['exception'] = Database::getException();
+                                                            }
                                                         } else {
                                                             $result['exception'] = Database::getException();
-                                                        }    
+                                                        }
                                                     } else {
-                                                        $result['exception'] = Database::getException();
+                                                        $result['exception'] = $usuario->getPasswordError();
                                                     }
                                                 } else {
-                                                    $result['exception'] = $usuario->getPasswordError();
+                                                    if (Database::getException()) {
+                                                        $result['exception'] = Database::getException();
+                                                    } else {
+                                                        $result['exception'] = 'Clave incorrecta';
+                                                    }
                                                 }
                                             } else {
-                                                if (Database::getException()) {
-                                                    $result['exception'] = Database::getException();
-                                                } else {
-                                                    $result['exception'] = 'Clave incorrecta';
-                                                }
+                                                $result['exception'] = 'Error al actualizar el estado de la autenticación en dos pasos';
                                             }
                                         } else {
                                             $result['exception'] = 'Ingrese una contraseña diferente a su nombre de usuario';
@@ -386,11 +392,15 @@ if (isset($_GET['action'])) {
                                 }
                             } else {
                                 if ($usuario->checkPassword($_POST['contra'])) {
+                                    if ($usuario->setAutenticacion(isset($_POST['autent']) ? 1 : 0)) {
                                     if ($usuario->updateUserCredentials2()) {
                                         $result['status'] = 1;
                                         $result['message'] = 'Credenciales actualizadas correctamente';
                                     } else {
                                         $result['exception'] = Database::getException();
+                                    }
+                                    } else {
+                                        $result['exception'] = 'Error al actualizar el estado de la autenticación en dos pasos';
                                     }
                                 } else {
                                     if (Database::getException()) {
@@ -410,7 +420,7 @@ if (isset($_GET['action'])) {
                     $result['exception'] = 'Usuario incorrecto';
                 }
                 break;
-            //Método para eliminar un empleado
+                //Método para eliminar un empleado
             case 'delete':
                 // if ($_POST['id_empleado'] != $_SESSION['id_empleado']) {
                 if ($usuario->setId($_POST['id_empleado'])) {
@@ -501,7 +511,7 @@ if (isset($_GET['action'])) {
     } else {
         // Se compara la acción a realizar cuando el administrador no ha iniciado sesión.
         switch ($_GET['action']) {
-            //Método para consultar la existencia de la cantidad de empleados
+                //Método para consultar la existencia de la cantidad de empleados
             case 'readAll':
                 if ($usuario->readAll()) {
                     $result['status'] = 1;
@@ -515,7 +525,7 @@ if (isset($_GET['action'])) {
                     }
                 }
                 break;
-            //Método para crear el primer usuario.
+                //Método para crear el primer usuario.
             case 'peme':
                 $_POST = $usuario->validateForm($_POST);
                 if ($usuario->setNombre($_POST['nombre'])) {
@@ -600,10 +610,10 @@ if (isset($_GET['action'])) {
                                 }
                             } else {
                                 $result['exception'] = 'La contraseña no tiene que ser la misma que la anterior.';
-                            }      
+                            }
                         } else {
                             $result['exception'] = 'Las contraseña no debe de ser igual al nombre de usuario.';
-                        }    
+                        }
                     } else {
                         $result['exception'] = 'Las contraseñas no coinciden';
                     }
@@ -611,40 +621,94 @@ if (isset($_GET['action'])) {
                     $result['exception'] = 'Usuario incorrecto';
                 }
                 break;
-            //Método para el proceso de login para los empleados(dashboard)
+                //Método para el proceso de login para los empleados(dashboard)
             case 'logIn':
                 $_POST = $usuario->validateForm($_POST);
                 if ($usuario->checkUser($_POST['alias'])) {
                     //$usuario->primerUso();
                     //if ($usuario->getPrimer_uso() == '2') {
                     if ($usuario->checkPassword($_POST['clave'])) {
+                        $usuario->setAlias($_POST['alias']);
                         $_SESSION['pass'] = $_POST['clave'];
                         $_SESSION['fecha'] = $usuario->getFecha();
                         $_SESSION['usuaio'] = $usuario->getAlias();
                         $_SESSION['cant'] = $usuario->getCant();
+                        $usuario->setIntentos(0);
+                        $usuario->updateIntentos();
                         if ($_SESSION['cant'] >= 90) {
                             $result['message'] = 'Han pasado un período largo desde su último cambio de contraseña, es hora de renovar tus credenciales.';
                             $result['status'] = 3;
                             $_SESSION['id_user'] = $usuario->getId();
                         } else {
-                            $_SESSION['id_usuario'] = $usuario->getId();
-                            $_SESSION["ultimoAcceso"]= date("Y-n-j H:i:s");
-                            $result['message'] = 'Autenticación correcta';
-                            $result['status'] = 1;
-                            //sesion que captura la fecha y hora del inicio de sesión
-                            $user_agent = $_SERVER['HTTP_USER_AGENT'];
-                            //Se establece la zona horaria y se obtiene la fecha y hora actual
-                            date_default_timezone_set('America/El_Salvador');
-                            $DateAndTime = date('m-d-Y h:i:s a', time());
-                            $plataforma = $usuario->getPlatform($user_agent);
-                            //Se registra ingresan los datos en la base de datos
-                            $usuario->registrarSesion($DateAndTime, $plataforma, $_SESSION['id_usuario']);
+                            if ($usuario->getAuten()) {                                
+                                $_SESSION['id_user'] = $usuario->getId();
+                                $_SESSION['correo'] = $usuario->getCorreo();                                
+                                $usuario->setId($_SESSION['id_user']);
+                                $usuario->generarCodigo(5);
+                                $usuario->updateCode();
+                                $_SESSION['autn'] = $usuario->getCodigo();
+                                $mail = new PHPMailer();
+                                $mail->IsSMTP();
+                                //Configuracion servidor mail
+                                $mail->setFrom('hardprimestore@gmail.com', 'HardPrimeStore'); //remitente
+                                $mail->SMTPAuth = true;
+                                $mail->SMTPSecure = 'tls'; //seguridad
+                                $mail->Host = "smtp.gmail.com"; // servidor smtp
+                                $mail->Port = 587; //puerto
+                                $mail->Username = 'HardPrimeStore@gmail.com'; //nombre usuario
+                                $mail->Password = 'Store2021'; //contraseña
+                                $mail->AddAddress($usuario->getCorreo());
+                                $mail->Subject = 'Segundo factor de autenticación - HardPrimeStore';
+                                $mail->Body = 'El código para iniciar sesión es: ' . $usuario->getCodigo() . '.';
+                                if ($mail->Send()) {                                   
+                                    $result['message'] = 'Se le ha envíado el código para iniciar sesión, por favor revise su correo.';
+                                    $result['status'] = 4;                                    
+                                } else {
+                                    $result['exception'] = 'Ocurrió un error al enviar el correo.';
+                                }
+                            } else {
+                                $_SESSION['id_usuario'] = $usuario->getId();
+                                $_SESSION["ultimoAcceso"] = date("Y-n-j H:i:s");
+                                $result['message'] = 'Autenticación correcta';
+                                $result['status'] = 1;
+                                //sesion que captura la fecha y hora del inicio de sesión
+                                $user_agent = $_SERVER['HTTP_USER_AGENT'];
+                                //Se establece la zona horaria y se obtiene la fecha y hora actual
+                                date_default_timezone_set('America/El_Salvador');
+                                $DateAndTime = date('m-d-Y h:i:s a', time());
+                                $plataforma = $usuario->getPlatform($user_agent);
+                                //Se registra ingresan los datos en la base de datos
+                                $usuario->registrarSesion($DateAndTime, $plataforma, $_SESSION['id_usuario']);
+                            }
                         }
-                    } else {
+                    } else {    
+                        $usuario->setAlias($_POST['alias']);
+                        $usuario->readIntentos();                        
                         if (Database::getException()) {
                             $result['exception'] = Database::getException();
-                        } else {
-                            $result['exception'] = 'Clave incorrecta';
+                        } else {                            
+                            if ($usuario->getIntentos() == 0){                                
+                                $usuario->setIntentos(1);
+                                $usuario->updateIntentos();
+                                $result['exception'] = 'Clave incorrecta';
+                            }
+                            else if($usuario->getIntentos() == 1){                                
+                                $usuario->setIntentos(2);
+                                $usuario->updateIntentos();
+                                $result['exception'] = 'Clave incorrecta';
+                            }
+                            else if($usuario->getIntentos() == 2){                                
+                                $usuario->setIntentos(3);
+                                $usuario->setEstado('inactivo');
+                                $usuario->setAlias($_POST['alias']);
+                                $usuario->updateState();
+                                $usuario->updateIntentos();
+                                $result['exception'] = 'Se han excedido los intentos permitidos, su cuenta ha sido bloqueada';
+                            }
+                            else if($usuario->getIntentos() > 2){
+                                $result['exception'] = 'Se han excedido los intentos permitidos, su cuenta ha sido bloqueada.';
+                            }              
+                            
                         }
                     }
                     //}else{
@@ -656,6 +720,40 @@ if (isset($_GET['action'])) {
                     } else {
                         $result['exception'] = 'Usuario incorrecto o inactivo';
                     }
+                }
+                break;
+                //Método para confirmar que el codigo de autenticación es correcto(dashboard)
+            case 'readAutenticacion':
+                $_POST = $usuario->validateForm($_POST);
+                if ($usuario->setCodigo($_SESSION['autn'])) {
+                    if ($usuario->setId($_SESSION['id_user'])) {
+                        if ($usuario->checkAutn() == true) {
+                            if ($usuario->getCodigo() == $_POST['codigo']) {
+                                $result['status'] = 1;
+                                $result['message'] = 'Autenticación correcta.';
+                                $_SESSION['id_usuario'] = $usuario->getId();
+                                $_SESSION["ultimoAcceso"] = date("Y-n-j H:i:s");
+                                $result['message'] = 'Autenticación correcta';
+                                $result['status'] = 1;
+                                //sesion que captura la fecha y hora del inicio de sesión
+                                $user_agent = $_SERVER['HTTP_USER_AGENT'];
+                                //Se establece la zona horaria y se obtiene la fecha y hora actual
+                                date_default_timezone_set('America/El_Salvador');
+                                $DateAndTime = date('m-d-Y h:i:s a', time());
+                                $plataforma = $usuario->getPlatform($user_agent);
+                                //Se registra ingresan los datos en la base de datos
+                                $usuario->registrarSesion($DateAndTime, $plataforma, $_SESSION['id_usuario']);
+                            } else {
+                                $result['exception'] = 'El código ingresado es incorrecto.';
+                            }
+                        } else {
+                            $result['exception'] = 'El usuario es incorrecto.';
+                        }
+                    } else {
+                        $result['exception'] = 'Error al asignar el usuario para iniciar sesion.';
+                    }
+                } else {
+                    $result['exception'] = 'Error al asignar el código de confirmación';
                 }
                 break;
             default:

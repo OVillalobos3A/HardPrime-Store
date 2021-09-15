@@ -14,7 +14,7 @@ if (isset($_GET['action'])) {
     $result = array('status' => 0, 'error' => 0, 'message' => null, 'exception' => null);
     // Se compara la acción a realizar según la petición del controlador.
     switch ($_GET['action']) {
-        //Método para insertar guardar todos los campos y guardarlos en la base
+            //Método para insertar guardar todos los campos y guardarlos en la base
         case 'createValoracion':
             if (isset($_SESSION['id_cliente'])) {
                 $_POST = $valorar->validateForm($_POST);
@@ -55,7 +55,7 @@ if (isset($_GET['action'])) {
             } else {
                 $result['exception'] = 'No se ha iniciado sesión';
             }
-            break;           
+            break;
             //Método para mostrar los comentarios de un producto en especifico mediante su ID
         case 'readComments':
             if ($valorar->setIdproducto($_POST['id_producto'])) {
@@ -99,7 +99,7 @@ if (isset($_GET['action'])) {
                 }
             }
             break;
-        //Método para consultar la información del empleado para mandarla al modal
+            //Método para consultar la información del empleado para mandarla al modal
         case 'readEmfileds':
             if ($result['dataset'] = $valorar->readEmfileds()) {
                 $result['status'] = 1;
@@ -120,23 +120,27 @@ if (isset($_GET['action'])) {
                             if ($_POST['ncontra'] == $_POST['ncontra1']) {
                                 if ($_POST['contra'] != $_POST['ncontra']) {
                                     if ($_POST['alias'] != $_POST['ncontra']) {
-                                        if ($valorar->checkPassword($_POST['contra'])) {
-                                            if ($valorar->setClave($_POST['ncontra'])) {
-                                                if ($valorar->updateUserCredentials()) {
-                                                    $result['status'] = 1;
-                                                    $result['message'] = 'Credenciales actualizadas correctamente';
+                                        if ($valorar->setAutenticacion(isset($_POST['autent']) ? 1 : 0)) {
+                                            if ($valorar->checkPassword($_POST['contra'])) {
+                                                if ($valorar->setClave($_POST['ncontra'])) {
+                                                    if ($valorar->updateUserCredentials()) {
+                                                        $result['status'] = 1;
+                                                        $result['message'] = 'Credenciales actualizadas correctamente';
+                                                    } else {
+                                                        $result['exception'] = Database::getException();
+                                                    }
                                                 } else {
-                                                    $result['exception'] = Database::getException();
+                                                    $result['exception'] = $valorar->getPasswordError();
                                                 }
                                             } else {
-                                                $result['exception'] = $valorar->getPasswordError();
+                                                if (Database::getException()) {
+                                                    $result['exception'] = Database::getException();
+                                                } else {
+                                                    $result['exception'] = 'Clave incorrecta';
+                                                }
                                             }
                                         } else {
-                                            if (Database::getException()) {
-                                                $result['exception'] = Database::getException();
-                                            } else {
-                                                $result['exception'] = 'Clave incorrecta';
-                                            }
+                                            $result['exception'] = 'Error al actualizar el estado de la autenticación en dos pasos';
                                         }
                                     } else {
                                         $result['exception'] = 'Ingrese una contraseña diferente a su nombre de usuario';
@@ -149,9 +153,13 @@ if (isset($_GET['action'])) {
                             }
                         } else {
                             if ($valorar->checkPassword($_POST['contra'])) {
-                                if ($valorar->updateUserCredentials2()) {
-                                    $result['status'] = 1;
-                                    $result['message'] = 'Credenciales actualizadas correctamente';
+                                if ($valorar->setAutenticacion(isset($_POST['autent']) ? 1 : 0)) {
+                                    if ($valorar->updateUserCredentials2()) {
+                                        $result['status'] = 1;
+                                        $result['message'] = 'Credenciales actualizadas correctamente';
+                                    } else {
+                                        $result['exception'] = 'Error al actualizar el estado de la autenticación en dos pasos';
+                                    }
                                 } else {
                                     $result['exception'] = Database::getException();
                                 }
@@ -173,29 +181,28 @@ if (isset($_GET['action'])) {
                 $result['exception'] = 'Usuario incorrecto';
             }
             break;
-        //Método para actualizar un comentario, capturando los datos del formulario
+            //Método para actualizar un comentario, capturando los datos del formulario
         case 'updateComentario':
             $_POST = $valorar->validateForm($_POST);
-            if ($valorar->setId($_POST['id_calificacion_act'])) {                
-                    if ($valorar->setComentario($_POST['comentario'])) {
-                        if ($valorar->setCalificacion($_POST['calificacion'])) {
-                            if ($valorar->setFecha($_POST['fecha'])) {
-                                if ($valorar->updateComentario()) {
-                                    $result['status'] = 1;
-                                    $result['message'] = 'Calificación modificado correctamente';
-                                } else {
-                                    $result['exception'] = Database::getException();
-                                }
+            if ($valorar->setId($_POST['id_calificacion_act'])) {
+                if ($valorar->setComentario($_POST['comentario'])) {
+                    if ($valorar->setCalificacion($_POST['calificacion'])) {
+                        if ($valorar->setFecha($_POST['fecha'])) {
+                            if ($valorar->updateComentario()) {
+                                $result['status'] = 1;
+                                $result['message'] = 'Calificación modificado correctamente';
                             } else {
-                                $result['exception'] = 'Fecha incorrecta';
+                                $result['exception'] = Database::getException();
                             }
                         } else {
-                            $result['exception'] = 'La calificación is invalida';
+                            $result['exception'] = 'Fecha incorrecta';
                         }
                     } else {
-                        $result['exception'] = 'Comentario incorrecto';
+                        $result['exception'] = 'La calificación is invalida';
                     }
-                
+                } else {
+                    $result['exception'] = 'Comentario incorrecto';
+                }
             } else {
                 $result['exception'] = 'No se pudo obtener el comentario';
             }

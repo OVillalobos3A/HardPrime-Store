@@ -197,6 +197,17 @@ Sitio_Publico::headerTemplate('HardPrimeStore - Mi cuenta');
                         <input id="contra" type="password" name="contra" class="validate" maxlength="16" required />
                         <label for="contra">Contraseña actual</label>
                     </div>
+                    <div class="input-field col s12 m6">
+                    <div class="switch">
+                        <span><b>&nbsp; Autenticacion en 2 pasos: &nbsp;</b></span>
+                        <label>
+                            <i class="material-icons">looks_one</i>
+                            <input id="autent" type="checkbox" name="autent" checked />
+                            <span class="lever"></span>
+                            <i class="material-icons">looks_two</i>
+                        </label>
+                    </div>
+                </div>
                 </div>
                 <div class="row center-align">
                     <a href="#" class="btn waves-effect red tooltipped modal-close" data-tooltip="Cancelar"><i class="material-icons">cancel</i></a>

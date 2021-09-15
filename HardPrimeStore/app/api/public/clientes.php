@@ -3,6 +3,8 @@ require_once('../../helpers/dashboard/database.php');
 require_once('../../helpers/dashboard/validator.php');
 require_once('../../models/clientes.php');
 
+require '../../../libraries/PHPMailer/PHPMailerAutoload.php';
+
 // Se comprueba si existe una acción a realizar, de lo contrario se finaliza el script con un mensaje de error.
 if (isset($_GET['action'])) {
     // Se crea una sesión o se reanuda la actual para poder utilizar variables de sesión en el script.
@@ -15,7 +17,7 @@ if (isset($_GET['action'])) {
     // Se declara e inicializa un arreglo para guardar el resultado que retorna la API.
     $result = array('status' => 0, 'recaptcha' => 0, 'message' => null, 'exception' => null);
     // Se verifica si existe una sesión iniciada como cliente para realizar las acciones correspondientes.
-    if (isset($_SESSION['id_cliente'])) {
+    if (isset($_SESSION['id_cliente'])  && $_SESSION['autentificado'] == 'SI') {
         $fechaGuardada = $_SESSION["ultimoAcceso"];
         date_default_timezone_set('America/El_Salvador');
         $ahora = date("Y-n-j H:i:s");
@@ -43,7 +45,7 @@ if (isset($_GET['action'])) {
                 //comparamos el tiempo transcurrido
                 if ($tiempo_transcurrido >= 500) {
                     $result['status'] = 1;
-                    //si pasaron 10 minutos o más
+                    //si pasaron 5 minutos o más
                     session_destroy(); // destruyo la sesión                    
                     //sino, actualizo la fecha de la sesión
                 } else {
@@ -56,7 +58,7 @@ if (isset($_GET['action'])) {
     } else {
         // Se compara la acción a realizar cuando el cliente no ha iniciado sesión.
         switch ($_GET['action']) {
-            //Método para regsitrar un cliente
+                //Método para regsitrar un cliente
             case 'register':
                 $_POST = $cliente->validateForm($_POST);
                 // Se sanea el valor del token para evitar datos maliciosos.
@@ -166,39 +168,92 @@ if (isset($_GET['action'])) {
                         $_SESSION['correo'] = $cliente->getCorreo();
                         $_SESSION['fecha'] = $cliente->getFecha();
                         $_SESSION['cant'] = $cliente->getCant();
+                        $_SESSION["autentificado"] = "NO";
+                        $_SESSION['cant'] = $cliente->getCant();
+                        $cliente->setUsuario($_POST['usuario']);
+                        $cliente->setIntentos(0);
+                        $cliente->updateIntentos();                           
                         if ($_SESSION['cant'] >= 90) {
                             $result['message'] = 'Han pasado un período largo desde su último cambio de contraseña, es hora de renovar tus credenciales.';
                             $result['status'] = 3;
                             $_SESSION['id_user'] = $cliente->getId();
                         } else {
-                            //$_SESSION['correo_cliente'] = $cliente->getCorreo();
-                            //defino la sesión que demuestra que el usuario está autorizado
-                            $_SESSION["autentificado"] = "SI";
-                            //sesion que captura la fecha y hora del inicio de sesión
-                            $_SESSION["ultimoAcceso"] = date("Y-n-j H:i:s");
-                            $user_agent = $_SERVER['HTTP_USER_AGENT'];
-                            date_default_timezone_set('America/El_Salvador');
-                            $DateAndTime = date('m-d-Y h:i:s a', time());
-                            $plataforma = $cliente->getPlatform($user_agent);
-                            $cliente->registrarSesion($DateAndTime, $plataforma, $_SESSION['id_cliente']);
-                            $_SESSION['id_cliente'] = $cliente->getId();
-                            $result['message'] = 'Autenticación correcta';
-                            $result['status'] = 1;
-                            if ($cliente->readCantprods()) {
-                                $_SESSION['numcarrito'] = $cliente->getNumproducts();
-                            } else {
-                                if (Database::getException()) {
-                                    $result['exception'] = Database::getException();
+
+                            if ($cliente->getAutenticacion()) {
+                                $_SESSION['id_user'] = $cliente->getId();
+                                $cliente->setId($_SESSION['id_user']);
+                                $cliente->generarCodigo(5);
+                                $cliente->updateCode();
+                                $_SESSION['autn'] = $cliente->getCodigoAutn();
+                                $mail = new PHPMailer();
+                                $mail->IsSMTP();
+                                //Configuracion servidor mail
+                                $mail->setFrom('hardprimestore@gmail.com', 'HardPrimeStore'); //remitente
+                                $mail->SMTPAuth = true;
+                                $mail->SMTPSecure = 'tls'; //seguridad
+                                $mail->Host = "smtp.gmail.com"; // servidor smtp
+                                $mail->Port = 587; //puerto
+                                $mail->Username = 'HardPrimeStore@gmail.com'; //nombre usuario
+                                $mail->Password = 'Store2021'; //contraseña
+                                $mail->AddAddress($cliente->getCorreo());
+                                $mail->Subject = 'Segundo factor de autenticación - HardPrimeStore';
+                                $mail->Body = 'El código para iniciar sesión es: ' . $cliente->getCodigoAutn() . '.';
+                                if ($mail->Send()) {
+                                    $result['message'] = 'Se le ha envíado el código para iniciar sesión, por favor revise su correo.';
+                                    $result['status'] = 4;
                                 } else {
-                                    $result['exception'] = 'Error desconocido';
+                                    $result['exception'] = 'Ocurrió un error al enviar el correo.';
+                                }
+                            } else {
+                                //$_SESSION['correo_cliente'] = $cliente->getCorreo();
+                                //defino la sesión que demuestra que el usuario está autorizado
+                                $_SESSION["autentificado"] = "SI";
+                                //sesion que captura la fecha y hora del inicio de sesión
+                                $_SESSION["ultimoAcceso"] = date("Y-n-j H:i:s");
+                                $user_agent = $_SERVER['HTTP_USER_AGENT'];
+                                date_default_timezone_set('America/El_Salvador');
+                                $DateAndTime = date('m-d-Y h:i:s a', time());
+                                $plataforma = $cliente->getPlatform($user_agent);
+                                $cliente->registrarSesion($DateAndTime, $plataforma, $_SESSION['id_cliente']);
+                                $_SESSION['id_cliente'] = $cliente->getId();
+                                $result['message'] = 'Autenticación correcta';
+                                $result['status'] = 1;
+                                if ($cliente->readCantprods()) {
+                                    $_SESSION['numcarrito'] = $cliente->getNumproducts();
+                                } else {
+                                    if (Database::getException()) {
+                                        $result['exception'] = Database::getException();
+                                    } else {
+                                        $result['exception'] = 'Error desconocido';
+                                    }
                                 }
                             }
                         }
                     } else {
+                        $cliente->setUsuario($_POST['usuario']);
+                        $cliente->readIntentos();      
                         if (Database::getException()) {
                             $result['exception'] = Database::getException();
-                        } else {
-                            $result['exception'] = 'Contraseña incorrecta';
+                        } else {                            
+                            if ($cliente->getIntentos() == 0){                                
+                                $cliente->setIntentos(1);
+                                $cliente->updateIntentos();
+                                $result['exception'] = 'Clave incorrecta';
+                            }
+                            else if($cliente->getIntentos() == 1){                                
+                                $cliente->setIntentos(2);
+                                $cliente->updateIntentos();
+                                $result['exception'] = 'Clave incorrecta';
+                            }
+                            else if($cliente->getIntentos() == 2){                                
+                                $cliente->setIntentos(3);
+                                $cliente->setEstado('inactivo');
+                                $cliente->setUsuario($_POST['usuario']);
+                                $cliente->updateState();
+                                $cliente->updateIntentos();
+                                $result['exception'] = 'Se han excedido los intentos permitidos, su cuenta ha sido bloqueada';
+                            }                                 
+                            
                         }
                     }
                     //} else {
@@ -210,6 +265,48 @@ if (isset($_GET['action'])) {
                     } else {
                         $result['exception'] = 'Alias incorrecto o cuenta desactivada';
                     }
+                }
+                break;
+                //Método para confirmar que el codigo de autenticación es correcto(dashboard)
+            case 'readAutenticacion':
+                $_POST = $cliente->validateForm($_POST);
+                if ($cliente->setCodigoAutn($_SESSION['autn'])) {
+                    if ($cliente->setId($_SESSION['id_user'])) {
+                        if ($cliente->checkAutn() == true) {
+                            if ($cliente->getCodigoAutn() == $_POST['codigo']) {
+                                //$_SESSION['correo_cliente'] = $cliente->getCorreo();
+                                //defino la sesión que demuestra que el usuario está autorizado
+                                $_SESSION["autentificado"] = "SI";
+                                //sesion que captura la fecha y hora del inicio de sesión
+                                $_SESSION["ultimoAcceso"] = date("Y-n-j H:i:s");
+                                $user_agent = $_SERVER['HTTP_USER_AGENT'];
+                                date_default_timezone_set('America/El_Salvador');
+                                $DateAndTime = date('m-d-Y h:i:s a', time());
+                                $plataforma = $cliente->getPlatform($user_agent);
+                                $cliente->registrarSesion($DateAndTime, $plataforma, $_SESSION['id_cliente']);
+                                $_SESSION['id_cliente'] = $cliente->getId();
+                                $result['message'] = 'Autenticación correcta';
+                                $result['status'] = 1;
+                                if ($cliente->readCantprods()) {
+                                    $_SESSION['numcarrito'] = $cliente->getNumproducts();
+                                } else {
+                                    if (Database::getException()) {
+                                        $result['exception'] = Database::getException();
+                                    } else {
+                                        $result['exception'] = 'Error desconocido';
+                                    }
+                                }
+                            } else {
+                                $result['exception'] = 'El código ingresado es incorrecto.';
+                            }
+                        } else {
+                            $result['exception'] = 'El usuario es incorrecto.';
+                        }
+                    } else {
+                        $result['exception'] = 'Error al asignar el usuario para iniciar sesion.';
+                    }
+                } else {
+                    $result['exception'] = 'Error al asignar el código de confirmación';
                 }
                 break;
             case 'changePass':
@@ -234,10 +331,10 @@ if (isset($_GET['action'])) {
                                 }
                             } else {
                                 $result['exception'] = 'La contraseña no tiene que ser la misma que la anterior.';
-                            }      
+                            }
                         } else {
                             $result['exception'] = 'Las contraseña no debe de ser igual al nombre de usuario.';
-                        }    
+                        }
                     } else {
                         $result['exception'] = 'Las contraseñas no coinciden';
                     }

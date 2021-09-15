@@ -48,6 +48,8 @@ document.getElementById('session-form').addEventListener('submit', function (eve
                 // Se comprueba si la respuesta es satisfactoria, de lo contrario se muestra un mensaje con la excepción.
                 if (response.status == 3) {
                     sweetAlert(3, response.message, 'changepassword.php');
+                } else if (response.status == 4){
+                    sweetAlert(3, response.message, 'autenticacion.php');
                 } else if (response.status == 1){
                     sweetAlert(1, response.message, 'screenprincipal.php');
                 } else {

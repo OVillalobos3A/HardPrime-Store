@@ -27,12 +27,14 @@ class Sitio_Publico
             </head>            
             <body>
             ');
+
     // Se obtiene el nombre del archivo de la página web actual.
-    //$filename = basename($_SERVER['PHP_SELF']);
+    $filename = basename($_SERVER['PHP_SELF']);
     // Se comprueba si existe una sesión de cliente para mostrar el menú de opciones, de lo contrario se muestra otro menú.
-    if (isset($_SESSION['id_cliente'])) {
+    if (isset($_SESSION['id_cliente']) && $_SESSION['autentificado'] == 'SI') {
       // Se verifica si la página web actual es diferente a login.php y register.php, de lo contrario se direcciona a index.php            
-      print('
+      if ($filename != 'login.php' && $filename != 'changepasspublic.php' && $filename != 'registro_clientes.php' && $filename != 'recuperar_contra.php') {
+        print('
               <header>
                 <div class="navbar-fixed">
                 <nav class="nav-extended light-blue darken-4">            
@@ -107,8 +109,12 @@ class Sitio_Publico
                 </ul>
               </header>
             ');
+      } else {
+        header('location: index.php');
+      }
     } else {
-      print('
+      if ($filename != 'mi_cuenta.php' && $filename != 'carrito_compras.php' && $filename != 'confirmar_pedido.php') {
+        print('
               <header>
                 <div class="navbar-fixed">
                 <nav class="nav-extended light-blue darken-4">            
@@ -173,6 +179,9 @@ class Sitio_Publico
                 </ul>
               </header>
             ');
+      } else {
+        header('location: index.php');
+      }
     }
   }
 

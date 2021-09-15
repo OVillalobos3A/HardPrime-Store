@@ -16,7 +16,7 @@ if (isset($_GET['action'])) {
     if (isset($_SESSION['id_usuario'])) {
         // Se compara la acción a realizar cuando un administrador ha iniciado sesión.
         switch ($_GET['action']) {
-            //Método para consultar la existencia de todos los productos registrados
+                //Método para consultar la existencia de todos los productos registrados
             case 'readAll':
                 if ($result['dataset'] = $producto->readAll()) {
                     $result['status'] = 1;
@@ -27,8 +27,8 @@ if (isset($_GET['action'])) {
                         $result['exception'] = 'No hay usuarios registrados';
                     }
                 }
-                break;  
-            //Método para buscar un usuario en especifico      
+                break;
+                //Método para buscar un usuario en especifico      
             case 'search':
                 $_POST = $producto->validateForm($_POST);
                 if ($_POST['search'] != '') {
@@ -51,7 +51,7 @@ if (isset($_GET['action'])) {
                     $result['exception'] = 'Ingrese un valor para buscar';
                 }
                 break;
-            //Método para crear un usuario
+                //Método para crear un usuario
             case 'create':
                 $_POST = $producto->validateForm($_POST);
                 if ($producto->setUsuario($_POST['usuario'])) {
@@ -87,7 +87,7 @@ if (isset($_GET['action'])) {
                     $result['exception'] = 'Usuario incorrecto';
                 }
                 break;
-            //Método para consultar la existencia de un usuario
+                //Método para consultar la existencia de un usuario
             case 'readOne':
                 if ($producto->setId($_POST['id_usuario'])) {
                     if ($result['dataset'] = $producto->readOne()) {
@@ -103,7 +103,7 @@ if (isset($_GET['action'])) {
                     $result['exception'] = 'Producto incorrecto';
                 }
                 break;
-            //Método para actualizar un usuario
+                //Método para actualizar un usuario
             case 'update':
                 $_POST = $producto->validateForm($_POST);
                 if ($producto->setId($_POST['id_usuario'])) {
@@ -137,7 +137,7 @@ if (isset($_GET['action'])) {
                     $result['exception'] = 'Usuario incorrecto';
                 }
                 break;
-            //Método para eliminar un usuario
+                //Método para eliminar un usuario
             case 'delete':
                 if ($_POST['id_usuario'] != $_SESSION['id_usuario']) {
                     if ($producto->setId($_POST['id_usuario'])) {

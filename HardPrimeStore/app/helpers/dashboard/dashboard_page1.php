@@ -3,6 +3,11 @@
 class Dashboard_Page {
     //Método para imprimir el encabezado y establecer el titulo del documento
     public static function headerTemplate($title) {
+        session_name("dashboard");
+        session_start();        
+        if (isset($_SESSION['id_usuario'])) {
+            header('location: screenprincipal.php');
+    } else {
         print('
             <!DOCTYPE html>
             <html lang="es">
@@ -35,7 +40,8 @@ class Dashboard_Page {
                 <br>
                 <!--Contenido principal del documento-->
                 <main>
-        ');
+        ');        
+    }
     }
 
     //Método para imprimir el pie y establecer el controlador del documento
@@ -64,4 +70,3 @@ class Dashboard_Page {
         ');
     }
 }
-?>

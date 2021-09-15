@@ -212,9 +212,15 @@ function openUpdateCredentials(id) {
             request.json().then(function (response) {
                 // Se comprueba si la respuesta es satisfactoria, de lo contrario se muestra un mensaje con la excepción.
                 if (response.status) {
+
                     // Se inicializan los campos del formulario con los datos del registro seleccionado.
                     document.getElementById('id_usuario').value = response.dataset.id_usuario;
-                    document.getElementById('alias').value = response.dataset.usuario;
+                    document.getElementById('alias').value = response.dataset.usuario;                    
+                    if (response.dataset.autenticacion) {
+                        document.getElementById('autent').checked = true;
+                    } else {
+                        document.getElementById('autent').checked = false;
+                    }
                     // Se actualizan los campos para que las etiquetas (labels) no queden sobre los datos.
                     M.updateTextFields();
                 } else {

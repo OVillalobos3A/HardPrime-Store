@@ -19,6 +19,9 @@ class Empleados extends Validator
     private $primer_uso = null;
     private $estado = null;
     private $imagen = null;
+    private $autenticacion = null;
+    private $codigo = null;
+    private $intentos = null;
     private $ruta = '../../../resources/img/productos/';
 
     /*
@@ -28,6 +31,16 @@ class Empleados extends Validator
     {
         if ($this->validateNaturalNumber($value)) {
             $this->id = $value;
+            return true;
+        } else {
+            return false;
+        }
+    }
+
+    public function setIntentos($value)
+    {
+        if ($this->validateNaturalNumber($value)) {
+            $this->intentos = $value;
             return true;
         } else {
             return false;
@@ -48,6 +61,16 @@ class Empleados extends Validator
     {
         if ($this->validateNaturalNumber($value)) {
             $this->primer_uso = $value;
+            return true;
+        } else {
+            return false;
+        }
+    }
+
+    public function setAutenticacion($value)
+    {
+        if ($this->validateBoolean($value)) {
+            $this->autenticacion = $value;
             return true;
         } else {
             return false;
@@ -174,12 +197,27 @@ class Empleados extends Validator
         }
     }
 
+    public function setCodigo($value)
+    {
+        if ($this->validateAlphanumeric($value, 1, 50)) {
+            $this->codigo = $value;
+            return true;
+        } else {
+            return false;
+        }
+    }
+
     /*
     *   Métodos para obtener valores de los atributos.
     */
     public function getId()
     {
         return $this->id;
+    }
+
+    public function getAuten()
+    {
+        return $this->autenticacion;
     }
 
     public function getCant()
@@ -217,6 +255,15 @@ class Empleados extends Validator
         return $this->primer_uso;
     }
 
+    public function getIntentos()
+    {
+        return $this->intentos;
+    }
+
+    public function getCodigo()
+    {
+        return $this->codigo;
+    }
 
     public function getTel()
     {
@@ -263,7 +310,7 @@ class Empleados extends Validator
      public function checkUser($alias)
         {
             $this->estado = "activo";
-            $sql = 'SELECT id_usuario, last_date FROM usuarios WHERE usuario = ? and estado = ? ';
+            $sql = 'SELECT id_usuario, last_date, autenticacion, empleados.correo as correo FROM usuarios INNER JOIN empleados USING(id_empleado) WHERE usuario = ? and usuarios.estado = ? ';
             $params = array($alias, $this->estado);
             if ($data = Database::getRow($sql, $params)) {
                 $this->id = $data['id_usuario'];
@@ -275,11 +322,13 @@ class Empleados extends Validator
                 $fecha2 = new DateTime($date);
                 $rela = $fecha1->diff($fecha2);
                 $this->cant = $rela->days;
+                $this->autenticacion = $data['autenticacion'];
+                $this->correo = $data['correo'];
                 return true;
             } else {
                 return false;
             }
-        }    
+        }        
 
     public function checkPassword($password)
     {
@@ -328,6 +377,15 @@ class Empleados extends Validator
         return Database::executeRow($sql, $params);
     }
 
+    public function updateState()
+    {        
+        $sql = 'UPDATE usuarios
+                SET estado = ?
+                WHERE usuario = ?';
+        $params = array($this->estado, $this->alias);
+        return Database::executeRow($sql, $params);
+    }
+
     /*
     *   Métodos para realizar las operaciones SCRUD (search, create, read, update, delete).
     */
@@ -353,12 +411,14 @@ class Empleados extends Validator
     public function firstUser()
     {
         $this->primer_uso = 0;
+        $intentos = 0;
+        $this->autenticacion = false;
         // Se encripta la clave por medio del algoritmo bcrypt que genera un string de 60 caracteres.
         $hash = password_hash($this->clave, PASSWORD_DEFAULT);
         $this->idt = 1;
-        $sql = 'INSERT INTO usuarios(usuario, contraseña, id_empleado, id_tipo_usuario, primer_uso)
-                VALUES(?,?,?,?,?)';
-        $params = array($this->alias, $hash, $this->ide, $this->idt, $this->primer_uso);
+        $sql = 'INSERT INTO usuarios(usuario, contraseña, id_empleado, id_tipo_usuario, primer_uso, intentos, autenticacion)
+                VALUES(?,?,?,?,?,?,?)';
+        $params = array($this->alias, $hash, $this->ide, $this->idt, $this->primer_uso, $intentos, $this->autenticacion);
         return Database::executeRow($sql, $params);
     }
 
@@ -447,11 +507,32 @@ class Empleados extends Validator
 
     public function readEmfileds()
     {
-        $sql = 'SELECT usuarios.id_empleado as emp, nombre, apellido, correo, telefono, imagen, usuarios.id_usuario, usuario
+        $sql = 'SELECT usuarios.id_empleado as emp, nombre, apellido, correo, telefono, imagen, usuarios.id_usuario, usuario, autenticacion
                 FROM usuarios INNER JOIN empleados ON usuarios.id_empleado = empleados.id_empleado
                 WHERE usuarios.id_usuario = ?';
         $params = array($_SESSION['id_usuario']);
         return Database::getRow($sql, $params);
+    }
+
+    public function readIntentos()
+    {
+        $sql = 'SELECT intentos FROM usuarios WHERE usuario = ?';
+        $params = array($this->alias);
+        if ($data = Database::getRow($sql, $params)) {
+            $this->intentos = $data['intentos'];
+            return true;
+        } else {
+            return false;
+        }   
+    }
+
+    public function updateIntentos()
+    {
+        $sql = 'UPDATE usuarios 
+                SET intentos = ?
+                WHERE usuario = ?';
+        $params = array($this->intentos, $this->alias);
+        return Database::executeRow($sql, $params);
     }
 
     public function updateRow($current_image)
@@ -490,18 +571,18 @@ class Empleados extends Validator
         // Se encripta la clave por medio del algoritmo bcrypt que genera un string de 60 caracteres.
         $hash = password_hash($this->clave, PASSWORD_DEFAULT);
         $sql = 'UPDATE usuarios 
-                SET usuario = ?, contraseña = ?
+                SET usuario = ?, contraseña = ?, autenticacion = ?
                 WHERE id_usuario = ?';
-        $params = array($this->alias, $hash, $this->id);
+        $params = array($this->alias, $hash, $this->autenticacion, $this->id);
         return Database::executeRow($sql, $params);
     }
 
     public function updateUserCredentials2()
     {
         $sql = 'UPDATE usuarios 
-                SET usuario = ?
+                SET usuario = ?, autenticacion = ?
                 WHERE id_usuario = ?';
-        $params = array($this->alias, $this->id);
+        $params = array($this->alias, $this->autenticacion, $this->id);
         return Database::executeRow($sql, $params);
     }
 
@@ -629,6 +710,49 @@ class Empleados extends Validator
         $sql = 'UPDATE usuarios SET last_date = ? WHERE id_usuario = ?';
         $params = array($date, $this->id);
         return Database::executeRow($sql, $params);
+    }
+
+    public function checkAutn()
+    {
+        $sql = 'SELECT codigo_autn FROM usuarios                
+                WHERE id_usuario = ?';
+        $params = array($this->id);
+        if ($data = Database::getRow($sql, $params)) {
+            $this->codigo = $data['codigo_autn'];
+            return true;
+        } else {
+            return false;
+        }                
+    }
+
+    public function updateCode()
+    {
+        $sql = 'UPDATE usuarios
+                SET codigo_autn = ?
+                WHERE id_usuario = ?';
+        $params = array($this->codigo, $this->id);
+        return Database::executeRow($sql, $params);
+    }
+
+    function generarCodigo($longitud)
+    {
+        
+        $caracteres = array("0", "1", "2", "3", "4", "5", "6", "7", "8", "9", "A" , "B" , "C" , "D", "E" , "F", "E" 
+        , "G", "H" , "I", "J", "K", "L", "M", "N", "O", "P", "Q", "R", "S", "T", "U", "V", "W", "X", "Y", "Z");
+
+
+        for ($i = 1; $i <= $longitud; $i++) {
+            $this->codigo .= $caracteres[$this->numero_aleatorio(0, 36)];
+        }
+
+        return $this->codigo;
+    }
+
+    function numero_aleatorio($ninicial, $nfinal)
+    {
+        $numero = rand($ninicial, $nfinal);
+
+        return $numero;
     }
 
 

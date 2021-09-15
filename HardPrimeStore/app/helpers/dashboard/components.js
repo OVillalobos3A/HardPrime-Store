@@ -82,6 +82,8 @@ function readRows2(api) {
                             <div class="center-align">
                                 <a class="waves-effect waves-light btn"><i class="material-icons right tooltipped" data-tooltip="Modificar perfil" onclick="openUpdateProfile(${row.id_empleado})">account_circle</i>Perfil</a>
                                 <a class="waves-effect waves-light btn"><i class="material-icons right tooltipped" data-tooltip="Modificar Credenciales" onclick="openUpdateCredentials(${row.id_usuario})">pin</i>Credenciales</a>
+                                <a class="waves-effect waves-light btn"><i class="material-icons right tooltipped" data-tooltip="Visualizar gráficos" onclick="openCreateDialog()">bar_chart</i>Gráficos</a>
+                                <a class="waves-effect waves-light btn"><i class="material-icons right tooltipped" data-tooltip="Historial de sesiones" onclick="openSesiones()">access_time</i>Historial de sesiones</a>
                             </div>
                         `;
                     });

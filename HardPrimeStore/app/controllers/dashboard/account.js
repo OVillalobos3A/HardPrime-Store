@@ -52,7 +52,7 @@ function timeOut() {
                 // Se comprueba si la respuesta es satisfactoria, de lo contrario se muestra un mensaje con la excepción.
                 if (response.status) {                  
                     // Se agregan las tarjetas a la etiqueta div mediante su id para mostrar las categorías.
-                    sweetAlert(2, "La sesión ha sido destruida por inactividad", 'index.php');
+                    sweetAlert(2, response.exception, 'index.php');
                     // Se inicializa el componente Tooltip asignado a los enlaces para que funcionen las sugerencias textuales.                    
                 } else {
                     // Se presenta un mensaje de error cuando no existen datos para mostrar.

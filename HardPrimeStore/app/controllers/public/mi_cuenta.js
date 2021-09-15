@@ -635,6 +635,11 @@ function openUpdateCredentials(id) {
                     // Se inicializan los campos del formulario con los datos del registro seleccionado.
                     document.getElementById('id_cliente').value = response.dataset.id_cliente;
                     document.getElementById('alias').value = response.dataset.usuario;
+                    if (response.dataset.autenticacion) {
+                        document.getElementById('autent').checked = true;
+                    } else {
+                        document.getElementById('autent').checked = false;
+                    }
                     // Se actualizan los campos para que las etiquetas (labels) no queden sobre los datos.
                     M.updateTextFields();
                 } else {

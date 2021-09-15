@@ -1,9 +1,17 @@
 <?php
 //Clase para definir las plantillas de las páginas web del sitio privado
-class Dashboard_Page {
+class Dashboard_Page
+{
     //Método para imprimir el encabezado y establecer el titulo del documento
-    public static function headerTemplate($title) {
-        print('
+    public static function headerTemplate($title)
+    {
+        // Se obtiene el nombre del archivo de la página web actual.
+        // Se crea una sesión o se reanuda la actual para poder utilizar variables de sesión en el script.
+        session_name("dashboard");
+        session_start();
+        $filename = basename($_SERVER['PHP_SELF']);
+        if (isset($_SESSION['id_usuario'])) {
+            print('
             <!DOCTYPE html>
             <html lang="es">
             <head>
@@ -22,7 +30,7 @@ class Dashboard_Page {
                 <!--Se informa al navegador que el sitio web está optimizado para dispositivos móviles-->
                 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
                 <!--Título del documento-->
-                <title>Dashboard - '.$title.'</title>
+                <title>Dashboard - ' . $title . '</title>
             </head>
             
             <body>
@@ -101,10 +109,14 @@ class Dashboard_Page {
                 <!--Contenido principal del documento-->
                 <main>
         ');
+        } else {
+            header('location: index.php');
+        }
     }
 
     //Método para imprimir el pie y establecer el controlador del documento
-    public static function footerTemplate($controller) {
+    public static function footerTemplate($controller)
+    {
         print('
                 </main>
                 <!--Pie del documento-->
@@ -129,4 +141,3 @@ class Dashboard_Page {
         ');
     }
 }
-?>

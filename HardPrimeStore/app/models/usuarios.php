@@ -53,7 +53,7 @@ class Usuarios extends Validator
 
     public function setClave($value)
     {
-        if ($this->validatePassword($value)) {
+        if ($this->validatePass($value)) {
             $this->clave = $value;
             return true;
         } else {
@@ -189,20 +189,23 @@ class Usuarios extends Validator
 
     public function updateRow()
     {
+        $intentos = 0;
         $sql = 'UPDATE usuarios
-                SET usuario = ?, estado = ?, id_empleado = ?, id_tipo_usuario = ?
+                SET usuario = ?, estado = ?, id_empleado = ?, id_tipo_usuario = ?, intentos = ?
                 WHERE id_usuario = ?';
-        $params = array($this->usuario, $this->estado, $this->empleado, $this->tipo_usuario, $this->id);
+        $params = array($this->usuario, $this->estado, $this->empleado, $this->tipo_usuario, $intentos, $this->id);
         return Database::executeRow($sql, $params);
     }
 
     public function recuContra()
     {
         $hash = password_hash($this->clave, PASSWORD_DEFAULT);
+        $intentos = 0;
+        $estado = 'activo';
         $sql = 'UPDATE usuarios
-                SET contraseña = ?
+                SET contraseña = ?, intentos = ?, estado = ?
                 WHERE usuario = ?';
-        $params = array($hash, $this->usuario);
+        $params = array($hash, $intentos, $estado, $this->usuario);
         return Database::executeRow($sql, $params);
     }
 
@@ -226,6 +229,19 @@ class Usuarios extends Validator
         $params = array($this->usuario);
         if ($data = Database::getRow($sql, $params)) {
             $this->codigo = $data['codigo_recu'];
+            return true;
+        } else {
+            return false;
+        }                
+    }
+
+    public function checkAutenticacion()
+    {
+        $sql = 'SELECT codigo_autn FROM usuarios                
+                WHERE id_usuario = ?';
+        $params = array($this->usuario);
+        if ($data = Database::getRow($sql, $params)) {
+            $this->codigo = $data['codigo_autn'];
             return true;
         } else {
             return false;
@@ -262,11 +278,13 @@ class Usuarios extends Validator
 
     function generarCodigo($longitud)
     {
-        $caracteres = array("0", "1", "2", "3", "4", "5", "6", "7", "8", "9");
+        
+        $caracteres = array("0", "1", "2", "3", "4", "5", "6", "7", "8", "9", "A" , "B" , "C" , "D", "E" , "F", "E" 
+        , "G", "H" , "I", "J", "K", "L", "M", "N", "O", "P", "Q", "R", "S", "T", "U", "V", "W", "X", "Y", "Z");
 
 
         for ($i = 1; $i <= $longitud; $i++) {
-            $this->codigo .= $caracteres[$this->numero_aleatorio(0, 9)];
+            $this->codigo .= $caracteres[$this->numero_aleatorio(0, 36)];
         }
 
         return $this->codigo;

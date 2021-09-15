@@ -15,6 +15,7 @@ class Public_valoraciones extends Validator
     private $fecha= null;
     private $estado = null;
     private $calificacion = null;
+    private $autenticacion = null;
     private $ruta = '../../../resources/img/productos/';
 
    
@@ -40,6 +41,17 @@ class Public_valoraciones extends Validator
             return false;
         }
     }
+
+    public function setAutenticacion($value)
+    {
+        if ($this->validateBoolean($value)) {
+            $this->autenticacion = $value;
+            return true;
+        } else {
+            return false;
+        }
+    }
+
 
     public function setClave($value)
     {
@@ -174,6 +186,11 @@ class Public_valoraciones extends Validator
         return $this->clave;
     }
 
+    public function getAutenticacion()
+    {
+        return $this->autenticacion;
+    }
+
     //Método para insertar una calificación en la base de datos
     public function createRow()
     {
@@ -284,7 +301,7 @@ class Public_valoraciones extends Validator
 
     public function readEmfileds()
     {
-        $sql = 'SELECT id_cliente as emp, usuario, id_cliente
+        $sql = 'SELECT id_cliente as emp, usuario, id_cliente, autenticacion
                 FROM clientes
                 WHERE id_cliente = ?';
         $params = array($_SESSION['id_cliente']);
@@ -308,18 +325,18 @@ class Public_valoraciones extends Validator
         // Se encripta la clave por medio del algoritmo bcrypt que genera un string de 60 caracteres.
         $hash = password_hash($this->clave, PASSWORD_DEFAULT);
         $sql = 'UPDATE clientes 
-                SET usuario = ?, contraseña = ?
+                SET usuario = ?, contraseña = ?, autenticacion = ?
                 WHERE id_cliente = ?';
-        $params = array($this->alias, $hash, $this->id);
+        $params = array($this->alias, $hash, $this->autenticacion, $this->id);
         return Database::executeRow($sql, $params);
     }
 
     public function updateUserCredentials2()
     {
         $sql = 'UPDATE clientes 
-                SET usuario = ?
+                SET usuario = ?, autenticacion = ?
                 WHERE id_cliente = ?';
-        $params = array($this->alias, $this->id);
+        $params = array($this->alias, $this->autenticacion, $this->id);
         return Database::executeRow($sql, $params);
     }
 

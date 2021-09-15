@@ -21,6 +21,10 @@ class Clientes extends Validator
     private $fecha = null;
     private $cantidad = null;
     private $codigo_recu = null;
+    private $autenticacion = null;
+    private $codigo = null;
+    private $intentos = null;
+    
     private $ruta = '../../../resources/img/productos/';
 
     /*
@@ -30,6 +34,36 @@ class Clientes extends Validator
     {
         if ($this->validateNaturalNumber($value)) {
             $this->id = $value;
+            return true;
+        } else {
+            return false;
+        }
+    }
+
+    public function setIntentos($value)
+    {
+        if ($this->validateNaturalNumber($value)) {
+            $this->intentos = $value;
+            return true;
+        } else {
+            return false;
+        }
+    }
+
+    public function setAutenticacion($value)
+    {
+        if ($this->validateBoolean($value)) {
+            $this->autenticacion = $value;
+            return true;
+        } else {
+            return false;
+        }
+    }
+
+    public function setCodigoAutn($value)
+    {
+        if ($this->validateAlphanumeric($value, 1, 50)) {
+            $this->codigo = $value;
             return true;
         } else {
             return false;
@@ -126,7 +160,7 @@ class Clientes extends Validator
 
     public function setContraseña($value)
     {
-        if ($this->validatePassword($value)) {
+        if ($this->validatePass($value)) {
             $this->contraseña = $value;
             return true;
         } else {
@@ -192,6 +226,16 @@ class Clientes extends Validator
         return $this->numproducts;
     }
 
+    public function getAutenticacion()
+    {
+        return $this->autenticacion;
+    }
+
+    public function getCodigoAutn()
+    {
+        return $this->codigo;
+    }
+
     public function getCantidad()
     {
         return $this->cantidad;
@@ -250,6 +294,11 @@ class Clientes extends Validator
     public function getCodigo()
     {
         return $this->codigo_recu;
+    }
+
+    public function getIntentos()
+    {
+        return $this->intentos;
     }
 
     public function getRuta()
@@ -315,11 +364,12 @@ class Clientes extends Validator
     //Método para actualizar el estado de un cliente a Activo
     public function updateRow()
     {
+        $intentos = 0;
         $this->estado = "activo";
         $sql = 'UPDATE clientes
-                SET estado = ?
+                SET estado = ?, intentos = ?
                 WHERE id_cliente = ?';
-        $params = array($this->estado, $this->id);
+        $params = array($this->estado, $intentos, $this->id);
         return Database::executeRow($sql, $params);
     }
 
@@ -347,7 +397,7 @@ class Clientes extends Validator
     public function checkUser($usuario)
     {
         $this->estado = "activo";
-        $sql = 'SELECT id_cliente, usuario, imagen, correo, last_date FROM clientes WHERE usuario = ? and estado = ? ';
+        $sql = 'SELECT id_cliente, usuario, imagen, correo, last_date, autenticacion FROM clientes WHERE usuario = ? and estado = ? ';
         $params = array($usuario, $this->estado);
         if ($data = Database::getRow($sql, $params)) {
             $this->id = $data['id_cliente'];
@@ -362,6 +412,7 @@ class Clientes extends Validator
             $fecha2 = new DateTime($date);
             $rela = $fecha1->diff($fecha2);
             $this->cant = $rela->days;
+            $this->autenticacion = $data['autenticacion'];            
             return true;
         } else {
             return false;
@@ -462,6 +513,139 @@ class Clientes extends Validator
         $date = date('Y-m-d');
         $sql = 'UPDATE clientes SET last_date = ? WHERE id_cliente = ?';
         $params = array($date, $this->id);
+        return Database::executeRow($sql, $params);
+    }
+
+    public function checkAutn()
+    {
+        $sql = 'SELECT codigo_autn FROM clientes                
+                WHERE id_cliente = ?';
+        $params = array($this->id);
+        if ($data = Database::getRow($sql, $params)) {
+            $this->codigo = $data['codigo_autn'];
+            return true;
+        } else {
+            return false;
+        }                
+    }
+
+    public function updateRecu()
+    {
+        $sql = 'UPDATE clientes
+                SET codigo_recu = ?
+                WHERE usuario= ?';
+        $params = array($this->codigo, $this->usuario);
+        return Database::executeRow($sql, $params);
+    }
+
+    public function updateCode()
+    {
+        $sql = 'UPDATE clientes
+                SET codigo_autn = ?
+                WHERE id_cliente = ?';
+        $params = array($this->codigo, $this->id);
+        return Database::executeRow($sql, $params);
+    }
+
+    function generarCodigo($longitud)
+    {
+        
+        $caracteres = array("0", "1", "2", "3", "4", "5", "6", "7", "8", "9", "A" , "B" , "C" , "D", "E" , "F", "E" 
+        , "G", "H" , "I", "J", "K", "L", "M", "N", "O", "P", "Q", "R", "S", "T", "U", "V", "W", "X", "Y", "Z");
+
+
+        for ($i = 1; $i <= $longitud; $i++) {
+            $this->codigo .= $caracteres[$this->numero_aleatorio(0, 36)];
+        }
+
+        return $this->codigo;
+    }
+
+    function numero_aleatorio($ninicial, $nfinal)
+    {
+        $numero = rand($ninicial, $nfinal);
+
+        return $numero;
+    }
+
+    public function readIntentos()
+    {
+        $sql = 'SELECT intentos FROM clientes WHERE usuario = ?';
+        $params = array($this->usuario);
+        if ($data = Database::getRow($sql, $params)) {
+            $this->intentos = $data['intentos'];
+            return true;
+        } else {
+            return false;
+        }   
+    }
+
+    public function updateIntentos()
+    {
+        $sql = 'UPDATE clientes 
+                SET intentos = ?
+                WHERE usuario = ?';
+        $params = array($this->intentos, $this->usuario);
+        return Database::executeRow($sql, $params);
+    }
+
+    public function updateState()
+    {        
+        $sql = 'UPDATE clientes
+                SET estado = ?
+                WHERE usuario = ?';
+        $params = array($this->estado, $this->usuario);
+        return Database::executeRow($sql, $params);
+    }
+
+    public function checkUsuario()
+    {
+        $sql = 'SELECT usuario FROM clientes                
+                WHERE usuario = ?';
+        $params = array($this->usuario);
+        if ($data = Database::getRow($sql, $params)) {
+            $this->usuario = $data['usuario'];
+            return true;
+        } else {
+            return false;
+        }                
+    }
+
+    public function obtenerCorreo()
+    {
+        $sql = 'SELECT correo FROM clientes                
+                WHERE usuario = ?';
+        $params = array($this->usuario);
+        if ($data = Database::getRow($sql, $params)) {
+            $this->correo = $data['correo'];            
+            return true;
+        } else {
+            return false;
+        }                
+    }
+
+    public function checkCode()
+    {
+        $sql = 'SELECT codigo_recu FROM clientes                
+                WHERE usuario = ?';
+        $params = array($this->usuario);
+        if ($data = Database::getRow($sql, $params)) {
+            $this->codigo = $data['codigo_recu'];
+            return true;
+        } else {
+            return false;
+        }                
+    }
+
+    public function recuContra()
+    {
+        $hash = password_hash($this->contraseña, PASSWORD_DEFAULT);
+        $intentos = 0;
+        $estado = 'activo';
+        $sql = 'UPDATE clientes
+                SET contraseña = ?, intentos = ?, estado = ?
+                WHERE usuario = ?';
+        $params = array($hash, $intentos, $estado, $this->usuario);
         return Database::executeRow($sql, $params);
     }
 }
