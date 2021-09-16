@@ -17,17 +17,23 @@ if (isset($_GET['action'])) {
         // Se compara la acción a realizar cuando un administrador ha iniciado sesión.
         switch ($_GET['action']) {
             case 'readAll':
-                if ($result['dataset'] = $categoria->readAll()) {
-                    $result['status'] = 1;
-                } else {
-                    if (Database::getException()) {
-                        $result['exception'] = Database::getException();
+                if (isset($_SESSION['id_usuario'])) {
+                    if ($result['dataset'] = $categoria->readAll()) {
+                        $result['status'] = 1;
                     } else {
-                        $result['exception'] = 'No hay categorías registradas';
+                        if (Database::getException()) {
+                            $result['status'] = 2;
+                            $result['exception'] = Database::getException();
+                        } else {
+                            $result['status'] = 2;
+                            $result['exception'] = 'No hay categorías registradas';
+                        }
                     }
+                } else {
+                    $result['status'] = 3;
                 }
                 break;
-            //Método para buscar una categor+ia en especifico
+                //Método para buscar una categor+ia en especifico
             case 'search':
                 $_POST = $categoria->validateForm($_POST);
                 if ($_POST['search'] != '') {
@@ -50,7 +56,7 @@ if (isset($_GET['action'])) {
                     $result['exception'] = 'Ingrese un valor para buscar';
                 }
                 break;
-            //Método para crear una categoria
+                //Método para crear una categoria
             case 'create':
                 $_POST = $categoria->validateForm($_POST);
                 if ($categoria->setNombre($_POST['nombre'])) {
@@ -80,7 +86,7 @@ if (isset($_GET['action'])) {
                     $result['exception'] = 'Nombre incorrecto';
                 }
                 break;
-            //Método para consultar una categoria
+                //Método para consultar una categoria
             case 'readOne':
                 if ($categoria->setId($_POST['id_categoria'])) {
                     if ($result['dataset'] = $categoria->readOne()) {
@@ -96,7 +102,7 @@ if (isset($_GET['action'])) {
                     $result['exception'] = 'Categoría incorrecta';
                 }
                 break;
-            //Método para actualizar una categoria
+                //Método para actualizar una categoria
             case 'update':
                 $_POST = $categoria->validateForm($_POST);
                 if ($categoria->setId($_POST['id_categoria'])) {
@@ -139,7 +145,7 @@ if (isset($_GET['action'])) {
                     $result['exception'] = 'Categoría incorrecta';
                 }
                 break;
-            //Método para eliminar una categoría
+                //Método para eliminar una categoría
             case 'delete':
                 if ($categoria->setId($_POST['id_categoria'])) {
                     if ($data = $categoria->readOne()) {

@@ -17,19 +17,25 @@ if (isset($_GET['action'])) {
     if (isset($_SESSION['id_usuario'])) {
         // Se compara la acción a realizar cuando un administrador ha iniciado sesión.
         switch ($_GET['action']) {
-            //Método para consultar la información de todas las marcas registradas
+                //Método para consultar la información de todas las marcas registradas
             case 'readAll':
-                if ($result['dataset'] = $marca->readAll()) {
-                    $result['status'] = 1;
-                } else {
-                    if (Database::getException()) {
-                        $result['exception'] = Database::getException();
+                if (isset($_SESSION['id_usuario'])) {
+                    if ($result['dataset'] = $marca->readAll()) {
+                        $result['status'] = 1;
                     } else {
-                        $result['exception'] = 'No hay marcas registradas';
+                        if (Database::getException()) {
+                            $result['status'] = 2;
+                            $result['exception'] = Database::getException();
+                        } else {
+                            $result['status'] = 2;
+                            $result['exception'] = 'No hay marcas registradas';
+                        }
                     }
+                } else {
+                    $result['status'] = 3;
                 }
                 break;
-            //Método para consultar la información de una marca en especifico
+                //Método para consultar la información de una marca en especifico
             case 'search':
                 $_POST = $marca->validateForm($_POST);
                 if ($_POST['search'] != '') {
@@ -52,7 +58,7 @@ if (isset($_GET['action'])) {
                     $result['exception'] = 'Ingrese un valor para buscar';
                 }
                 break;
-            //Método para crear una marca
+                //Método para crear una marca
             case 'create':
                 $_POST = $marca->validateForm($_POST);
                 if ($marca->setNombre($_POST['nombre_marca'])) {
@@ -90,7 +96,7 @@ if (isset($_GET['action'])) {
                     $result['exception'] = 'Nombre incorrecto o campo vacío';
                 }
                 break;
-            //Método para consultar la información de una marca
+                //Método para consultar la información de una marca
             case 'readOne':
                 if ($marca->setId($_POST['id_marca'])) {
                     if ($result['dataset'] = $marca->readOne()) {
@@ -106,7 +112,7 @@ if (isset($_GET['action'])) {
                     $result['exception'] = 'Marca incorrecta';
                 }
                 break;
-            //Método para actualizar una marca
+                //Método para actualizar una marca
             case 'update':
                 $_POST = $marca->validateForm($_POST);
                 if ($marca->setId($_POST['id_marca'])) {
@@ -117,8 +123,10 @@ if (isset($_GET['action'])) {
                                     if ($marca->setLogo($_FILES['archivo_marca1'])) {
                                         if ($marca->updateRow2($data['imagen'], $data['logo_marca'])) {
                                             $result['status'] = 1;
-                                            if ($marca->saveFile($_FILES['archivo_marca'], $marca->getRuta(), $marca->getImagen()) && 
-                                                $marca->saveFile($_FILES['archivo_marca1'], $marca->getRuta1(), $marca->getLogo())) {
+                                            if (
+                                                $marca->saveFile($_FILES['archivo_marca'], $marca->getRuta(), $marca->getImagen()) &&
+                                                $marca->saveFile($_FILES['archivo_marca1'], $marca->getRuta1(), $marca->getLogo())
+                                            ) {
                                                 $result['message'] = 'Marca modificada correctamente';
                                             } else {
                                                 $result['message'] = 'Marca modificada pero no se guardó la imagen o el logo';
@@ -170,8 +178,8 @@ if (isset($_GET['action'])) {
                                             $result['message'] = 'Marca modificada correctamente';
                                         } else {
                                             $result['exception'] = Database::getException();
-                                        }  
-                                    }    
+                                        }
+                                    }
                                 }
                             }
                         } else {
@@ -184,7 +192,7 @@ if (isset($_GET['action'])) {
                     $result['exception'] = 'Marca incorrecta';
                 }
                 break;
-            //Método para eliminar una marca
+                //Método para eliminar una marca
             case 'delete':
                 if ($marca->setId($_POST['id_marca'])) {
                     if ($data = $marca->readOne()) {
@@ -195,7 +203,7 @@ if (isset($_GET['action'])) {
                                 if ($marca->deleteFile($marca->getRuta1(), $data['logo_marca'])) {
                                 } else {
                                     $result['message'] = 'Marca eliminada pero no se borró el logo';
-                                }    
+                                }
                             } else {
                                 $result['message'] = 'Marca eliminada pero no se borró la imagen ni el logo';
                             }

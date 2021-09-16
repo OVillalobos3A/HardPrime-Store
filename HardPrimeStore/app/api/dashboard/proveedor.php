@@ -16,19 +16,25 @@ if (isset($_GET['action'])) {
     if (isset($_SESSION['id_usuario'])) {
         // Se compara la acción a realizar cuando un administrador ha iniciado sesión.
         switch ($_GET['action']) {
-            //Método para consultar la existencia de todos los proveedores registrados
+                //Método para consultar la existencia de todos los proveedores registrados
             case 'readAll':
-                if ($result['dataset'] = $proveedor->readAll()) {
-                    $result['status'] = 1;
-                } else {
-                    if (Database::getException()) {
-                        $result['exception'] = Database::getException();
+                if (isset($_SESSION['id_usuario'])) {
+                    if ($result['dataset'] = $proveedor->readAll()) {
+                        $result['status'] = 1;
                     } else {
-                        $result['exception'] = 'No hay proveedores registrados';
+                        if (Database::getException()) {
+                            $result['status'] = 2;
+                            $result['exception'] = Database::getException();
+                        } else {
+                            $result['status'] = 2;
+                            $result['exception'] = 'No hay proveedores registrados';
+                        }
                     }
+                } else {
+                    $result['status'] = 3;
                 }
                 break;
-            //Método para buscar un proveedor en especifico
+                //Método para buscar un proveedor en especifico
             case 'search':
                 $_POST = $proveedor->validateForm($_POST);
                 if ($_POST['search'] != '') {
@@ -51,7 +57,7 @@ if (isset($_GET['action'])) {
                     $result['exception'] = 'Ingrese un valor para buscar';
                 }
                 break;
-            //Método para crear un proveedor
+                //Método para crear un proveedor
             case 'create':
                 $_POST = $proveedor->validateForm($_POST);
                 if ($proveedor->setNombre($_POST['nombre'])) {
@@ -77,7 +83,7 @@ if (isset($_GET['action'])) {
                     $result['exception'] = 'Formato de nombre incorrecto';
                 }
                 break;
-            //Método para consultar un proveedor
+                //Método para consultar un proveedor
             case 'readOne':
                 if ($proveedor->setId($_POST['id_proveedor'])) {
                     if ($result['dataset'] = $proveedor->readOne()) {
@@ -93,7 +99,7 @@ if (isset($_GET['action'])) {
                     $result['exception'] = 'Proveedor incorrecto';
                 }
                 break;
-            //Método para actualizar un proveedor
+                //Método para actualizar un proveedor
             case 'update':
                 $_POST = $proveedor->validateForm($_POST);
                 if ($proveedor->setId($_POST['id_proveedor'])) {
@@ -127,7 +133,7 @@ if (isset($_GET['action'])) {
                     $result['exception'] = 'Proveedor incorrecto';
                 }
                 break;
-            //Método para eliminar un proveedor
+                //Método para eliminar un proveedor
             case 'delete':
                 if ($proveedor->setId($_POST['id_proveedor'])) {
                     if ($data = $proveedor->readOne()) {

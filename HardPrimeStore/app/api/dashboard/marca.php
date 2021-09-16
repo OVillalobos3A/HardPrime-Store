@@ -18,15 +18,22 @@ if (isset($_GET['action'])) {
         switch ($_GET['action']) {
             //Método para consultar la información de todos las marcas registrados
             case 'readAll':
+                if (isset($_SESSION['id_usuario'])) {
                 if ($result['dataset'] = $categoria->readAll()) {
                     $result['status'] = 1;
                 } else {
                     if (Database::getException()) {
+                        $result['status'] = 2;
                         $result['exception'] = Database::getException();
                     } else {
+                        $result['status'] = 2;
                         $result['exception'] = 'No hay categorías registradas';
                     }
                 }
+            }else{
+                $result['status'] = 3;
+            }
+
                 break;
             //Método para buscar una marca en especifico
             case 'search':

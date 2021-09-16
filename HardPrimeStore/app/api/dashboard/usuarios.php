@@ -18,14 +18,20 @@ if (isset($_GET['action'])) {
         switch ($_GET['action']) {
                 //Método para consultar la existencia de todos los productos registrados
             case 'readAll':
-                if ($result['dataset'] = $producto->readAll()) {
-                    $result['status'] = 1;
-                } else {
-                    if (Database::getException()) {
-                        $result['exception'] = Database::getException();
+                if (isset($_SESSION['id_usuario'])) {
+                    if ($result['dataset'] = $producto->readAll()) {
+                        $result['status'] = 1;
                     } else {
-                        $result['exception'] = 'No hay usuarios registrados';
+                        if (Database::getException()) {
+                            $result['status'] = 2;
+                            $result['exception'] = Database::getException();
+                        } else {
+                            $result['status'] = 2;
+                            $result['exception'] = 'No hay usuarios registrados';
+                        }
                     }
+                } else {
+                    $result['status'] = 3;
                 }
                 break;
                 //Método para buscar un usuario en especifico      

@@ -29,17 +29,23 @@ if (isset($_GET['action'])) {
                 } else {
                     $result['exception'] = 'Ocurrió un problema al cerrar la sesión';
                 }
-                break;                                
+                break;
                 //Método para consultar la existencia de empleados
             case 'readAll':
-                if ($result['dataset'] = $usuario->readAll()) {
-                    $result['status'] = 1;
-                } else {
-                    if (Database::getException()) {
-                        $result['exception'] = Database::getException();
+                if (isset($_SESSION['id_usuario'])) {
+                    if ($result['dataset'] = $usuario->readAll()) {
+                        $result['status'] = 1;
                     } else {
-                        $result['exception'] = 'No hay empleados registrados';
+                        if (Database::getException()) {
+                            $result['status'] = 2;
+                            $result['exception'] = Database::getException();
+                        } else {
+                            $result['status'] = 2;
+                            $result['exception'] = 'No hay empleados registrados';
+                        }
                     }
+                } else {
+                    $result['status'] = 3;
                 }
                 break;
                 //Método para consultar la existencia de empleados sin tener en cuenta la existencia del usuario root
@@ -381,12 +387,12 @@ if (isset($_GET['action'])) {
                             } else {
                                 if ($usuario->checkPassword($_POST['contra'])) {
                                     if ($usuario->setAutenticacion(isset($_POST['autent']) ? 1 : 0)) {
-                                    if ($usuario->updateUserCredentials2()) {
-                                        $result['status'] = 1;
-                                        $result['message'] = 'Credenciales actualizadas correctamente';
-                                    } else {
-                                        $result['exception'] = Database::getException();
-                                    }
+                                        if ($usuario->updateUserCredentials2()) {
+                                            $result['status'] = 1;
+                                            $result['message'] = 'Credenciales actualizadas correctamente';
+                                        } else {
+                                            $result['exception'] = Database::getException();
+                                        }
                                     } else {
                                         $result['exception'] = 'Error al actualizar el estado de la autenticación en dos pasos';
                                     }
@@ -628,9 +634,9 @@ if (isset($_GET['action'])) {
                             $result['status'] = 3;
                             $_SESSION['id_user'] = $usuario->getId();
                         } else {
-                            if ($usuario->getAuten()) {                                
+                            if ($usuario->getAuten()) {
                                 $_SESSION['id_user'] = $usuario->getId();
-                                $_SESSION['correo'] = $usuario->getCorreo();                                
+                                $_SESSION['correo'] = $usuario->getCorreo();
                                 $usuario->setId($_SESSION['id_user']);
                                 $usuario->generarCodigo(5);
                                 $usuario->updateCode();
@@ -648,9 +654,9 @@ if (isset($_GET['action'])) {
                                 $mail->AddAddress($usuario->getCorreo());
                                 $mail->Subject = 'Segundo factor de autenticación - HardPrimeStore';
                                 $mail->Body = 'El código para iniciar sesión es: ' . $usuario->getCodigo() . '.';
-                                if ($mail->Send()) {                                   
+                                if ($mail->Send()) {
                                     $result['message'] = 'Se le ha envíado el código para iniciar sesión, por favor revise su correo.';
-                                    $result['status'] = 4;                                    
+                                    $result['status'] = 4;
                                 } else {
                                     $result['exception'] = 'Ocurrió un error al enviar el correo.';
                                 }
@@ -670,34 +676,30 @@ if (isset($_GET['action'])) {
                                 $usuario->registrarSesion($DateAndTime, $plataforma, $_SESSION['id_usuario']);
                             }
                         }
-                    } else {    
+                    } else {
                         $usuario->setAlias($_POST['alias']);
-                        $usuario->readIntentos();                        
+                        $usuario->readIntentos();
                         if (Database::getException()) {
                             $result['exception'] = Database::getException();
-                        } else {                            
-                            if ($usuario->getIntentos() == 0){                                
+                        } else {
+                            if ($usuario->getIntentos() == 0) {
                                 $usuario->setIntentos(1);
                                 $usuario->updateIntentos();
                                 $result['exception'] = 'Clave incorrecta';
-                            }
-                            else if($usuario->getIntentos() == 1){                                
+                            } else if ($usuario->getIntentos() == 1) {
                                 $usuario->setIntentos(2);
                                 $usuario->updateIntentos();
                                 $result['exception'] = 'Clave incorrecta';
-                            }
-                            else if($usuario->getIntentos() == 2){                                
+                            } else if ($usuario->getIntentos() == 2) {
                                 $usuario->setIntentos(3);
                                 $usuario->setEstado('inactivo');
                                 $usuario->setAlias($_POST['alias']);
                                 $usuario->updateState();
                                 $usuario->updateIntentos();
                                 $result['exception'] = 'Se han excedido los intentos permitidos, su cuenta ha sido bloqueada';
-                            }
-                            else if($usuario->getIntentos() > 2){
+                            } else if ($usuario->getIntentos() > 2) {
                                 $result['exception'] = 'Se han excedido los intentos permitidos, su cuenta ha sido bloqueada.';
-                            }              
-                            
+                            }
                         }
                     }
                     //}else{

@@ -18,9 +18,13 @@ function readRows(api) {
             request.json().then(function (response) {
                 let data = [];
                 // Se comprueba si la respuesta es satisfactoria, de lo contrario se muestra un mensaje con la excepción.
-                if (response.status) {
+                if (response.status == 1) {
                     data = response.dataset;
-                } else {
+                }
+                else if(response.status == 3){
+                    sweetAlert(2, 'La sesión ha sido destruida por inactividad', 'index.php');
+                } 
+                else if (response.status == 2) {
                     sweetAlert(4, response.exception, null);
                 }
                 // Se envían los datos a la función del controlador para que llene la tabla en la vista.

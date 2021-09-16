@@ -16,19 +16,25 @@ if (isset($_GET['action'])) {
     if (isset($_SESSION['id_usuario']) || isset($_SESSION['id_cliente'])) {
         // Se compara la acción a realizar cuando un administrador ha iniciado sesión.
         switch ($_GET['action']) {
-            //Método para consultar la información de todos los pedidos
+                //Método para consultar la información de todos los pedidos
             case 'readAll':
-                if ($result['dataset'] = $pedidos->readAll()) {
-                    $result['status'] = 1;
-                } else {
-                    if (Database::getException()) {
-                        $result['exception'] = Database::getException();
+                if (isset($_SESSION['id_usuario'])) {
+                    if ($result['dataset'] = $pedidos->readAll()) {
+                        $result['status'] = 1;
                     } else {
-                        $result['exception'] = 'No hay pedidos registrados';
+                        if (Database::getException()) {
+                            $result['status'] = 2;
+                            $result['exception'] = Database::getException();
+                        } else {
+                            $result['status'] = 2;
+                            $result['exception'] = 'No hay pedidos registrados';
+                        }
                     }
+                } else {
+                    $result['status'] = 3;
                 }
                 break;
-            //Método para consultar la información del detalle de un pedido en especifico
+                //Método para consultar la información del detalle de un pedido en especifico
             case 'viewShop':
                 if ($pedidos->setId($_POST['id_pedido'])) {
                     if ($result['dataset'] = $pedidos->viewShop()) {
@@ -50,7 +56,7 @@ if (isset($_GET['action'])) {
                     $result['exception'] = 'Pedido incorrecto';
                 }
                 break;
-            //Método para buscar un pedido en especifico
+                //Método para buscar un pedido en especifico
             case 'search':
                 $_POST = $pedidos->validateForm($_POST);
                 if ($_POST['search'] != '') {
@@ -73,7 +79,7 @@ if (isset($_GET['action'])) {
                     $result['exception'] = 'Ingrese un valor para buscar';
                 }
                 break;
-            //Método para buscar un pedido en especifico(por código)
+                //Método para buscar un pedido en especifico(por código)
             case 'searchPedido':
                 $_POST = $pedidos->validateForm($_POST);
                 if ($_POST['search'] != '') {
@@ -96,7 +102,7 @@ if (isset($_GET['action'])) {
                     $result['exception'] = 'Ingrese un valor para buscar';
                 }
                 break;
-            //Método para consultar la información de un pedido
+                //Método para consultar la información de un pedido
             case 'readOne':
                 if ($pedidos->setId($_POST['id_pedido'])) {
                     if ($result['dataset'] = $pedidos->readOne()) {
@@ -112,7 +118,7 @@ if (isset($_GET['action'])) {
                     $result['exception'] = 'Pedido incorrecto';
                 }
                 break;
-            //Método para consultar la información de un pedido que no este en preparación
+                //Método para consultar la información de un pedido que no este en preparación
             case 'readOne1':
                 if ($pedidos->setId($_POST['id_pedido'])) {
                     if ($result['dataset'] = $pedidos->readOne()) {
@@ -128,8 +134,8 @@ if (isset($_GET['action'])) {
                     $result['exception'] = 'Pedido incorrecto';
                 }
                 break;
-            //Método para actualizar el estado de un pedido
-            //darlo por finalizado
+                //Método para actualizar el estado de un pedido
+                //darlo por finalizado
             case 'update':
                 $_POST = $pedidos->validateForm($_POST);
                 if ($pedidos->setId($_POST['id_pedido'])) {
@@ -148,7 +154,7 @@ if (isset($_GET['action'])) {
                                 } else {
                                     $result['exception'] = Database::getException();
                                     $result['message'] = 'Ha ocurrido un error';
-                                } 
+                                }
                             }
                         }
                     }
@@ -156,16 +162,16 @@ if (isset($_GET['action'])) {
                     $result['exception'] = 'Pedido incorrecto';
                 }
                 break;
-            //Método para actualizar el estado de un pedio
-            //Darlo por cancelado
-            //ESTE MÉTODO YA NO SE OCUPA. HASTA PROXIMO AVISO.
+                //Método para actualizar el estado de un pedio
+                //Darlo por cancelado
+                //ESTE MÉTODO YA NO SE OCUPA. HASTA PROXIMO AVISO.
             case 'cancelpedido1':
                 $_POST = $pedidos->validateForm($_POST);
                 if ($pedidos->setId($_POST['id_pedido'])) {
                     if ($data = $pedidos->readOne2()) {
                         $result['exception'] = 'Este pedido ya fue cancelado';
                     } else {
-                        if ($data = $pedidos-> readState2()) {
+                        if ($data = $pedidos->readState2()) {
                             $result['exception'] = 'Este pedido ya a sido entregado, no se puede modificar.';
                         } else {
                             if ($pedidos->updateRowCancel()) {
@@ -199,18 +205,18 @@ if (isset($_GET['action'])) {
                     $result['exception'] = 'Pedido incorrecto';
                 }
                 break;
-            //Método para actualizar el estado de un pedido
-            //darlo por entregado
+                //Método para actualizar el estado de un pedido
+                //darlo por entregado
             case 'entrega':
                 $_POST = $pedidos->validateForm($_POST);
                 if ($pedidos->setId($_POST['id_pedido'])) {
-                    if ($data = $pedidos-> readState2()) {
+                    if ($data = $pedidos->readState2()) {
                         $result['exception'] = 'Este pedido ya fue entregado';
                     } else {
-                        if ($data = $pedidos-> readState()) {
+                        if ($data = $pedidos->readState()) {
                             $result['exception'] = 'Este pedido ha sido cancelado, no se puede dar por entregado';
                         } else {
-                            if ($data = $pedidos-> readState3()) {
+                            if ($data = $pedidos->readState3()) {
                                 $result['exception'] = 'Este pedido se encuentra aún en proceso, no se puede dar por entregado';
                             } else {
                                 if ($pedidos->updateRowDelivery()) {
@@ -239,7 +245,7 @@ if (isset($_GET['action'])) {
                     }
                 }
                 break;
-            //ESTE MÉTODO NO SE OCUPA, HASTA NUEVO AVISO.
+                //ESTE MÉTODO NO SE OCUPA, HASTA NUEVO AVISO.
             case 'cancel':
                 $_POST = $pedidos->validateForm($_POST);
                 if ($pedidos->setId($_POST['id_pedido'])) {

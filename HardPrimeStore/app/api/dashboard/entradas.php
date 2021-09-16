@@ -16,20 +16,26 @@ if (isset($_GET['action'])) {
     if (isset($_SESSION['id_usuario'])) {
         // Se compara la acción a realizar cuando un administrador ha iniciado sesión.
         switch ($_GET['action']) {
-            //Método para consultar la existencia de entradas
+                //Método para consultar la existencia de entradas
             case 'readAll':
-                if ($result['dataset'] = $entrada->readAll()) {
-                    $result['status'] = 1;
-                } else {
-                    if (Database::getException()) {
-                        $result['exception'] = Database::getException();
+                if (isset($_SESSION['id_usuario'])) {
+                    if ($result['dataset'] = $entrada->readAll()) {
+                        $result['status'] = 1;
                     } else {
-                        $result['exception'] = 'No hay entradas registradas';
+                        if (Database::getException()) {
+                            $result['status'] = 2;
+                            $result['exception'] = Database::getException();
+                        } else {
+                            $result['status'] = 2;
+                            $result['exception'] = 'No hay entradas registradas';
+                        }
                     }
+                } else {
+                    $result['status'] = 3;
                 }
                 break;
-            //Método para consultar la información de todos los productos registrados
-            //para luego pasarlos al combobox(select)
+                //Método para consultar la información de todos los productos registrados
+                //para luego pasarlos al combobox(select)
             case 'readAllProduct':
                 if ($result['dataset'] = $entrada->readAllProduct()) {
                     $result['status'] = 1;
@@ -40,7 +46,7 @@ if (isset($_GET['action'])) {
                     }
                 }
                 break;
-            //Método para consultar el empleado que ha iniciado sesión
+                //Método para consultar el empleado que ha iniciado sesión
             case 'readEmp':
                 if ($result['dataset'] = $entrada->readEmp()) {
                     $result['status'] = 1;
@@ -53,7 +59,7 @@ if (isset($_GET['action'])) {
                     }
                 }
                 break;
-            //Método para consultar una entrada en especifico
+                //Método para consultar una entrada en especifico
             case 'search':
                 $_POST = $entrada->validateForm($_POST);
                 if ($_POST['search'] != '') {
@@ -76,7 +82,7 @@ if (isset($_GET['action'])) {
                     $result['exception'] = 'Ingrese un valor para buscar';
                 }
                 break;
-            //Método para crear una entrada
+                //Método para crear una entrada
             case 'create':
                 $_POST = $entrada->validateForm($_POST);
                 if ($entrada->setCant($_POST['cantidad'])) {
@@ -92,10 +98,10 @@ if (isset($_GET['action'])) {
                                     }
                                 } else {
                                     $result['exception'] = 'Fecha incorrecta';
-                                } 
+                                }
                             } else {
                                 $result['exception'] = 'Empleado incorrecto';
-                            } 
+                            }
                         } else {
                             $result['exception'] = 'No hay existencia de productos';
                         }
@@ -106,7 +112,7 @@ if (isset($_GET['action'])) {
                     $result['exception'] = 'Cantidad incorrecta';
                 }
                 break;
-            //Método para eliminar una entrada
+                //Método para eliminar una entrada
             case 'delete':
                 if ($entrada->setId($_POST['id_entrada'])) {
                     if ($data = $entrada->readOne()) {
@@ -116,7 +122,7 @@ if (isset($_GET['action'])) {
                             $result['message'] = 'Se ha eliminado la entrada';
                         } else {
                             $result['exception'] = Database::getException();
-                        }  
+                        }
                     } else {
                         $result['exception'] = 'Entrada inexistente';
                     }
