@@ -656,12 +656,13 @@ if (isset($_GET['action'])) {
                                 }
                             } else {
                                 $_SESSION['id_usuario'] = $usuario->getId();
+                                date_default_timezone_set('America/El_Salvador');
                                 $_SESSION["ultimoAcceso"] = date("Y-n-j H:i:s");
                                 $result['message'] = 'Autenticación correcta';
                                 $result['status'] = 1;
                                 //sesion que captura la fecha y hora del inicio de sesión
                                 $user_agent = $_SERVER['HTTP_USER_AGENT'];
-                                //Se establece la zona horaria y se obtiene la fecha y hora actual
+                                //Se establece la zona horaria y se obtiene la fecha y hora actual                                
                                 date_default_timezone_set('America/El_Salvador');
                                 $DateAndTime = date('m-d-Y h:i:s a', time());
                                 $plataforma = $usuario->getPlatform($user_agent);

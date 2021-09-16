@@ -20,7 +20,7 @@ if (isset($_GET['action'])) {
         date_default_timezone_set('America/El_Salvador');
         $ahora = date("Y-n-j H:i:s");
         $tiempo_transcurrido = (strtotime($ahora) - strtotime($fechaGuardada));
-        switch ($_GET['action']) {           
+        switch ($_GET['action']) {
                 //Método para cerrar sesión en caso de inactividad
             case 'timeOutt':
                 //comparamos el tiempo transcurrido
@@ -34,14 +34,18 @@ if (isset($_GET['action'])) {
                 }
                 break;
                 //Método para consultar la existencia de empleados sin tener en cuenta la existencia del usuario root
-                default:
+            default:
                 $result['exception'] = 'Acción no disponible fuera de la sesión';
         }
+
+
+        // Se indica el tipo de contenido a mostrar y su respectivo conjunto de caracteres.
+        header('content-type: application/json; charset=utf-8');
+        // Se imprime el resultado en formato JSON y se retorna al controlador.
+        print(json_encode($result));
+    } else {
+        print(json_encode('Acceso denegado'));
     }
-    // Se indica el tipo de contenido a mostrar y su respectivo conjunto de caracteres.
-    header('content-type: application/json; charset=utf-8');
-    // Se imprime el resultado en formato JSON y se retorna al controlador.
-    print(json_encode($result));
 } else {
     print(json_encode('Recurso no disponible'));
 }
