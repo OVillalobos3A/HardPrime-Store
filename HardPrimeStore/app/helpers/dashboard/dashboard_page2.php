@@ -133,9 +133,9 @@ class Dashboard_Page
                 <script type="text/javascript" src="../../app/helpers/dashboard/components.js"></script>
                 <script>
                     M.AutoInit();
-                </script>
-                <script type="text/javascript" src="../../app/controllers/dashboard/account.js"></script>
+                </script>                
                 <script type="text/javascript" src="../../app/controllers/dashboard/' . $controller . '"></script>
+                <script type="text/javascript" src="../../app/controllers/dashboard/account.js"></script>
             </body>
             </html>
         ');

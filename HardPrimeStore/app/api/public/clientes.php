@@ -43,7 +43,7 @@ if (isset($_GET['action'])) {
                 //Método para cerrar sesión en caso de inactividad
             case 'timeOut':
                 //comparamos el tiempo transcurrido
-                if ($tiempo_transcurrido >= 500) {
+                if ($tiempo_transcurrido >= 300) {
                     $result['status'] = 1;
                     //si pasaron 5 minutos o más
                     session_destroy(); // destruyo la sesión                    

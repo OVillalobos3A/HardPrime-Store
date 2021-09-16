@@ -29,7 +29,7 @@ if (isset($_GET['action'])) {
                 } else {
                     $result['exception'] = 'Ocurrió un problema al cerrar la sesión';
                 }
-                break;
+                break;                                
                 //Método para consultar la existencia de empleados
             case 'readAll':
                 if ($result['dataset'] = $usuario->readAll()) {
@@ -40,18 +40,6 @@ if (isset($_GET['action'])) {
                     } else {
                         $result['exception'] = 'No hay empleados registrados';
                     }
-                }
-                break;
-                //Método para cerrar sesión en caso de inactividad
-            case 'timeOut':
-                //comparamos el tiempo transcurrido
-                if ($tiempo_transcurrido >= 500) {
-                    $result['status'] = 1;
-                    //si pasaron 5 minutos o más
-                    session_destroy(); // destruyo la sesión                    
-                    //sino, actualizo la fecha de la sesión
-                } else {
-                    $_SESSION["ultimoAcceso"] = $ahora;
                 }
                 break;
                 //Método para consultar la existencia de empleados sin tener en cuenta la existencia del usuario root

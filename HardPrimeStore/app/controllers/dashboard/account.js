@@ -1,8 +1,9 @@
 // Constante para establecer la ruta y parámetros de comunicación con la API.
 const API_EMP = '../../app/api/dashboard/emp.php?action=';
+const API_TIME = '../../app/api/dashboard/timeout.php?action=';
 
 document.addEventListener('DOMContentLoaded', function () {
-    timeOut();
+    timeOutt();
 });
 
 // Función para mostrar un mensaje de confirmación al momento de cerrar sesión.
@@ -42,8 +43,8 @@ function logOut() {
     });
 }
 
-function timeOut() {
-    fetch(API_EMP + 'timeOut', {
+function timeOutt() {
+    fetch(API_TIME + 'timeOutt', {
         method: 'get'
     }).then(function (request) {
         // Se verifica si la petición es correcta, de lo contrario se muestra un mensaje indicando el problema.
@@ -52,7 +53,7 @@ function timeOut() {
                 // Se comprueba si la respuesta es satisfactoria, de lo contrario se muestra un mensaje con la excepción.
                 if (response.status) {                  
                     // Se agregan las tarjetas a la etiqueta div mediante su id para mostrar las categorías.
-                    sweetAlert(2, response.exception, 'index.php');
+                    sweetAlert(2, 'La sesion ha sido destruida por inactividad', 'index.php');
                     // Se inicializa el componente Tooltip asignado a los enlaces para que funcionen las sugerencias textuales.                    
                 } else {
                     // Se presenta un mensaje de error cuando no existen datos para mostrar.
