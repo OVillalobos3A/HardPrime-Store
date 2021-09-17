@@ -521,65 +521,69 @@ if (isset($_GET['action'])) {
                 break;
                 //Método para crear el primer usuario.
             case 'peme':
-                $_POST = $usuario->validateForm($_POST);
-                if ($usuario->setNombre($_POST['nombre'])) {
-                    if ($usuario->setApellido($_POST['apellido'])) {
-                        if ($usuario->setCorreo($_POST['correo'])) {
-                            if ($usuario->setTel($_POST['tel'])) {
-                                if ($usuario->setFecha($_POST['fecha'])) {
-                                    if ($usuario->setGen($_POST['gen'])) {
-                                        if ($usuario->setAlias($_POST['alias'])) {
-                                            if ($_POST['clave1'] == $_POST['clave2']) {
-                                                if ($usuario->setClave($_POST['clave1'])) {
-                                                    if (is_uploaded_file($_FILES['archivo']['tmp_name'])) {
-                                                        if ($usuario->setImagen($_FILES['archivo'])) {
-                                                            if ($usuario->createFirstEmp()) {
-                                                                if ($usuario->saveFile($_FILES['archivo'], $usuario->getRuta(), $usuario->getImagen())) {
-                                                                    if ($usuario->firstUser()) {
-                                                                        $result['status'] = 1;
-                                                                        $result['message'] = 'Se han ingresado correctamente los datos';
+                if (!($usuario->readAll())) {
+                    $_POST = $usuario->validateForm($_POST);
+                    if ($usuario->setNombre($_POST['nombre'])) {
+                        if ($usuario->setApellido($_POST['apellido'])) {
+                            if ($usuario->setCorreo($_POST['correo'])) {
+                                if ($usuario->setTel($_POST['tel'])) {
+                                    if ($usuario->setFecha($_POST['fecha'])) {
+                                        if ($usuario->setGen($_POST['gen'])) {
+                                            if ($usuario->setAlias($_POST['alias'])) {
+                                                if ($_POST['clave1'] == $_POST['clave2']) {
+                                                    if ($usuario->setClave($_POST['clave1'])) {
+                                                        if (is_uploaded_file($_FILES['archivo']['tmp_name'])) {
+                                                            if ($usuario->setImagen($_FILES['archivo'])) {
+                                                                if ($usuario->createFirstEmp()) {
+                                                                    if ($usuario->saveFile($_FILES['archivo'], $usuario->getRuta(), $usuario->getImagen())) {
+                                                                        if ($usuario->firstUser()) {
+                                                                            $result['status'] = 1;
+                                                                            $result['message'] = 'Se han ingresado correctamente los datos';
+                                                                        } else {
+                                                                            $result['exception'] = Database::getException();
+                                                                            $result['message'] = 'Error desconocido';
+                                                                        }
                                                                     } else {
-                                                                        $result['exception'] = Database::getException();
-                                                                        $result['message'] = 'Error desconocido';
+                                                                        $result['message'] = 'Empleado creado pero no se guardó la imagen';
                                                                     }
                                                                 } else {
-                                                                    $result['message'] = 'Empleado creado pero no se guardó la imagen';
+                                                                    $result['exception'] = Database::getException();
                                                                 }
                                                             } else {
-                                                                $result['exception'] = Database::getException();
+                                                                $result['exception'] = $usuario->getImageError();
                                                             }
                                                         } else {
-                                                            $result['exception'] = $usuario->getImageError();
+                                                            $result['exception'] = 'Seleccione foto de perfil';
                                                         }
                                                     } else {
-                                                        $result['exception'] = 'Seleccione foto de perfil';
+                                                        $result['exception'] = $usuario->getPasswordError();
                                                     }
                                                 } else {
-                                                    $result['exception'] = $usuario->getPasswordError();
+                                                    $result['exception'] = 'Claves diferentes';
                                                 }
                                             } else {
-                                                $result['exception'] = 'Claves diferentes';
+                                                $result['exception'] = 'Usuario incorrecto';
                                             }
                                         } else {
-                                            $result['exception'] = 'Usuario incorrecto';
+                                            $result['exception'] = 'Género incorrecto';
                                         }
                                     } else {
-                                        $result['exception'] = 'Género incorrecto';
+                                        $result['exception'] = 'Fecha incorrecta';
                                     }
                                 } else {
-                                    $result['exception'] = 'Fecha incorrecta';
+                                    $result['exception'] = 'Teléfono incorrecto';
                                 }
                             } else {
-                                $result['exception'] = 'Teléfono incorrecto';
+                                $result['exception'] = 'Correo incorrecto';
                             }
                         } else {
-                            $result['exception'] = 'Correo incorrecto';
+                            $result['exception'] = 'Apellidos incorrectos';
                         }
                     } else {
-                        $result['exception'] = 'Apellidos incorrectos';
+                        $result['exception'] = 'Nombres incorrectos';
                     }
                 } else {
-                    $result['exception'] = 'Nombres incorrectos';
+                    $result['exception'] = 'No se permite registrar un segundo primer usuario, acción denegada.';
                 }
                 break;
             case 'changePass':

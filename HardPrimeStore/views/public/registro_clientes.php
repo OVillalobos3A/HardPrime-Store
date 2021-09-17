@@ -27,12 +27,12 @@ Sitio_Publico::headerTemplate('Crear cuenta');
                             </div>
                             <div class="input-field col s12 m6">
                                 <i class="material-icons prefix">email</i>
-                                <input id="correo" type="text" name="correo" maxlength="40" class="validate" required>
+                                <input id="correo" type="text" name="correo" maxlength="40" class="validate" autocomplete="off" required>
                                 <label for="correo">Correo</label>
                             </div>
                             <div class="input-field col s12 m6">
                                 <i class="material-icons prefix">phone</i>
-                                <input id="telefono" type="text" name="telefono" maxlength="9" class="validate" required>
+                                <input id="telefono" type="text" name="telefono" maxlength="9" class="validate" autocomplete="off" required>
                                 <label for="telefono">Teléfono</label>
                             </div>
                             <div class="input-field col s12">
@@ -56,17 +56,17 @@ Sitio_Publico::headerTemplate('Crear cuenta');
                             </div>
                             <div class="input-field col s12 m6">
                                 <i class="material-icons prefix">assignment_ind</i>
-                                <input id="alias" type="text" name="alias" class="validate" maxlength="10" required />
+                                <input id="alias" type="text" name="alias" class="validate" maxlength="10" autocomplete="off" required />
                                 <label for="alias">Usuario</label>
                             </div>
                             <div class="input-field col s12 m6">
                                 <i class="material-icons prefix">vpn_key</i>
-                                <input id="clave1" type="password" name="clave1" class="validate" maxlength="16" required />
+                                <input id="clave1" type="password" name="clave1" class="validate" maxlength="16" autocomplete="off" required />
                                 <label for="clave1">Clave</label>
                             </div>
                             <div class="input-field col s12 m6">
                                 <i class="material-icons prefix">vpn_key</i>
-                                <input id="clave2" type="password" name="clave2" class="validate" maxlength="16" required />
+                                <input id="clave2" type="password" name="clave2" class="validate" maxlength="16" autocomplete="off" required />
                                 <label for="clave2">Confirmar clave</label>
                             </div>
                         </div>                        

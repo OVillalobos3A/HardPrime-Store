@@ -27,7 +27,6 @@ Sitio_Publico::headerTemplate('Recuperar contraseña');
 
                                 </div>
                                 <!--Boton para enviar el código de confirmación y habilitar el cambio de contraseña-->
-
                                 <br>&nbsp;&nbsp;<button class="waves-effect orange darken-4 btn" type="submit" id="action" name="action"><i class="material-icons right">email</i>Enviar código</button>
                             </div>
                             <b>Se ha enviara código de confirmación a tu correo electronico asociado con este usuario, por favor revisa tu bandeja de entrada y procede a cambiar tu contraseña.</b>

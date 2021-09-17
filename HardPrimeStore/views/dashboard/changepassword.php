@@ -25,13 +25,13 @@ Dashboard_Page::headerTemplate('Cambio de contraseña');
                     <!--Estableciendo el tamaño del que tomará el Input field-->
                     <div class="input-field col s12 m6">
                         <i class="material-icons prefix">password</i>
-                        <input id="clave" type="text" name="clave" class="validate" maxlength="16" required>
+                        <input id="clave" type="password" name="clave" class="validate" maxlength="16" required>
                         <label for="clave">Nueva contraseña:</label>
                     </div>
                     <!--Estableciendo el tamaño del que tomará el Input field-->
                     <div class="input-field col s12 m6">
                         <i class="material-icons prefix">password</i>
-                        <input id="confirmar" type="text" name="confirmar" class="validate" maxlength="16" required>
+                        <input id="confirmar" type="password" name="confirmar" class="validate" maxlength="16" required>
                         <label for="confirmar">Confirmar contraseña:</label>
                     </div>
                 </div>

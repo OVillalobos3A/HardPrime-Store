@@ -92,7 +92,7 @@ Dashboard_Page::headerTemplate('Administrar usuarios');
                     <!--Estableciendo el tamaño del que tomará el Input field-->
                     <div class="input-field col s12 m6">
                         <i class="material-icons prefix">account_box</i>
-                        <input id="usuario" name="usuario" type="text" maxlength="10" class="validate" required>
+                        <input id="usuario" name="usuario" type="text" maxlength="10" autocomplete="off" class="validate" required>
                         <label for="telefono">Usuario</label>
                     </div>
                     <div class="input-field col s12 m6">

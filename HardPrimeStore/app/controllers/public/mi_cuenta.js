@@ -70,7 +70,7 @@ function readPedido() {
                     // Se inicializa el componente Tooltip asignado a los enlaces para que funcionen las sugerencias textuales.
                     M.Tooltip.init(document.querySelectorAll('.tooltipped'));
                 } else {
-                    sweetAlert(4, response.exception, 'index.php');
+                    sweetAlert(4, response.exception, null);
                 }
             });
         } else {

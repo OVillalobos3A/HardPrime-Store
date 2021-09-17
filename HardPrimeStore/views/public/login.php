@@ -21,7 +21,7 @@ Sitio_Publico::headerTemplate('HardPrimeStore - Carrito de compras');
                                         <!--Campo para que el cliente ingrese su usuario-->
                                         <div class="input-field col s12">
                                             <i class="material-icons prefix">account_box</i>
-                                            <input type="text" id="usuario" name="usuario" class="validate" maxlength="10" required>
+                                            <input type="text" id="usuario" name="usuario" class="validate" maxlength="10" autocomplete="off" required>
                                             <label for="usuario">Ingrese su usuario</label>
                                         </div>
                                     </div>
@@ -36,7 +36,7 @@ Sitio_Publico::headerTemplate('HardPrimeStore - Carrito de compras');
                                         <!--Campo para que el cliente ingrese su contraseña-->
                                         <div class="input-field col s12">
                                             <i class="material-icons prefix">vpn_key</i>
-                                            <input id="clave" name="clave" type="password" class="validate" maxlength="16" required>
+                                            <input id="clave" name="clave" type="password" class="validate" maxlength="16" autocomplete="off" required>
                                             <label for="contraseña">Ingrese su contraseña</label>
                                         </div>
                                     </div>

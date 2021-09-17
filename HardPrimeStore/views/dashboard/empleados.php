@@ -81,12 +81,12 @@ Dashboard_Page::headerTemplate('Empleados');
                 </div>
                 <div class="input-field col s12 m6">
                     <i class="material-icons prefix">email</i>
-                    <input id="correo" type="text" name="correo" maxlength="40" class="validate" required>
+                    <input id="correo" type="text" name="correo" maxlength="40" class="validate" autocomplete="off" required>
                     <label for="correo">Correo</label>
                 </div>
                 <div class="input-field col s12 m6">
                     <i class="material-icons prefix">phone</i>
-                    <input id="telefono" type="text" name="telefono" maxlength="9" class="validate" required>
+                    <input id="telefono" type="text" name="telefono" maxlength="9" class="validate" autocomplete="off" required>
                     <label for="telefono">Teléfono</label>
                 </div>
                 <div class="input-field col s12 m6">
